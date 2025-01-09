@@ -1,0 +1,30 @@
+<mat-toolbar class="custom-toolbar d-flex align-items-center justify-content-between">
+  <!-- Sidebar Toggle Button -->
+  <button
+    mat-icon-button
+    class="neumorphic-button"
+    aria-label="Toggle Sidebar"
+    (click)="toggleSidebar()"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Logo/Title -->
+  <span class="toolbar-title">Personal Work APP</span>
+
+  <!-- Spacer -->
+  <span class="flex-grow-1"></span>
+
+
+
+  <!-- Profile Button -->
+  <button
+    mat-button
+    routerLink="/profile"
+    routerLinkActive="active"
+    class="profile-button neumorphic-button"
+  >
+    <mat-icon>account_circle</mat-icon>
+    Profile
+  </button>
+</mat-toolbar>

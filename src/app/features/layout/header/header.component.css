@@ -1,0 +1,47 @@
+.custom-toolbar {
+  background-color: #1f2937; /* Modern dark gray */
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0 16px;
+}
+
+.toolbar-title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.neumorphic-button {
+  background: linear-gradient(145deg, #2d3748, #1a202c);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.neumorphic-button:hover {
+  background: linear-gradient(145deg, #374151, #2d3748);
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.notification-icon {
+  color: #ffffff;
+  position: relative;
+}
+
+.notification-icon .badge {
+  font-size: 0.75rem;
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.flex-grow-1 {
+  flex: 1;
+}
