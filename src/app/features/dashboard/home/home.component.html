@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar Menu -->
+    <div class="col-md-3 col-lg-2 bg-light p-3">
+      <div class="list-group">
+        <a routerLink="/home/tasks" class="list-group-item list-group-item-action" routerLinkActive="active">Thêm Công Việc</a>
+        <a routerLink="/home/meetings" class="list-group-item list-group-item-action">Thêm Cuộc Họp</a>
+        <a routerLink="/home/notes" class="list-group-item list-group-item-action">Ghi Chú</a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 p-4">
+      <h2>Home Dashboard</h2>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

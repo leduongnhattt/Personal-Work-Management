@@ -1,0 +1,45 @@
+body {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+.card {
+  border: none;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #ff758c, #ff7eb3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-gradient {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  border: none;
+  transition: 0.3s ease-in-out;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+  transform: scale(1.02);
+}
+
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  transition: 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #1171cb;
+  box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.25);
+}
+
+.text-muted a {
+  transition: 0.3s ease;
+}
+
+.text-muted a:hover {
+  text-decoration: underline;
+}
