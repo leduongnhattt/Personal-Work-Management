@@ -9,6 +9,7 @@ import { NotesComponent } from './features/notes/notes.component';
 import { MainComponent } from './features/main/main.component';
 import { ScheduleComponent } from './features/schedule/schedule.component';
 import { SettingsComponent } from './features/settings/settings.component';
+import { ProfileComponent } from './features/profile/profile.component';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -24,6 +25,7 @@ export const routes: Routes = [
       { path: 'settings', component: SettingsComponent },
       { path: '', redirectTo: 'tasks', pathMatch: 'full' }
     ]
-  }
+  },
+  { path: 'profile', component: ProfileComponent }
 ];
 

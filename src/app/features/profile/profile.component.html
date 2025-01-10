@@ -1,0 +1,17 @@
+<app-header></app-header>
+<app-sidenav></app-sidenav>
+<div class="profile-container">
+  <div class="profile-card">
+    <img
+      *ngIf="user.profilePicture"
+      [src]="user.profilePicture"
+      alt="Profile Picture"
+      class="profile-picture"
+    />
+    <h2>{{ user.token.userName }}</h2>
+    <p>Email: {{ user.token.email }}</p>
+    <p>Username: {{ user.token.userName }}</p>
+    <p>Phone Number: {{ user.token.sdt }}</p>
+  </div>
+</div>
+

@@ -29,14 +29,13 @@ export class SidenavComponent {
 
   ngOnInit() {
     this.sidebarService.sidebarVisibility$.subscribe((isVisible) => {
-      console.log(isVisible)
       this.isSidebarVisible = isVisible;
     });
   }
 
   toggleSidebar() {
     this.isSidebarVisible = !this.isSidebarVisible;
-    this.sidebarService.toggleSidebar(); // Toggle sidebar state
+    this.sidebarService.toggleSidebar();
   }
 
 

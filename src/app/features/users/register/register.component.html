@@ -43,6 +43,25 @@
             </div>
           </div>
         </div>
+        <!-- SDT -->
+        <div class="form-floating mb-3">
+          <input
+            formControlName="sdt"
+            type="text"
+            id="sdt"
+            class="form-control"
+            placeholder="Phone Number"
+            required />
+          <label for="sdt"><i class="fas fa-envelope me-2"></i> Phone Number</label>
+          <div class="text-danger" *ngIf="hasDisplayError('sdt')">
+            <div *ngIf="form.controls.sdt.hasError('required')">
+              Please enter your phone number
+            </div>
+            <div *ngIf="form.controls.sdt.hasError('pattern')">
+              Phone number must be 10 digits and start with 0.
+            </div>
+          </div>
+        </div>
 
         <!-- Password -->
         <div class="form-floating mb-3">

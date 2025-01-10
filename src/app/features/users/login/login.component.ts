@@ -37,7 +37,8 @@ export class LoginComponent {
         console.log(this.form.value);
         this.authService.login(this.form.value).subscribe({
           next: (res: any) => {
-            this.router.navigateByUrl('/home');
+            this.authService.saveToken(res.token);
+            this.router.navigateByUrl('/main/home');
           },
           error : err => {
             if (err.status == 400) {
