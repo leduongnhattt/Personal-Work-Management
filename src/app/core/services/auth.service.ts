@@ -1,43 +1,53 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { TOKEN_KEY } from '../constants';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   constructor(private http: HttpClient) { }
-  registerUser(formData: any) {
-    return this.http.post(environment.apiUrl + '/register', formData);
+
+
+  registerUser(formData: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/register`, formData);
   }
-  login(formData: any) {
-    return this.http.post(environment.apiUrl + '/login', formData);
+
+
+  login(formData: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/login`, formData);
   }
-  isLoggedIn() {
-    return this.getToken() != null ? true : false;
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
   }
-  saveToken(token: string) {
+
+
+  saveToken(token: string): void {
     if (typeof window !== 'undefined' && localStorage) {
-        localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(TOKEN_KEY, token);
     }
   }
-  getToken() {
+
+  getToken(): string | null {
     if (typeof window !== 'undefined' && localStorage) {
       return localStorage.getItem(TOKEN_KEY);
     }
     return null;
   }
-  deleteToken() {
+  deleteToken(): void {
     if (typeof window !== 'undefined' && localStorage) {
       localStorage.removeItem(TOKEN_KEY);
     }
   }
-  getProfile() {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.getToken()}`
-    });
-    return this.http.get(environment.apiUrl + '/profile', { headers });
+
+  getProfile(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/profile`);
+  }
+
+  updateProfile(data: any): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/profile`, data);
   }
 }

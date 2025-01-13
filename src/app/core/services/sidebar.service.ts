@@ -10,6 +10,11 @@ export class SidebarService {
   sidebarVisibility$ = this.sidebarVisibilitySubject.asObservable();
 
   toggleSidebar() {
-    this.sidebarVisibilitySubject.next(!this.sidebarVisibilitySubject.value);
+    const currentVisibility = this.sidebarVisibilitySubject.value;
+    this.sidebarVisibilitySubject.next(!currentVisibility);
+  }
+
+  hideSidebar() {
+    this.sidebarVisibilitySubject.next(false); 
   }
 }

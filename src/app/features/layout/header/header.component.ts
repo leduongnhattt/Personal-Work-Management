@@ -16,6 +16,8 @@ export class HeaderComponent {
 
   toggleSidebar() {
     this.sidebarService.toggleSidebar();
-    // Check if the visibility state is changing
+  }
+  hideSidebar() {
+    this.sidebarService.hideSidebar();
   }
 }

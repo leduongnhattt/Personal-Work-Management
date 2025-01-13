@@ -1,17 +1,113 @@
 <app-header></app-header>
 <app-sidenav></app-sidenav>
-<div class="profile-container">
-  <div class="profile-card">
-    <img
-      *ngIf="user.profilePicture"
-      [src]="user.profilePicture"
-      alt="Profile Picture"
-      class="profile-picture"
-    />
-    <h2>{{ user.token.userName }}</h2>
-    <p>Email: {{ user.token.email }}</p>
-    <p>Username: {{ user.token.userName }}</p>
-    <p>Phone Number: {{ user.token.sdt }}</p>
+
+<div class="container py-4">
+  <h4 class="fw-bold mb-4">Account Settings</h4>
+
+  <div class="card shadow-sm">
+    <!-- Horizontal Navigation -->
+    <div class="card-header">
+      <div class="nav nav-tabs">
+        <a
+          class="nav-link"
+          [class.active]="isActiveTab('general')"
+          (click)="setTab('general')">
+          General
+        </a>
+        <a
+          class="nav-link"
+          [class.active]="isActiveTab('change-password')"
+          (click)="setTab('change-password')">
+          Change Password
+        </a>
+        <a
+          class="nav-link"
+          [class.active]="isActiveTab('social-links')"
+          (click)="setTab('social-links')">
+          Social Links
+        </a>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="updateProfile()">
+      <div class="card-body">
+        <!-- General Tab -->
+        <div *ngIf="isActiveTab('general')">
+          <div class="d-flex align-items-center mb-4">
+            <!-- Profile Image -->
+            <img [src]="form.get('image')?.value || 'https://localhost:7035/images/695eecf9-6bb3-40e1-b7fa-4fb0c4cfbeb6.png'" alt="User Avatar" class="rounded-circle me-3" width="80">
+            <div>
+              <label class="btn btn-outline-primary btn-sm">
+                Upload New Photo
+                <input type="file" class="d-none" (change)="onFileSelected($event)">
+              </label>
+              <button type="button" class="btn btn-secondary btn-sm ms-2" (click)="resetImage()">Reset</button>
+              <small class="text-muted d-block mt-2">Allowed JPG, GIF, or PNG. Max size of 800KB</small>
+            </div>
+          </div>
+          <!-- Username -->
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" class="form-control" formControlName="username">
+          </div>
+          <!-- Phone Number -->
+          <div class="mb-3">
+            <label for="phonenumber" class="form-label">Phone Number</label>
+            <input type="text" id="phonenumber" class="form-control" formControlName="phoneNumber">
+          </div>
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" formControlName="email">
+            <div class="alert alert-warning mt-3" *ngIf="!user.token.emailConfirmed">
+              Your email is not confirmed. Please check your inbox.
+              <br><a href="#">Resend Confirmation</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Change Password Tab -->
+        <div *ngIf="isActiveTab('change-password')">
+          <div class="mb-3">
+            <label for="current-password" class="form-label">Current Password</label>
+            <input type="password" id="current-password" class="form-control" formControlName="currentPassword">
+          </div>
+          <div class="mb-3">
+            <label for="new-password" class="form-label">New Password</label>
+            <input type="password" id="new-password" class="form-control" formControlName="newPassword">
+          </div>
+          <div class="mb-3">
+            <label for="repeat-password" class="form-label">Repeat New Password</label>
+            <input type="password" id="repeat-password" class="form-control" formControlName="repeatPassword">
+          </div>
+        </div>
+
+        <!-- Social Links Tab -->
+        <div *ngIf="isActiveTab('social-links')">
+          <div class="mb-3">
+            <label for="twitter" class="form-label">Twitter</label>
+            <input type="url" id="twitter" class="form-control" formControlName="twitter" [value]="user.token?.twitter || ''">
+          </div>
+          <div class="mb-3">
+            <label for="facebook" class="form-label">Facebook</label>
+            <input type="url" id="facebook" class="form-control" formControlName="facebook" [value]="user.token?.facebook || ''">
+          </div>
+          <div class="mb-3">
+            <label for="linkedin" class="form-label">LinkedIn</label>
+            <input type="url" id="linkedin" class="form-control" formControlName="linkedin" [value]="user.token?.linkedin || ''">
+          </div>
+          <div class="mb-3">
+            <label for="instagram" class="form-label">Instagram</label>
+            <input type="url" id="instagram" class="form-control" formControlName="instagram" [value]="user.token?.instagram || ''">
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="text-end mt-3">
+          <button type="submit" class="btn btn-primary mx-2" [disabled]="!form.valid">Save Changes</button>
+          <button type="button" class="btn btn-secondary" (click)="resetImage()">Cancel</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
-
