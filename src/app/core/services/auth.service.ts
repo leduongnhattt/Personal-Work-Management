@@ -12,12 +12,12 @@ export class AuthService {
 
 
   registerUser(formData: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/register`, formData);
+    return this.http.post(`${environment.apiAuthUrl}/register`, formData);
   }
 
 
   login(formData: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/login`, formData);
+    return this.http.post(`${environment.apiAuthUrl}/login`, formData);
   }
 
   isLoggedIn(): boolean {
@@ -44,10 +44,10 @@ export class AuthService {
   }
 
   getProfile(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/profile`);
+    return this.http.get(`${environment.apiAuthUrl}/profile`);
   }
 
   updateProfile(data: any): Observable<any> {
-    return this.http.put(`${environment.apiUrl}/profile`, data);
+    return this.http.put(`${environment.apiAuthUrl}/profile`, data);
   }
 }

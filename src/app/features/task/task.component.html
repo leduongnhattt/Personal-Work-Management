@@ -1,5 +1,97 @@
-<div class="card shadow-lg p-4 rounded-4">
-  <h3 class="text-center text-gradient mb-4">Thêm Công Việc</h3>
-  <input type="text" class="form-control mb-3" placeholder="Nhập tên công việc" />
-  <button class="btn btn-gradient w-100">Thêm Công Việc</button>
+<div class="card shadow-lg p-4 rounded-4" style="max-width: 1400px; margin: auto;">
+  <h4 class="text-center text-gradient mb-3">Add Work Task</h4>
+  <form (ngSubmit)="addWorkTask()" [formGroup]="taskForm">
+    <!-- Task Name -->
+    <div class="mb-3">
+      <label for="title" class="form-label fw-bold">Task Name</label>
+      <input
+        type="text"
+        id="title"
+        class="form-control form-control-lg"
+        placeholder="Enter task name"
+        formControlName="title"
+      />
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+      <label for="description" class="form-label fw-bold">Description</label>
+      <textarea
+        id="description"
+        class="form-control form-control-lg"
+        placeholder="Enter task description"
+        formControlName="description"
+        rows="4"
+        style="resize: none;"
+      ></textarea>
+    </div>
+
+    <!-- Start Date -->
+    <div class="mb-3">
+      <label for="startDateTask" class="form-label fw-bold">Start Date</label>
+      <input
+        type="date"
+        id="startDateTask"
+        class="form-control form-control-lg"
+        formControlName="startDateTask"
+        (input)="validateDates()"
+      />
+    </div>
+
+    <!-- End Date -->
+    <div class="mb-3">
+      <label for="endDateTask" class="form-label fw-bold">End Date</label>
+      <input
+        type="date"
+        id="endDateTask"
+        class="form-control form-control-lg"
+        formControlName="endDateTask"
+        (input)="validateDates()"
+      />
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="dateError" class="text-danger fw-bold mb-3">
+      {{ dateError }}
+    </div>
+
+    <!-- Status -->
+    <div class="mb-3">
+      <label for="status" class="form-label fw-bold">Status</label>
+      <select
+        id="status"
+        class="form-select form-select-lg"
+        formControlName="status"
+      >
+        <option value="" disabled selected>Select status</option>
+        <option value="Pending">Pending</option>
+        <option value="InProgress">In Progress</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </div>
+
+    <!-- Reminder Time -->
+    <div class="mb-3">
+      <label for="reminderTime" class="form-label fw-bold">Reminder Time (minutes)</label>
+      <input
+        type="number"
+        id="reminderTime"
+        class="form-control form-control-lg"
+        placeholder="Enter reminder time"
+        formControlName="reminderTime"
+      />
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-center mt-4">
+      <button
+        type="submit"
+        class="btn btn-gradient px-5 py-3 rounded-pill"
+        [disabled]="!taskForm.valid || dateError"
+      >
+        Add Task
+      </button>
+    </div>
+  </form>
 </div>

@@ -1,11 +1,6 @@
 <mat-toolbar class="custom-toolbar d-flex align-items-center justify-content-between">
   <!-- Sidebar Toggle Button -->
-  <button
-    mat-icon-button
-    class="neumorphic-button"
-    aria-label="Toggle Sidebar"
-    (click)="toggleSidebar()"
-  >
+  <button mat-icon-button class="neumorphic-button" aria-label="Toggle Sidebar" (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
   </button>
 
@@ -15,17 +10,15 @@
   <!-- Spacer -->
   <span class="flex-grow-1"></span>
 
-
-
   <!-- Profile Button -->
-  <button
-    mat-button
-    routerLink="/profile"
-    routerLinkActive="active"
-    class="profile-button neumorphic-button"
-    (click)="hideSidebar()"
-  >
+  <button mat-button routerLink="/profile" routerLinkActive="active" class="profile-button neumorphic-button" (click)="hideSidebar()">
     <mat-icon>account_circle</mat-icon>
     Profile
+  </button>
+
+  <!-- Sign Out Button -->
+  <button mat-button class="sign-out-button neumorphic-button rounded-pill" (click)="signOut()">
+    <mat-icon>exit_to_app</mat-icon>
+    <span class="d-none d-sm-inline">Sign Out</span>
   </button>
 </mat-toolbar>

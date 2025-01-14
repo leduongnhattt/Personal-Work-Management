@@ -8,22 +8,13 @@
     <!-- Horizontal Navigation -->
     <div class="card-header">
       <div class="nav nav-tabs">
-        <a
-          class="nav-link"
-          [class.active]="isActiveTab('general')"
-          (click)="setTab('general')">
+        <a class="nav-link" [class.active]="isActiveTab('general')" (click)="setTab('general')">
           General
         </a>
-        <a
-          class="nav-link"
-          [class.active]="isActiveTab('change-password')"
-          (click)="setTab('change-password')">
+        <a class="nav-link" [class.active]="isActiveTab('change-password')" (click)="setTab('change-password')">
           Change Password
         </a>
-        <a
-          class="nav-link"
-          [class.active]="isActiveTab('social-links')"
-          (click)="setTab('social-links')">
+        <a class="nav-link" [class.active]="isActiveTab('social-links')" (click)="setTab('social-links')">
           Social Links
         </a>
       </div>
@@ -35,13 +26,13 @@
         <div *ngIf="isActiveTab('general')">
           <div class="d-flex align-items-center mb-4">
             <!-- Profile Image -->
-            <img [src]="form.get('image')?.value || 'https://localhost:7035/images/695eecf9-6bb3-40e1-b7fa-4fb0c4cfbeb6.png'" alt="User Avatar" class="rounded-circle me-3" width="80">
+            <img [src]="'https://localhost:7035' + form.get('imageUrl')?.value" alt="User Avatar"
+              class="rounded-circle me-3" width="80">
             <div>
               <label class="btn btn-outline-primary btn-sm">
                 Upload New Photo
-                <input type="file" class="d-none" (change)="onFileSelected($event)">
+                <input type="file" class="d-none" (change)="onFileSelected($event)" formControlName="imageUrl">
               </label>
-              <button type="button" class="btn btn-secondary btn-sm ms-2" (click)="resetImage()">Reset</button>
               <small class="text-muted d-block mt-2">Allowed JPG, GIF, or PNG. Max size of 800KB</small>
             </div>
           </div>
@@ -59,10 +50,18 @@
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" id="email" class="form-control" formControlName="email">
-            <div class="alert alert-warning mt-3" *ngIf="!user.token.emailConfirmed">
+            <div class="alert alert-warning mt-3">
               Your email is not confirmed. Please check your inbox.
               <br><a href="#">Resend Confirmation</a>
             </div>
+          </div>
+          <div class="text-end mt-3">
+            <button type="submit" class="btn btn-primary mx-2" [disabled]="!form.dirty">
+              Save Changes
+            </button>
+            <button type="button" class="btn btn-secondary" [disabled]="!form.dirty" (click)="resetImage()">
+              Cancel
+            </button>
           </div>
         </div>
 
@@ -80,32 +79,46 @@
             <label for="repeat-password" class="form-label">Repeat New Password</label>
             <input type="password" id="repeat-password" class="form-control" formControlName="repeatPassword">
           </div>
+          <div class="text-end mt-3">
+            <button type="submit" class="btn btn-primary mx-2" [disabled]="!form.dirty">
+              Save Changes
+            </button>
+            <button type="button" class="btn btn-secondary" [disabled]="!form.dirty">
+              Cancel
+            </button>
+          </div>
         </div>
 
         <!-- Social Links Tab -->
         <div *ngIf="isActiveTab('social-links')">
           <div class="mb-3">
             <label for="twitter" class="form-label">Twitter</label>
-            <input type="url" id="twitter" class="form-control" formControlName="twitter" [value]="user.token?.twitter || ''">
+            <input type="url" id="twitter" class="form-control" formControlName="twitter"
+              [value]="user.token?.twitter || ''">
           </div>
           <div class="mb-3">
             <label for="facebook" class="form-label">Facebook</label>
-            <input type="url" id="facebook" class="form-control" formControlName="facebook" [value]="user.token?.facebook || ''">
+            <input type="url" id="facebook" class="form-control" formControlName="facebook"
+              [value]="user.token?.facebook || ''">
           </div>
           <div class="mb-3">
             <label for="linkedin" class="form-label">LinkedIn</label>
-            <input type="url" id="linkedin" class="form-control" formControlName="linkedin" [value]="user.token?.linkedin || ''">
+            <input type="url" id="linkedin" class="form-control" formControlName="linkedin"
+              [value]="user.token?.linkedin || ''">
           </div>
           <div class="mb-3">
             <label for="instagram" class="form-label">Instagram</label>
-            <input type="url" id="instagram" class="form-control" formControlName="instagram" [value]="user.token?.instagram || ''">
+            <input type="url" id="instagram" class="form-control" formControlName="instagram"
+              [value]="user.token?.instagram || ''">
           </div>
-        </div>
-
-        <!-- Buttons -->
-        <div class="text-end mt-3">
-          <button type="submit" class="btn btn-primary mx-2" [disabled]="!form.valid">Save Changes</button>
-          <button type="button" class="btn btn-secondary" (click)="resetImage()">Cancel</button>
+          <div class="text-end mt-3">
+            <button type="submit" class="btn btn-primary mx-2" [disabled]="!form.dirty">
+              Save Changes
+            </button>
+            <button type="button" class="btn btn-secondary" [disabled]="!form.dirty">
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </form>

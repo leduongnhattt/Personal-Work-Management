@@ -3,7 +3,8 @@ import { SidebarService } from '../../../core/services/sidebar.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -12,12 +13,21 @@ import { RouterLink } from '@angular/router';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  constructor(private sidebarService: SidebarService) {}
+  constructor(private sidebarService: SidebarService, private router: Router, private authService: AuthService) {}
 
   toggleSidebar() {
     this.sidebarService.toggleSidebar();
   }
   hideSidebar() {
     this.sidebarService.hideSidebar();
+  }
+
+  signOut() {
+    const confirmSignOut = confirm("Are you sure you want to sign out?");
+
+    if (confirmSignOut) {
+      this.authService.deleteToken();
+      this.router.navigateByUrl('/login');
+    }
   }
 }

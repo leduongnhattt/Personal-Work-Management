@@ -4,6 +4,7 @@ import { SidenavComponent } from "../layout/sidenav/sidenav.component";
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -13,17 +14,19 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  user: any = {}; // Holds the current user profile data
-  currentTab: string = 'general'; // Default tab
-  form!: FormGroup; // The form group
-  selectedFile: File | null = null; // File selected for upload
-  image: any;
-
-  constructor(private authService: AuthService, private formBuilder: FormBuilder) {}
+  user: any = {};
+  currentTab: string = 'general';
+  form!: FormGroup;
+  selectedFile: File | null = null;
+  isImageServer: boolean = false;
+  imageUrl: string = '';
+  constructor(private authService: AuthService,
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.getUserProfile(); // Fetch user profile on component load
-    this.initForm(); // Initialize the form
+    this.getUserProfile();
+    this.initForm();
   }
 
   // Initialize the form with validators
@@ -42,18 +45,18 @@ export class ProfileComponent implements OnInit {
       next: (res: any) => {
         console.log('User Profile:', res);
         this.user = res;
+        this.isImageServer = true;
         this.form.patchValue({
-          username: res.token?.userName || '',
-          phoneNumber: res.token?.sdt || '',
-          email: res.token?.email || '',
-          imageUrl: res.token?.image || ''
+          username: res.data?.userName || '',
+          phoneNumber: res.data?.sdt || '',
+          email: res.data?.email || '',
+          imageUrl: res.data?.image || ''
         });
       },
       error: (err) => console.error('Failed to fetch user profile:', err),
     });
   }
 
-  // Handle file selection for profile image
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -65,11 +68,10 @@ export class ProfileComponent implements OnInit {
           imageElement.src = e.target?.result as string;
         }
       };
-      reader.readAsDataURL(this.selectedFile); // Preview the image
+      reader.readAsDataURL(this.selectedFile);
     }
   }
 
-  // Handle profile update
   updateProfile(): void {
     if (this.form.valid) {
       const formData = new FormData();
@@ -79,15 +81,13 @@ export class ProfileComponent implements OnInit {
       if (this.selectedFile) {
         formData.append('imageFile', this.selectedFile, this.selectedFile.name);
       }
-
       this.authService.updateProfile(formData).subscribe({
         next: (res: any) => {
           console.log(res);
-          alert('Profile updated successfully!');
-          this.user.token.Image = res?.data.imageUrl || this.user.token.profileImage;
-          this.resetImage(); // Reset the image preview to the latest profile image
+          this.toastr.success('Profile updated successfully!')
+          this.getUserProfile();
         },
-        error: (err) => alert('Failed to update profile. Please try again!'),
+        error: (err) => this.toastr.error('Failed to update profile. Please try again!'),
       });
     } else {
       alert('Please fix the form errors before submitting!');
@@ -99,7 +99,8 @@ export class ProfileComponent implements OnInit {
     this.selectedFile = null;
     const imageElement = document.querySelector('.rounded-circle') as HTMLImageElement;
     if (imageElement) {
-      imageElement.src = this.user.token?.profileImage || 'https://bootdey.com/img/Content/avatar/avatar1.png';
+      this.getUserProfile();
+
     }
   }
 
@@ -107,8 +108,6 @@ export class ProfileComponent implements OnInit {
   setTab(tabName: string): void {
     this.currentTab = tabName;
   }
-
-  // Check if the current tab is active
   isActiveTab(tabName: string): boolean {
     return this.currentTab === tabName;
   }

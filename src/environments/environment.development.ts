@@ -1,3 +1,4 @@
 export const environment = {
-  apiUrl: 'https://localhost:7035/api/Auth'
+  apiAuthUrl: 'https://localhost:7035/api/Auth',
+  apiTaskUrl: 'https://localhost:7035/api/WorkTask'
 };
