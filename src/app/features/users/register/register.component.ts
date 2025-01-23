@@ -65,6 +65,7 @@ export class RegisterComponent implements OnInit {
         error: err => {
           if (err.status === 409) {
             this.toastr.error('Username or email already exists.', 'Registration Failed');
+            this.form.reset();
           } else {
             this.toastr.error('An error occurred.', 'Registration Failed');
           }

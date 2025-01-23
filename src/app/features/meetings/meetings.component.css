@@ -1,0 +1,39 @@
+.text-gradient {
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-gradient {
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(90deg, #2575fc, #6a11cb);
+  transform: scale(1.05);
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #f0f0f0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-size: 0.85rem;
+  color: #b0b0b0;
+}
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Ẩn scrollbar của body */
+}
+
+.app-container {
+  height: 100vh; /* Chiếm toàn màn hình */
+  overflow: auto; /* Chỉ hiển thị scrollbar nếu nội dung quá dài */
+}
