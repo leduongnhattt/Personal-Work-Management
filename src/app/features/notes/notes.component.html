@@ -1,5 +1,24 @@
-<div class="card shadow-lg p-4 rounded-4">
-  <h3 class="text-center text-gradient mb-4">Ghi Chú</h3>
-  <textarea class="form-control mb-3" rows="5" placeholder="Nhập ghi chú..."></textarea>
-  <button class="btn btn-gradient w-100">Lưu Ghi Chú</button>
+<div class="card shadow-lg p-4 rounded-4" style="max-width: 1400px; margin: auto;">
+  <h4 class="text-center text-gradient mb-3">Add Note</h4>
+  <form (ngSubmit)="addNote()" [formGroup]="noteForm">
+    <!-- Title -->
+    <div class="mb-3">
+      <label for="title" class="form-label fw-bold">Note Title</label>
+      <input type="text" id="title" class="form-control form-control-lg" placeholder="Enter note title"
+        formControlName="title" />
+    </div>
+
+    <!-- Content -->
+    <div class="mb-3">
+      <label for="content" class="form-label fw-bold">Content</label>
+      <textarea id="content" class="form-control form-control-lg" placeholder="Enter note content"
+        formControlName="content" rows="4" style="resize: none;"></textarea>
+    </div>
+    <!-- Submit Button -->
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-gradient px-5 py-3 rounded-pill" [disabled]="!noteForm.valid">
+        Add Form
+      </button>
+    </div>
+  </form>
 </div>
