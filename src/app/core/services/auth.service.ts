@@ -24,7 +24,14 @@ export class AuthService {
     return !!this.getToken();
   }
 
-
+  getUserId(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.sub;
+    }
+    return null;
+  }
   saveToken(token: string): void {
     if (typeof window !== 'undefined' && localStorage) {
       localStorage.setItem(TOKEN_KEY, token);

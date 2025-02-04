@@ -13,5 +13,15 @@ export class NoteService {
   createNote(note: any): Observable<any> {
     return this.http.post(environment.apiNoteUrl + '/addNote', note);
   }
+  getAllNotes(): Observable<any> {
+    return this.http.get(environment.apiNoteUrl + '/allNote');
+  }
+  updateNote(noteId: string, note: any): Observable<any> {
+    return this.http.put(`${environment.apiNoteUrl}/updateNote/${noteId}`, note);
+  }
+
+  deleteNote(noteId: string): Observable<any> {
+    return this.http.delete(`${environment.apiNoteUrl}/deleteNote/${noteId}`);
+  }
 
 }

@@ -1,1 +1,42 @@
-<p>schedule works!</p>
+<div class="schedule-container">
+  <!-- Phần Meetings -->
+  <div class="meeting-section">
+    <h2 class="section-title meeting-title">
+      <mat-icon>event</mat-icon>
+      <span>Lịch Meetings</span>
+    </h2>
+    <div class="meeting-list">
+      <mat-card *ngFor="let apointment of schedule?.apointments" class="apointment-card">
+        <mat-card-header class="apointment-header">
+          <mat-card-title>{{ apointment?.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Mô tả:</strong> {{ apointment?.description }}</p>
+          <p><strong>Địa điểm:</strong> {{ apointment?.location }}</p>
+          <p><strong>Bắt đầu:</strong> {{ apointment?.startDateApoint | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Kết thúc:</strong> {{ apointment?.endDateApoint | date:'dd/MM/yyyy' }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Phần Tasks -->
+  <div class="task-section">
+    <h2 class="section-title task-title">
+      <mat-icon>task_alt</mat-icon>
+      <span>Lịch Tasks</span>
+    </h2>
+    <div class="task-list">
+      <mat-card *ngFor="let task of schedule?.tasks" class="task-card">
+        <mat-card-header class="task-header">
+          <mat-card-title>{{ task?.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Mô tả:</strong> {{ task?.description }}</p>
+          <p><strong>Bắt đầu:</strong> {{ task?.startDateTask | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Kết thúc:</strong> {{ task?.endDateTask | date:'dd/MM/yyyy' }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -10,6 +10,7 @@ import { MainComponent } from './features/main/main.component';
 import { ScheduleComponent } from './features/schedule/schedule.component';
 import { SettingsComponent } from './features/settings/settings.component';
 import { ProfileComponent } from './features/profile/profile.component';
+import { NotePageComponent } from './features/dashboard/note-page/note-page.component';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
   {
     path: 'main', component: MainComponent, children: [
       { path: 'home', component: HomeComponent },
+      { path: 'note_page', component: NotePageComponent},
       { path: 'tasks', component: TaskComponent },
       { path: 'meetings', component: MeetingsComponent },
       { path: 'notes', component: NotesComponent },

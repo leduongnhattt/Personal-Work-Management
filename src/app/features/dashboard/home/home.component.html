@@ -1,7 +1,43 @@
 <div class="container-fluid">
-    <!-- Main Content -->
-    <div class="col-md-9 col-lg-10 p-4">
-      <h2>Home Dashboard</h2>
-      <router-outlet></router-outlet>
+  <!-- Main Content -->
+  <div class="col-md-9 col-lg-10 p-4">
+    <h2>Home Dashboard</h2>
+    <div class="row">
+      <!-- Card for Notes -->
+      <div class="col-md-4 mb-4">
+        <div class="card card-hover" (click)="navigateTo('main/note_page')">
+          <div class="card-body">
+            <h5 class="card-title">Notes</h5>
+            <p class="card-text">Manage your notes here.</p>
+            <i class="fas fa-sticky-note fa-3x"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card for Tasks -->
+      <div class="col-md-4 mb-4">
+        <div class="card card-hover" (click)="navigateTo('tasks')">
+          <div class="card-body">
+            <h5 class="card-title">Tasks</h5>
+            <p class="card-text">Manage your tasks here.</p>
+            <i class="fas fa-tasks fa-3x"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card for Appointments -->
+      <div class="col-md-4 mb-4">
+        <div class="card card-hover" (click)="navigateTo('appointments')">
+          <div class="card-body">
+            <h5 class="card-title">Appointments</h5>
+            <p class="card-text">Manage your appointments here.</p>
+            <i class="fas fa-calendar-alt fa-3x"></i>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Router Outlet for displaying the list of notes, tasks, appointments -->
+    <router-outlet></router-outlet>
+  </div>
 </div>

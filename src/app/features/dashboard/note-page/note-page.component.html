@@ -1,0 +1,54 @@
+<div class="container mt-4">
+  <h2 class="text-center text-primary">📌 Danh sách ghi chú</h2>
+
+  <div *ngIf="notes.length === 0" class="alert alert-warning text-center">
+    Không có ghi chú nào.
+  </div>
+
+  <div class="row">
+    <div class="col-md-4" *ngFor="let note of notes">
+      <div class="card shadow-lg border-0 mb-4">
+        <div class="card-header bg-primary text-white text-uppercase fw-bold text-center">
+          {{ note.title }}
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ note.content }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-warning btn-sm" (click)="editNote(note)" data-bs-toggle="modal" data-bs-target="#editNoteModal">
+            📝 Sửa
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="deleteNote(note.noteId)">
+            ❌ Xóa
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editNoteModalLabel">Sửa Ghi Chú</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="noteTitle" class="form-label">Tiêu đề</label>
+            <input type="text" class="form-control" id="noteTitle" [(ngModel)]="selectedNote.title" placeholder="Nhập tiêu đề">
+          </div>
+          <div class="mb-3">
+            <label for="noteContent" class="form-label">Nội dung</label>
+            <textarea class="form-control" id="noteContent" [(ngModel)]="selectedNote.content" rows="3" placeholder="Nhập nội dung ghi chú"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-primary" (click)="updateNote()">Lưu thay đổi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
