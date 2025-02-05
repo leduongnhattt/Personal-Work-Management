@@ -7,11 +7,10 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, CommonModule, FirstKeyPipe],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [RouterLink, ReactiveFormsModule, CommonModule, FirstKeyPipe],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export class LoginComponent {
     constructor(private formBuilder: FormBuilder,

@@ -6,19 +6,18 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-sidenav',
-  standalone: true,
-  imports: [MatIconModule, CommonModule, RouterLink],
-  templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.css',
-  animations: [
-    trigger('fadeInOut', [
-      state('void', style({ opacity: 0 })),
-      transition(':enter, :leave', [
-        animate(300, style({ opacity: 1 })),
-      ]),
-    ]),
-  ],
+    selector: 'app-sidenav',
+    imports: [MatIconModule, CommonModule, RouterLink],
+    templateUrl: './sidenav.component.html',
+    styleUrl: './sidenav.component.css',
+    animations: [
+        trigger('fadeInOut', [
+            state('void', style({ opacity: 0 })),
+            transition(':enter, :leave', [
+                animate(300, style({ opacity: 1 })),
+            ]),
+        ]),
+    ]
 })
 export class SidenavComponent {
 

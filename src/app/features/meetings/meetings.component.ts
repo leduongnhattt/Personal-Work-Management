@@ -6,11 +6,10 @@ import { ToastrService } from 'ngx-toastr';
 import { error } from 'console';
 
 @Component({
-  selector: 'app-meetings',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './meetings.component.html',
-  styleUrl: './meetings.component.css'
+    selector: 'app-meetings',
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './meetings.component.html',
+    styleUrl: './meetings.component.css'
 })
 export class MeetingsComponent implements OnInit{
   meetingForm!: FormGroup;

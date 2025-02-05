@@ -5,11 +5,10 @@ import { TaskService } from '../../core/services/task.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-task',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './task.component.html',
-  styleUrl: './task.component.css'
+    selector: 'app-task',
+    imports: [ReactiveFormsModule, CommonModule],
+    templateUrl: './task.component.html',
+    styleUrl: './task.component.css'
 })
 export class TaskComponent {
   taskForm!: FormGroup;

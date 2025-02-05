@@ -7,11 +7,10 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, CommonModule, FirstKeyPipe],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+    selector: 'app-register',
+    imports: [RouterLink, ReactiveFormsModule, CommonModule, FirstKeyPipe],
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,

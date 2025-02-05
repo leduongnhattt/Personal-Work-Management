@@ -14,41 +14,40 @@
         <div class="card-body">
           <p class="card-text">{{ note.content }}</p>
         </div>
-        <div class="card-footer d-flex justify-content-between">
-          <button class="btn btn-warning btn-sm" (click)="editNote(note)" data-bs-toggle="modal" data-bs-target="#editNoteModal">
-            📝 Sửa
-          </button>
-          <button class="btn btn-danger btn-sm" (click)="deleteNote(note.noteId)">
-            ❌ Xóa
-          </button>
+        <div class="card-footer d-flex justify-content-between align-items-center">
+          <small class="text-muted">🕒 {{ note.createdAt | date:'HH:mm dd/MM/yyyy' }}</small>
+          <div class="d-flex gap-1">
+            <button class="btn btn-warning btn-sm" (click)="openModal(editNoteModal, note)">📝 Sửa</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteNote(note.noteId)">❌ Xóa</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-  <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editNoteModalLabel">Sửa Ghi Chú</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="noteTitle" class="form-label">Tiêu đề</label>
-            <input type="text" class="form-control" id="noteTitle" [(ngModel)]="selectedNote.title" placeholder="Nhập tiêu đề">
-          </div>
-          <div class="mb-3">
-            <label for="noteContent" class="form-label">Nội dung</label>
-            <textarea class="form-control" id="noteContent" [(ngModel)]="selectedNote.content" rows="3" placeholder="Nhập nội dung ghi chú"></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-          <button type="button" class="btn btn-primary" (click)="updateNote()">Lưu thay đổi</button>
-        </div>
-      </div>
+
+<!-- Modal -->
+<ng-template #editNoteModal>
+  <div class="modal-header bg-primary text-white p-3">
+    <h5 class="modal-title">✏️ Sửa Ghi Chú</h5>
+    <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
+  </div>
+
+  <div class="modal-body p-3">
+    <div class="mb-3">
+      <label for="noteTitle" class="form-label fw-bold">📌 Tiêu đề</label>
+      <input id="noteTitle" [(ngModel)]="selectedNote.title" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label for="noteContent" class="form-label fw-bold">📝 Nội dung</label>
+      <textarea id="noteContent" [(ngModel)]="selectedNote.content" class="form-control" rows="4"></textarea>
     </div>
   </div>
 
+  <div class="modal-footer p-3">
+    <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ Đóng</button>
+    <button class="btn btn-primary" (click)="updateNote(); modalRef?.hide()">💾 Lưu</button>
+  </div>
+</ng-template>
 

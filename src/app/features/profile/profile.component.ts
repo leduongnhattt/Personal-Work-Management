@@ -7,11 +7,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [HeaderComponent, SidenavComponent, CommonModule, ReactiveFormsModule],
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+    selector: 'app-profile',
+    imports: [HeaderComponent, SidenavComponent, CommonModule, ReactiveFormsModule],
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
   user: any = {};

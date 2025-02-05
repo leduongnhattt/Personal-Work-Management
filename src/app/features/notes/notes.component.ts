@@ -6,11 +6,10 @@ import { NoteService } from '../../core/services/note.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-notes',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './notes.component.html',
-  styleUrl: './notes.component.css'
+    selector: 'app-notes',
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './notes.component.html',
+    styleUrl: './notes.component.css'
 })
 export class NotesComponent implements OnInit{
 
@@ -29,11 +28,7 @@ export class NotesComponent implements OnInit{
 
   addNote() {
     if (this.noteForm.valid) {
-      const noteData = {
-        ...this.noteForm.value,
-        createdAt: new Date().toISOString()
-      };
-      this.noteService.createNote(noteData).subscribe({
+      this.noteService.createNote(this.noteForm.value).subscribe({
         next: (res: any) => {
           if (res.status === "Success") {
             this.toastr.success('Note added successfully!');

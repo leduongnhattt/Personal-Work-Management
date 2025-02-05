@@ -1,12 +1,12 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NoteService } from '../../../core/services/note.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-note-page',
-  standalone: true,
-  imports: [DatePipe, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DatePipe],
   templateUrl: './note-page.component.html',
   styleUrl: './note-page.component.css'
 })
@@ -14,15 +14,26 @@ export class NotePageComponent {
   notes: any[] = [];
   selectedNote: any = { noteId: '', title: '', content: '' };
 
-  constructor(private noteService: NoteService) {}
+  constructor(private noteService: NoteService, private modalService: BsModalService) {}
+  @ViewChild('editNoteModal') editNoteModal: any;
+  modalRef?: BsModalRef;
 
+  openModal(template: any, note: any): void {
+
+    this.selectedNote = { ...note };
+    this.modalRef = this.modalService.show(template);
+    console.log(this.selectedNote.noteId);
+  }
   ngOnInit(): void {
-    this.loadNotes();
+    setTimeout(() => {
+      this.loadNotes();
+    }, 500);
   }
 
   loadNotes(): void {
     this.noteService.getAllNotes().subscribe(
       (data) => {
+        console.log('Dữ liệu từ API:', data);
         this.notes = data.data;
       },
       (error) => {
@@ -31,19 +42,14 @@ export class NotePageComponent {
     );
   }
 
-  editNote(note: any): void {
-    this.selectedNote = { ...note };
-    console.log(this.selectedNote);
 
-  }
 
   updateNote(): void {
     this.noteService.updateNote(this.selectedNote.noteId, {
       title: this.selectedNote.title,
-      content: this.selectedNote.content,
-      createdAt: this.selectedNote.createdAt
+      content: this.selectedNote.content
     }).subscribe(
-      (response) => {
+      () => {
         this.loadNotes();
         alert('Ghi chú đã được cập nhật!');
       },
@@ -53,11 +59,10 @@ export class NotePageComponent {
     );
   }
 
-
   deleteNote(noteId: string): void {
     if (confirm('Bạn có chắc chắn muốn xóa ghi chú này không?')) {
       this.noteService.deleteNote(noteId).subscribe(
-        (response) => {
+        () => {
           alert('Ghi chú đã được xóa!');
           this.loadNotes();
         },

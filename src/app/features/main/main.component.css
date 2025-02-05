@@ -14,7 +14,7 @@
 }
 
 .app-sidenav {
-  flex: 0 0 250px; /* Fixed width for the sidebar */
+  flex: 0 0 250px;
   background-color: #333;
   color: white;
   padding: 20px;
@@ -22,11 +22,11 @@
 
 .content {
   position: fixed;
-  top: 80px; /* Adjust this value to match the height of your header */
+  top: 80px;
   right: 0;
   bottom: 0;
   overflow-y: auto;
-  z-index: 999; /* Ensure the content is above the sidebar */
+  z-index: 999;
 }
 
 .content.content-with-sidebar {
@@ -45,4 +45,4 @@
   transition: left 0.3s ease, padding-left 0.3s ease; /* Add transitions for left and padding changes */
 }
 
-/* Additional styling for a visually appealing layout */
+

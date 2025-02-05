@@ -7,11 +7,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  standalone: true,
-  selector: 'app-schedule',
-  imports: [CommonModule, MatCardModule, MatIconModule],
-  templateUrl: './schedule.component.html',
-  styleUrl: './schedule.component.css'
+    selector: 'app-schedule',
+    imports: [CommonModule, MatCardModule, MatIconModule],
+    templateUrl: './schedule.component.html',
+    styleUrl: './schedule.component.css'
 })
 export class ScheduleComponent implements OnInit {
   schedule: any = { tasks: [], apointments: [] }; 
