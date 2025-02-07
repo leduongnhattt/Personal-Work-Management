@@ -1,0 +1,84 @@
+<div class="container mt-4">
+  <h2 class="text-center text-primary">📌 List Meeting</h2>
+
+  <div *ngIf="apointments.length === 0" class="alert alert-warning text-center">
+    There is no meeting to display.
+  </div>
+
+  <div class="row">
+    <div class="col-md-4" *ngFor="let apointment of apointments">
+      <div class="card shadow-lg border-0 mb-4">
+        <div class="card-header bg-info text-white text-uppercase fw-bold text-center">
+          {{ apointment.title }}
+        </div>
+
+        <div class="card-body">
+          <p class="card-text"><strong>📌 Description:</strong> {{ apointment.description }}</p>
+          <p class="card-text"><strong>📅 Start:</strong> {{ apointment.startDateApoint | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>⏳ End:</strong> {{ apointment.endDateApoint | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>📍 Location:</strong> {{ apointment.location }}</p>
+          <p class="card-text"><strong>⏰ Reminder:</strong> {{ apointment.reminderTime }} minutes before</p>
+        </div>
+
+        <div class="card-footer d-flex justify-content-end align-items-center">
+          <!-- Nút chỉnh sửa và xóa -->
+          <div class="d-flex gap-1">
+            <button class="btn btn-warning btn-sm" (click)="openModal(editApointmentModal, apointment)">📝 Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteApointment(apointment.apointmentId)">❌ Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Update Task -->
+<ng-template #editApointmentModal>
+  <div class="modal-header bg-primary text-white p-3">
+    <h5 class="modal-title">✏️ Update Meeting</h5>
+    <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
+  </div>
+
+  <div class="modal-body p-3">
+    <!-- Title -->
+    <div class="mb-3">
+      <label for="taskTitle" class="form-label fw-bold">📌 Title</label>
+      <input id="taskTitle" [(ngModel)]="selectedApointment.title" class="form-control">
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+      <label for="taskDescription" class="form-label fw-bold">📝 Description</label>
+      <textarea id="taskDescription" [(ngModel)]="selectedApointment.description" class="form-control"
+        rows="3"></textarea>
+    </div>
+
+    <!-- Start Date -->
+    <div class="mb-3">
+      <label for="startDateTask" class="form-label fw-bold">📅 Start Date</label>
+      <input id="startDateTask" type="date" [(ngModel)]="selectedApointment.startDateApoint" class="form-control">
+    </div>
+
+    <!-- End Date -->
+    <div class="mb-3">
+      <label for="endDateTask" class="form-label fw-bold">⏳ End Date</label>
+      <input id="endDateTask" type="date" [(ngModel)]="selectedApointment.endDateApoint" class="form-control">
+    </div>
+    <!-- Location -->
+    <div class="mb-3">
+      <label for="taskLocation" class="form-label fw-bold">📍 Location</label>
+      <input id="taskLocation" [(ngModel)]="selectedApointment.location" class="form-control">
+    </div>
+
+    <!-- Reminder Time -->
+    <div class="mb-3">
+      <label for="reminderTime" class="form-label fw-bold">⏰ Reminder (minutes before)</label>
+      <input id="reminderTime" type="number" [(ngModel)]="selectedApointment.reminderTime" class="form-control" min="1">
+    </div>
+  </div>
+
+  <div class="modal-footer p-3">
+    <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ Close</button>
+    <button class="btn btn-primary" (click)="updateApointment(); modalRef?.hide()">💾 Save Changes</button>
+  </div>
+</ng-template>

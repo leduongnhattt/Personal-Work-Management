@@ -60,10 +60,10 @@ export class NotePageComponent {
   }
 
   deleteNote(noteId: string): void {
-    if (confirm('Bạn có chắc chắn muốn xóa ghi chú này không?')) {
+    if (confirm('BAre you sure you want to delete this note?')) {
       this.noteService.deleteNote(noteId).subscribe(
         () => {
-          alert('Ghi chú đã được xóa!');
+          alert('The note has been deleted!');
           this.loadNotes();
         },
         (error) => {

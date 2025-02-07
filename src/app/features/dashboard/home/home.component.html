@@ -1,5 +1,4 @@
 <div class="container-fluid">
-  <!-- Main Content -->
   <div class="col-md-9 col-lg-10 p-4">
     <h2>Home Dashboard</h2>
     <div class="row">
@@ -16,7 +15,7 @@
 
       <!-- Card for Tasks -->
       <div class="col-md-4 mb-4">
-        <div class="card card-hover" (click)="navigateTo('tasks')">
+        <div class="card card-hover" (click)="navigateTo('main/task_page')">
           <div class="card-body">
             <h5 class="card-title">Tasks</h5>
             <p class="card-text">Manage your tasks here.</p>
@@ -27,10 +26,10 @@
 
       <!-- Card for Appointments -->
       <div class="col-md-4 mb-4">
-        <div class="card card-hover" (click)="navigateTo('appointments')">
+        <div class="card card-hover" (click)="navigateTo('main/meeting_page')">
           <div class="card-body">
-            <h5 class="card-title">Appointments</h5>
-            <p class="card-text">Manage your appointments here.</p>
+            <h5 class="card-title">Meetings</h5>
+            <p class="card-text">Manage your meetings here.</p>
             <i class="fas fa-calendar-alt fa-3x"></i>
           </div>
         </div>

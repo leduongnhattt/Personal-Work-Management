@@ -13,4 +13,13 @@ export class MeetingService {
   createMeeting(meeting: any): Observable<any>{
     return this.http.post(environment.apiMeetingUrl + '/addApointment', meeting);
   }
+  getAllMeetings(): Observable<any>{
+    return this.http.get(environment.apiMeetingUrl + '/allApointment');
+  }
+  updateMeeting(meetingId: string, meeting: any): Observable<any>{
+    return this.http.put(environment.apiMeetingUrl + '/updateApointment/' + meetingId, meeting);
+  }
+  deleteMeeting(meetingId: string): Observable<any>{
+    return this.http.delete(environment.apiMeetingUrl + '/deleteApointment/' + meetingId);
+  }
 }

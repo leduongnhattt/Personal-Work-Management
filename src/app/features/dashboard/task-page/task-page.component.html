@@ -1,0 +1,103 @@
+<div class="container mt-4">
+  <h2 class="text-center text-primary">📌 List Task</h2>
+
+  <div *ngIf="tasks.length === 0" class="alert alert-warning text-center">
+    There is no task to display.
+  </div>
+
+  <div class="row">
+    <div class="col-md-4" *ngFor="let task of tasks">
+      <div class="card shadow-lg border-0 mb-4">
+        <div class="card-header text-white text-uppercase fw-bold text-center"
+             [ngClass]="{'bg-success': task.status === 'Completed',
+                         'bg-warning': task.status === 'InProgress',
+                         'bg-danger': task.status === 'Pending',
+                         'bg-secondary': task.status === 'Cancelled'}">
+          {{ task.title }}
+        </div>
+
+        <div class="card-body">
+          <p class="card-text"><strong>📌 Description:</strong> {{ task.description }}</p>
+          <p class="card-text"><strong>📅 Start:</strong> {{ task.startDateTask | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>⏳ End:</strong> {{ task.endDateTask | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>⏰ Reminder:</strong> {{ task.reminderTime }} minutes before</p>
+          <p class="card-text">
+            <strong>📌 Status:</strong>
+            <span class="badge mx-2" [ngClass]="{'bg-success': task.status === 'Completed',
+                                            'bg-warning': task.status === 'InProgress',
+                                            'bg-danger': task.status === 'Pending',
+                                            'bg-secondary': task.status === 'Cancelled'}"
+                                            >
+              {{ task.status }}
+            </span>
+          </p>
+        </div>
+
+        <div class="card-footer d-flex justify-content-end align-items-center">
+          <!-- Nút chỉnh sửa và xóa -->
+          <div class="d-flex gap-1">
+            <button class="btn btn-warning btn-sm" (click)="openModal(editTaskModal, task)">📝 Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteTask(task.workTaskId)">❌ Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Update Task -->
+<ng-template #editTaskModal>
+  <div class="modal-header bg-primary text-white p-3">
+    <h5 class="modal-title">✏️ Update Task</h5>
+    <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
+  </div>
+
+  <div class="modal-body p-3">
+    <!-- Title -->
+    <div class="mb-3">
+      <label for="taskTitle" class="form-label fw-bold">📌 Title</label>
+      <input id="taskTitle" [(ngModel)]="selectedTask.title" class="form-control">
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+      <label for="taskDescription" class="form-label fw-bold">📝 Description</label>
+      <textarea id="taskDescription" [(ngModel)]="selectedTask.description" class="form-control" rows="3"></textarea>
+    </div>
+
+    <!-- Start Date -->
+    <div class="mb-3">
+      <label for="startDateTask" class="form-label fw-bold">📅 Start Date</label>
+      <input id="startDateTask" type="date" [(ngModel)]="selectedTask.startDateTask" class="form-control">
+    </div>
+
+    <!-- End Date -->
+    <div class="mb-3">
+      <label for="endDateTask" class="form-label fw-bold">⏳ End Date</label>
+      <input id="endDateTask" type="date" [(ngModel)]="selectedTask.endDateTask" class="form-control">
+    </div>
+
+    <!-- Status -->
+    <div class="mb-3">
+      <label for="taskStatus" class="form-label fw-bold">📌 Status</label>
+      <select id="taskStatus" [(ngModel)]="selectedTask.status" class="form-select">
+        <option value="Pending">🔴 Pending</option>
+        <option value="InProgress">🟡 In Progress</option>
+        <option value="Completed">🟢 Completed</option>
+        <option value="Cancelled">⚫ Cancelled</option>
+      </select>
+    </div>
+
+    <!-- Reminder Time -->
+    <div class="mb-3">
+      <label for="reminderTime" class="form-label fw-bold">⏰ Reminder (minutes before)</label>
+      <input id="reminderTime" type="number" [(ngModel)]="selectedTask.reminderTime" class="form-control" min="1">
+    </div>
+  </div>
+
+  <div class="modal-footer p-3">
+    <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ Close</button>
+    <button class="btn btn-primary" (click)="updateTask(); modalRef?.hide()">💾 Save Changes</button>
+  </div>
+</ng-template>
+
