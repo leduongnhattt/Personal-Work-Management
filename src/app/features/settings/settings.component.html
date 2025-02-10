@@ -1,1 +1,61 @@
-<p>settings works!</p>
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center" [ngClass]="{'bg-dark text-white': isDarkMode}">
+  <div class="card shadow-lg p-4 rounded-lg border-0 w-100 h-100 overflow-hidden" id="settingsCard" [ngClass]="{'bg-dark text-white': isDarkMode}">
+    <h2 class="mb-4 text-center text-primary fw-bold">Settings</h2>
+
+    <ul class="nav nav-pills nav-justified mb-3" id="settingsTabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#notifications">🔔 Notifications</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#security">🔒 Security</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#appearance">🎨 Appearance</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#language">🌍 Language</a>
+      </li>
+    </ul>
+
+    <div class="tab-content mt-4 overflow-auto" style="max-height: 70vh;">
+      <!-- Notifications Settings -->
+      <div id="notifications" class="tab-pane fade show active">
+        <h5 class="fw-bold">🔔 Notifications</h5>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="emailNotifications">
+          <label class="form-check-label" for="emailNotifications">Enable/Disable Email</label>
+        </div>
+        <div class="form-check form-switch mt-3">
+          <input class="form-check-input" type="checkbox" id="pushNotifications">
+          <label class="form-check-label" for="pushNotifications">Enable/Disable Push Notifications</label>
+        </div>
+      </div>
+
+      <!-- Security Settings -->
+      <div id="security" class="tab-pane fade">
+        <h5 class="fw-bold">🔒 Security</h5>
+        <button class="btn btn-primary w-100 py-2">Enable Two-Factor Authentication (2FA)</button>
+      </div>
+
+      <!-- Appearance Settings -->
+      <div id="appearance" class="tab-pane fade">
+        <h5 class="fw-bold">🎨 Appearance</h5>
+        <div class="form-check form-switch">
+          <input type="checkbox" (change)="toggleDarkMode($event)" [checked]="isDarkMode">
+          <label class="form-check-label" for="darkModeToggle">🌙 Enable/Disable Dark Mode</label>
+        </div>
+      </div>
+
+      <!-- Language Settings -->
+      <div id="language" class="tab-pane fade">
+        <h5 class="fw-bold">🌍 Language</h5>
+        <select class="form-select shadow-sm">
+          <option value="en" selected>English</option>
+          <option value="vi">Vietnamese</option>
+          <option value="fr">Français</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,42 +1,49 @@
 <div class="container-fluid">
   <div class="col-md-9 col-lg-10 p-4">
-    <h2>Home Dashboard</h2>
-    <div class="row">
-      <!-- Card for Notes -->
-      <div class="col-md-4 mb-4">
-        <div class="card card-hover" (click)="navigateTo('main/note_page')">
-          <div class="card-body">
-            <h5 class="card-title">Notes</h5>
-            <p class="card-text">Manage your notes here.</p>
-            <i class="fas fa-sticky-note fa-3x"></i>
+    <h2 class="text-primary fw-bold mb-4">📌 Home Dashboard</h2>
+
+    <div class="row g-4">
+      <!-- Notes Card -->
+      <div class="col-md-4">
+        <div class="card card-hover shadow-lg border-0" (click)="navigateTo('main/note_page')">
+          <div class="card-body text-center">
+            <div class="icon-box bg-primary text-white mb-3">
+              <i class="material-icons">note</i>
+            </div>
+            <h5 class="card-title fw-bold">Notes</h5>
+            <p class="card-text text-muted">Organize your notes efficiently.</p>
           </div>
         </div>
       </div>
 
-      <!-- Card for Tasks -->
-      <div class="col-md-4 mb-4">
-        <div class="card card-hover" (click)="navigateTo('main/task_page')">
-          <div class="card-body">
-            <h5 class="card-title">Tasks</h5>
-            <p class="card-text">Manage your tasks here.</p>
-            <i class="fas fa-tasks fa-3x"></i>
+      <!-- Tasks Card -->
+      <div class="col-md-4">
+        <div class="card card-hover shadow-lg border-0" (click)="navigateTo('main/task_page')">
+          <div class="card-body text-center">
+            <div class="icon-box bg-success text-white mb-3">
+              <i class="material-icons">check_circle</i>
+            </div>
+            <h5 class="card-title fw-bold">Tasks</h5>
+            <p class="card-text text-muted">Manage and track your tasks easily.</p>
           </div>
         </div>
       </div>
 
-      <!-- Card for Appointments -->
-      <div class="col-md-4 mb-4">
-        <div class="card card-hover" (click)="navigateTo('main/meeting_page')">
-          <div class="card-body">
-            <h5 class="card-title">Meetings</h5>
-            <p class="card-text">Manage your meetings here.</p>
-            <i class="fas fa-calendar-alt fa-3x"></i>
+      <!-- Meetings Card -->
+      <div class="col-md-4">
+        <div class="card card-hover shadow-lg border-0" (click)="navigateTo('main/meeting_page')">
+          <div class="card-body text-center">
+            <div class="icon-box bg-danger text-white mb-3">
+              <i class="material-icons">event</i>
+            </div>
+            <h5 class="card-title fw-bold">Meetings</h5>
+            <p class="card-text text-muted">Schedule and manage your meetings.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Router Outlet for displaying the list of notes, tasks, appointments -->
+    <!-- Router Outlet -->
     <router-outlet></router-outlet>
   </div>
 </div>
