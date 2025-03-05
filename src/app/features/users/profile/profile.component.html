@@ -69,7 +69,7 @@
         <div *ngIf="isActiveTab('change-password')">
           <div class="mb-3">
             <label for="current-password" class="form-label">Current Password</label>
-            <input type="password" id="current-password" class="form-control" formControlName="currentPassword">
+            <input type="password" id="current-password" class="form-control" formControlName="oldPassword">
           </div>
           <div class="mb-3">
             <label for="new-password" class="form-label">New Password</label>
@@ -80,7 +80,7 @@
             <input type="password" id="repeat-password" class="form-control" formControlName="repeatPassword">
           </div>
           <div class="text-end mt-3">
-            <button type="submit" class="btn btn-primary mx-2" [disabled]="!form.dirty">
+            <button type="button" class="btn btn-primary mx-2" [disabled]="!form.dirty" (click)="updatePassword()">
               Save Changes
             </button>
             <button type="button" class="btn btn-secondary" [disabled]="!form.dirty">

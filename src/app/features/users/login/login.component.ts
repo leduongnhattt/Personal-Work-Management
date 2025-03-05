@@ -37,6 +37,7 @@ export class LoginComponent {
       this.authService.login(this.form.value).subscribe({
         next: (res: any) => {
           this.authService.saveToken(res.accessToken);
+          this.toastr.success('Login successful', 'Welcome!');
           this.router.navigateByUrl('/main/home');
         },
         error: err => {

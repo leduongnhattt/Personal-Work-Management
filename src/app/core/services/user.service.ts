@@ -14,4 +14,14 @@ export class UserService {
   getSchedule(userId: string): Observable<any> {
     return this.http.get(`${environment.apiScheduleUrl}/getAll/${userId}`);
   }
+  updatePassword(oldPassword: string, newPassword: string): Observable<any> {
+    return this.http.put(`${environment.apiAuthUrl}/update-password`, { oldPassword, newPassword });
+  }
+  getProfile(): Observable<any> {
+    return this.http.get(`${environment.apiAuthUrl}/profile`);
+  }
+
+  updateProfile(data: any): Observable<any> {
+    return this.http.put(`${environment.apiAuthUrl}/profile`, data);
+  }
 }

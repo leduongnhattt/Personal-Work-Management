@@ -9,7 +9,7 @@ import { NotesComponent } from './features/notes/notes.component';
 import { MainComponent } from './features/main/main.component';
 import { ScheduleComponent } from './features/schedule/schedule.component';
 import { SettingsComponent } from './features/settings/settings.component';
-import { ProfileComponent } from './features/profile/profile.component';
+import { ProfileComponent } from './features/users/profile/profile.component';
 import { NotePageComponent } from './features/dashboard/note-page/note-page.component';
 import { MeetingPageComponent } from './features/dashboard/meeting-page/meeting-page.component';
 import { TaskPageComponent } from './features/dashboard/task-page/task-page.component';
@@ -17,13 +17,13 @@ import { TaskPageComponent } from './features/dashboard/task-page/task-page.comp
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: '', component: LoginComponent },  // Đường dẫn mặc định là trang đăng nhập
+  { path: '', component: LoginComponent },
   {
     path: 'main', component: MainComponent, children: [
       { path: 'home', component: HomeComponent },
-      { path: 'note_page', component: NotePageComponent},
-      { path: 'task_page', component: TaskPageComponent},
-      { path: 'meeting_page', component: MeetingPageComponent},
+      { path: 'note_page', component: NotePageComponent },
+      { path: 'task_page', component: TaskPageComponent },
+      { path: 'meeting_page', component: MeetingPageComponent },
       { path: 'tasks', component: TaskComponent },
       { path: 'meetings', component: MeetingsComponent },
       { path: 'notes', component: NotesComponent },

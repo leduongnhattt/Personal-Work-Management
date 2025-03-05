@@ -72,12 +72,4 @@ export class AuthService {
     );
   }
 
-
-  getProfile(): Observable<any> {
-    return this.http.get(`${environment.apiAuthUrl}/profile`);
-  }
-
-  updateProfile(data: any): Observable<any> {
-    return this.http.put(`${environment.apiAuthUrl}/profile`, data);
-  }
 }
