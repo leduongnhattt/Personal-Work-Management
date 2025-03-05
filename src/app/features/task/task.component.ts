@@ -3,12 +3,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ToastrService } from 'ngx-toastr';
 import { TaskService } from '../../core/services/task.service';
 import { CommonModule } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-task',
-    imports: [ReactiveFormsModule, CommonModule],
-    templateUrl: './task.component.html',
-    styleUrl: './task.component.css'
+  selector: 'app-task',
+  imports: [ReactiveFormsModule, CommonModule, TranslateModule],
+  templateUrl: './task.component.html',
+  styleUrl: './task.component.css'
 })
 export class TaskComponent {
   taskForm!: FormGroup;
@@ -17,8 +18,9 @@ export class TaskComponent {
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private translate: TranslateService
+  ) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -40,7 +42,9 @@ export class TaskComponent {
     const endDate = this.taskForm.get('endDateTask')?.value;
 
     if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-      this.dateError = 'Start date must be earlier than or equal to end date.';
+      this.translate.get('DATE_ERROR').subscribe((message) => {
+        this.dateError = message;
+      });
       setTimeout(() => {
         this.taskForm.get('startDateTask')?.reset();
         this.taskForm.get('endDateTask')?.reset();
@@ -58,12 +62,13 @@ export class TaskComponent {
     this.taskService.createTask(this.taskForm.value).subscribe({
       next: (res: any) => {
         if (res.status === "Success") {
-          this.toastr.success('Task added successfully!');
+          this.translate.get('ERROR').subscribe((message) => {
+            this.toastr.error(message);
+          });
           this.taskForm.reset();
         }
       },
       error: (err) => {
-        console.error(err);
         this.toastr.error('An error occurred while adding the task.');
       },
     });

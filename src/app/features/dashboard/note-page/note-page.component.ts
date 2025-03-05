@@ -3,10 +3,12 @@ import { NoteService } from '../../../core/services/note.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-note-page',
-  imports: [CommonModule, FormsModule, DatePipe],
+  imports: [CommonModule, FormsModule, DatePipe, TranslateModule],
   templateUrl: './note-page.component.html',
   styleUrl: './note-page.component.css'
 })
@@ -14,7 +16,9 @@ export class NotePageComponent {
   notes: any[] = [];
   selectedNote: any = { noteId: '', title: '', content: '' };
 
-  constructor(private noteService: NoteService, private modalService: BsModalService) {}
+  constructor(private noteService: NoteService, private modalService: BsModalService ,private toastr: ToastrService
+    , private translate: TranslateService
+  ) {}
   @ViewChild('editNoteModal') editNoteModal: any;
   modalRef?: BsModalRef;
 
@@ -51,7 +55,9 @@ export class NotePageComponent {
     }).subscribe(
       () => {
         this.loadNotes();
-        alert('Ghi chú đã được cập nhật!');
+        this.translate.get('TOASTR.NOTE_UPDATED').subscribe((translatedText: string) => {
+          setTimeout(() => this.toastr.success(translatedText), 100);
+        });
       },
       (error) => {
         console.error('Lỗi khi cập nhật ghi chú:', error);
@@ -60,16 +66,20 @@ export class NotePageComponent {
   }
 
   deleteNote(noteId: string): void {
-    if (confirm('BAre you sure you want to delete this note?')) {
-      this.noteService.deleteNote(noteId).subscribe(
-        () => {
-          alert('The note has been deleted!');
-          this.loadNotes();
-        },
-        (error) => {
-          console.error('Lỗi khi xóa ghi chú:', error);
-        }
-      );
-    }
+    this.translate.get('TOASTR.CONFIRM_DELETE').subscribe((confirmText: string) => {
+      if (confirm(confirmText)) {
+        this.noteService.deleteNote(noteId).subscribe(
+          (response) => {
+            this.notes = this.notes.filter(note => note.noteId !== noteId);
+            this.translate.get('TOASTR.NOTE_DELETED').subscribe((translatedText: string) => {
+              setTimeout(() => this.toastr.success(translatedText), 100);
+            });
+          },
+          (error) => {
+            console.error('Lỗi khi xóa ghi chú:', error);
+          }
+        );
+      }
+    });
   }
 }

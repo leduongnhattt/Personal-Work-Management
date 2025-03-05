@@ -1,37 +1,38 @@
 <div class="card shadow-lg p-4 rounded-4" style="max-width: 1400px; margin: auto;">
-  <h4 class="text-center text-gradient mb-3">Add Meeting Task</h4>
+  <h4 class="text-center text-gradient mb-3">{{ 'addMeeting' | translate }}</h4>
   <form (ngSubmit)="addMeeting()" [formGroup]="meetingForm">
     <!-- Task Name -->
     <div class="mb-3">
-      <label for="title" class="form-label fw-bold">Meeting Title</label>
-      <input type="text" id="title" class="form-control form-control-lg" placeholder="Enter meeting title"
-        formControlName="title" />
+      <label for="title" class="form-label fw-bold">{{ 'meetingTitle' | translate }}</label>
+      <input type="text" id="title" class="form-control form-control-lg"
+        placeholder="{{ 'placeholderMeeting1' | translate }}" formControlName="title" />
     </div>
 
     <!-- Description -->
     <div class="mb-3">
-      <label for="description" class="form-label fw-bold">Description</label>
-      <textarea id="description" class="form-control form-control-lg" placeholder="Enter meeting description"
-        formControlName="description" rows="4" style="resize: none;"></textarea>
+      <label for="description" class="form-label fw-bold">{{ 'description' | translate }}</label>
+      <textarea id="description" class="form-control form-control-lg"
+        placeholder="{{ 'placeholderMeeting2' | translate }}" formControlName="description" rows="4"
+        style="resize: none;"></textarea>
     </div>
 
     <!-- Location -->
     <div class="mb-3">
-      <label for="location" class="form-label fw-bold">Location</label>
-      <textarea id="location" class="form-control form-control-lg" placeholder="Enter meeting location"
+      <label for="location" class="form-label fw-bold">{{ 'location' | translate }}</label>
+      <textarea id="location" class="form-control form-control-lg" placeholder="{{ 'placeholderMeeting3' | translate }}"
         formControlName="location" rows="4" style="resize: none;"></textarea>
     </div>
 
     <!-- Start Date -->
     <div class="mb-3">
-      <label for="startDateApoint" class="form-label fw-bold">Start Date</label>
+      <label for="startDateApoint" class="form-label fw-bold">{{ 'startDate' | translate }}</label>
       <input type="date" id="startDateApoint" class="form-control form-control-lg" formControlName="startDateApoint"
         (input)="validateDates()" />
     </div>
 
     <!-- End Date -->
     <div class="mb-3">
-      <label for="endDateApoint" class="form-label fw-bold">End Date</label>
+      <label for="endDateApoint" class="form-label fw-bold">{{ 'endDate' | translate }}</label>
       <input type="date" id="endDateApoint" class="form-control form-control-lg" formControlName="endDateApoint"
         (input)="validateDates()" />
     </div>
@@ -43,15 +44,16 @@
 
     <!-- Reminder Time -->
     <div class="mb-3">
-      <label for="reminderTime" class="form-label fw-bold">Reminder Time (minutes)</label>
+      <label for="reminderTime" class="form-label fw-bold">{{ 'reminderTime' | translate }}</label>
       <input type="number" id="reminderTime" class="form-control form-control-lg" placeholder="Enter reminder time"
         formControlName="reminderTime" />
     </div>
 
     <!-- Submit Button -->
     <div class="text-center mt-4">
-      <button type="submit" class="btn btn-gradient px-5 py-3 rounded-pill" [disabled]="!meetingForm.valid || dateError">
-        Add Form
+      <button type="submit" class="btn btn-gradient px-5 py-3 rounded-pill"
+        [disabled]="!meetingForm.valid || dateError">
+        {{ 'addMeeting' | translate }}
       </button>
     </div>
   </form>

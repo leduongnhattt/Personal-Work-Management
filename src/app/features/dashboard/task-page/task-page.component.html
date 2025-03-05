@@ -1,8 +1,8 @@
 <div class="container mt-4">
-  <h2 class="text-center text-primary">📌 List Task</h2>
+  <h2 class="text-center text-primary">📌 {{'listTask' | translate}}</h2>
 
   <div *ngIf="tasks.length === 0" class="alert alert-warning text-center">
-    There is no task to display.
+    {{'noTask' | translate}}
   </div>
 
   <div class="row">
@@ -17,12 +17,12 @@
         </div>
 
         <div class="card-body">
-          <p class="card-text"><strong>📌 Description:</strong> {{ task.description }}</p>
-          <p class="card-text"><strong>📅 Start:</strong> {{ task.startDateTask | date:'dd/MM/yyyy' }}</p>
-          <p class="card-text"><strong>⏳ End:</strong> {{ task.endDateTask | date:'dd/MM/yyyy' }}</p>
-          <p class="card-text"><strong>⏰ Reminder:</strong> {{ task.reminderTime }} minutes before</p>
+          <p class="card-text"><strong>📌 {{'description' | translate}}:</strong> {{ task.description }}</p>
+          <p class="card-text"><strong>📅 {{'start' | translate}}:</strong> {{ task.startDateTask | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>⏳ {{'end' | translate}}:</strong> {{ task.endDateTask | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>⏰ {{'reminder' | translate}}:</strong> {{ task.reminderTime }} minutes before</p>
           <p class="card-text">
-            <strong>📌 Status:</strong>
+            <strong>📌 {{'status' | translate}}:</strong>
             <span class="badge mx-2" [ngClass]="{'bg-success': task.status === 'Completed',
                                             'bg-warning': task.status === 'InProgress',
                                             'bg-danger': task.status === 'Pending',
@@ -36,8 +36,8 @@
         <div class="card-footer d-flex justify-content-end align-items-center">
           <!-- Nút chỉnh sửa và xóa -->
           <div class="d-flex gap-1">
-            <button class="btn btn-warning btn-sm" (click)="openModal(editTaskModal, task)">📝 Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteTask(task.workTaskId)">❌ Delete</button>
+            <button class="btn btn-warning btn-sm" (click)="openModal(editTaskModal, task)">📝 {{'edit' | translate}}</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteTask(task.workTaskId)">❌ {{'delete' | translate}}</button>
           </div>
         </div>
       </div>
@@ -48,56 +48,56 @@
 <!-- Modal Update Task -->
 <ng-template #editTaskModal>
   <div class="modal-header bg-primary text-white p-3">
-    <h5 class="modal-title">✏️ Update Task</h5>
+    <h5 class="modal-title">✏️ {{'editTask' | translate}}</h5>
     <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
   </div>
 
   <div class="modal-body p-3">
     <!-- Title -->
     <div class="mb-3">
-      <label for="taskTitle" class="form-label fw-bold">📌 Title</label>
+      <label for="taskTitle" class="form-label fw-bold">📌 {{'title' | translate}}</label>
       <input id="taskTitle" [(ngModel)]="selectedTask.title" class="form-control">
     </div>
 
     <!-- Description -->
     <div class="mb-3">
-      <label for="taskDescription" class="form-label fw-bold">📝 Description</label>
+      <label for="taskDescription" class="form-label fw-bold">📝 {{'description' | translate}}</label>
       <textarea id="taskDescription" [(ngModel)]="selectedTask.description" class="form-control" rows="3"></textarea>
     </div>
 
     <!-- Start Date -->
     <div class="mb-3">
-      <label for="startDateTask" class="form-label fw-bold">📅 Start Date</label>
+      <label for="startDateTask" class="form-label fw-bold">📅 {{'start' | translate}}</label>
       <input id="startDateTask" type="date" [(ngModel)]="selectedTask.startDateTask" class="form-control">
     </div>
 
     <!-- End Date -->
     <div class="mb-3">
-      <label for="endDateTask" class="form-label fw-bold">⏳ End Date</label>
+      <label for="endDateTask" class="form-label fw-bold">⏳ {{'end' | translate}}</label>
       <input id="endDateTask" type="date" [(ngModel)]="selectedTask.endDateTask" class="form-control">
     </div>
 
     <!-- Status -->
     <div class="mb-3">
-      <label for="taskStatus" class="form-label fw-bold">📌 Status</label>
+      <label for="taskStatus" class="form-label fw-bold">📌 {{'status' | translate}}</label>
       <select id="taskStatus" [(ngModel)]="selectedTask.status" class="form-select">
-        <option value="Pending">🔴 Pending</option>
-        <option value="InProgress">🟡 In Progress</option>
-        <option value="Completed">🟢 Completed</option>
-        <option value="Cancelled">⚫ Cancelled</option>
+        <option value="Pending">🔴 {{'pending' | translate}}</option>
+        <option value="InProgress">🟡 {{'inprogress' | translate}}</option>
+        <option value="Completed">🟢 {{'completed' | translate}}</option>
+        <option value="Cancelled">⚫ {{'cancelled' | translate}}</option>
       </select>
     </div>
 
     <!-- Reminder Time -->
     <div class="mb-3">
-      <label for="reminderTime" class="form-label fw-bold">⏰ Reminder (minutes before)</label>
+      <label for="reminderTime" class="form-label fw-bold">⏰ {{'reminder' | translate}}</label>
       <input id="reminderTime" type="number" [(ngModel)]="selectedTask.reminderTime" class="form-control" min="1">
     </div>
   </div>
 
   <div class="modal-footer p-3">
-    <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ Close</button>
-    <button class="btn btn-primary" (click)="updateTask(); modalRef?.hide()">💾 Save Changes</button>
+    <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ {{'close' | translate}}</button>
+    <button class="btn btn-primary" (click)="updateTask(); modalRef?.hide()">💾 {{'save' | translate}}</button>
   </div>
 </ng-template>
 

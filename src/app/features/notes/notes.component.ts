@@ -4,16 +4,17 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { title } from 'process';
 import { NoteService } from '../../core/services/note.service';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-notes',
-    imports: [CommonModule, ReactiveFormsModule],
-    templateUrl: './notes.component.html',
-    styleUrl: './notes.component.css'
+  selector: 'app-notes',
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+  templateUrl: './notes.component.html',
+  styleUrl: './notes.component.css'
 })
-export class NotesComponent implements OnInit{
+export class NotesComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private noteService: NoteService, private toastr: ToastrService){}
+  constructor(private formBuilder: FormBuilder, private noteService: NoteService, private toastr: ToastrService, private translate: TranslateService) { }
   ngOnInit(): void {
     this.initializeForm();
   }
@@ -31,12 +32,16 @@ export class NotesComponent implements OnInit{
       this.noteService.createNote(this.noteForm.value).subscribe({
         next: (res: any) => {
           if (res.status === "Success") {
-            this.toastr.success('Note added successfully!');
+            this.translate.get('NOTE_ADDED').subscribe((message) => {
+              this.toastr.success(message);
+            });
             this.noteForm.reset();
           }
         },
         error: (error) => {
-          this.toastr.error('An error occurred while adding the note.');
+          this.translate.get('ERROR').subscribe((message) => {
+            this.toastr.error(message);
+          });
           this.noteForm.reset();
         }
       })

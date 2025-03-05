@@ -4,23 +4,27 @@ import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angula
 import { MeetingService } from '../../core/services/meeting.service';
 import { ToastrService } from 'ngx-toastr';
 import { error } from 'console';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-meetings',
-    imports: [CommonModule, ReactiveFormsModule],
-    templateUrl: './meetings.component.html',
-    styleUrl: './meetings.component.css'
+  selector: 'app-meetings',
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+  templateUrl: './meetings.component.html',
+  styleUrl: './meetings.component.css'
 })
-export class MeetingsComponent implements OnInit{
+export class MeetingsComponent implements OnInit {
   meetingForm!: FormGroup;
   dateError: string | null = null;
 
-  constructor(private formBuilder: FormBuilder, private meetingSerivce: MeetingService, private toastr: ToastrService) {}
+  constructor(private formBuilder: FormBuilder,
+    private meetingSerivce: MeetingService,
+    private toastr: ToastrService,
+    private translate: TranslateService) { }
   ngOnInit(): void {
     this.initializeForm();
   }
 
-  private initializeForm() : void {
+  private initializeForm(): void {
     this.meetingForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -36,13 +40,17 @@ export class MeetingsComponent implements OnInit{
     this.meetingSerivce.createMeeting(this.meetingForm.value).subscribe({
       next: (res: any) => {
         if (res.status === 'Success') {
-          this.toastr.success('Meeting added successfully!');
+          this.translate.get('MEETING_ADDED').subscribe((message) => {
+            this.toastr.success(message);
+          });
           this.meetingForm.reset();
         }
       },
       error: (error) => {
         console.error(error);
-        this.toastr.error('An error occurred while adding the meeting.');
+        this.translate.get('ERROR').subscribe((message) => {
+          this.toastr.error(message);
+        });
         this.meetingForm.reset();
       }
     });

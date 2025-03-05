@@ -5,9 +5,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
     selector: 'app-header',
-    imports: [MatIconModule, MatToolbarModule, CommonModule, RouterLink],
+    imports: [MatIconModule, MatToolbarModule, CommonModule, RouterLink, TranslateModule],
     templateUrl: './header.component.html',
     styleUrl: './header.component.css'
 })

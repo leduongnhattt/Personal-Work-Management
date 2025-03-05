@@ -3,7 +3,7 @@
   <div class="meeting-section">
     <h2 class="section-title meeting-title">
       <mat-icon>event</mat-icon>
-      <span>Schedule Meetings</span>
+      <span>{{ 'scheduleMeeting' | translate }}</span>
     </h2>
     <div class="meeting-list">
       <mat-card *ngFor="let apointment of schedule?.apointments" class="apointment-card">
@@ -11,10 +11,10 @@
           <mat-card-title>{{ apointment?.title }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p><strong>Description:</strong> {{ apointment?.description }}</p>
-          <p><strong>Location:</strong> {{ apointment?.location }}</p>
-          <p><strong>Start:</strong> {{ apointment?.startDateApoint | date:'dd/MM/yyyy' }}</p>
-          <p><strong>End:</strong> {{ apointment?.endDateApoint | date:'dd/MM/yyyy' }}</p>
+          <p><strong>{{ 'description' | translate }}:</strong> {{ apointment?.description }}</p>
+          <p><strong>{{ 'location' | translate }}:</strong> {{ apointment?.location }}</p>
+          <p><strong>{{ 'start' | translate }}:</strong> {{ apointment?.startDateApoint | date:'dd/MM/yyyy' }}</p>
+          <p><strong>{{ 'end' | translate }}:</strong> {{ apointment?.endDateApoint | date:'dd/MM/yyyy' }}</p>
         </mat-card-content>
       </mat-card>
     </div>
@@ -24,7 +24,7 @@
   <div class="task-section">
     <h2 class="section-title task-title">
       <mat-icon>task_alt</mat-icon>
-      <span>Schedule Tasks</span>
+      <span>{{ 'scheduleTask' | translate }}</span>
     </h2>
     <div class="task-list">
       <mat-card *ngFor="let task of schedule?.tasks" class="task-card">
@@ -32,9 +32,9 @@
           <mat-card-title>{{ task?.title }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p><strong>Description:</strong> {{ task?.description }}</p>
-          <p><strong>Start:</strong> {{ task?.startDateTask | date:'dd/MM/yyyy' }}</p>
-          <p><strong>End:</strong> {{ task?.endDateTask | date:'dd/MM/yyyy' }}</p>
+          <p><strong>{{ 'description' | translate }}:</strong> {{ task?.description }}</p>
+          <p><strong>{{ 'start' | translate }}:</strong> {{ task?.startDateTask | date:'dd/MM/yyyy' }}</p>
+          <p><strong>{{ 'end' | translate }}:</strong> {{ task?.endDateTask | date:'dd/MM/yyyy' }}</p>
         </mat-card-content>
       </mat-card>
     </div>

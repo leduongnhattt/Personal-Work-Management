@@ -1,8 +1,8 @@
 <div class="container mt-4">
-  <h2 class="text-center text-primary">📌List Note</h2>
+  <h2 class="text-center text-primary">📌{{'listNote' | translate}}</h2>
 
   <div *ngIf="notes.length === 0" class="alert alert-warning text-center">
-    There is no note to display.
+    {{'noNote' | translate}}
   </div>
 
   <div class="row">
@@ -17,8 +17,8 @@
         <div class="card-footer d-flex justify-content-between align-items-center">
           <small class="text-muted">🕒 {{ note.createdAt | date:'HH:mm dd/MM/yyyy' }}</small>
           <div class="d-flex gap-1">
-            <button class="btn btn-warning btn-sm" (click)="openModal(editNoteModal, note)">📝 Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteNote(note.noteId)">❌ Delete</button>
+            <button class="btn btn-warning btn-sm" (click)="openModal(editNoteModal, note)">📝 {{'edit' | translate}}</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteNote(note.noteId)">❌ {{'delete' | translate}}</button>
           </div>
         </div>
       </div>
@@ -29,25 +29,25 @@
 <!-- Modal -->
 <ng-template #editNoteModal>
   <div class="modal-header bg-primary text-white p-3">
-    <h5 class="modal-title">✏️ Edit Note</h5>
+    <h5 class="modal-title">✏️ {{'editNote' | translate}}</h5>
     <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
   </div>
 
   <div class="modal-body p-3">
     <div class="mb-3">
-      <label for="noteTitle" class="form-label fw-bold">📌 Title</label>
+      <label for="noteTitle" class="form-label fw-bold">📌 {{'title' | translate}}</label>
       <input id="noteTitle" [(ngModel)]="selectedNote.title" class="form-control">
     </div>
 
     <div class="mb-3">
-      <label for="noteContent" class="form-label fw-bold">📝 Content</label>
+      <label for="noteContent" class="form-label fw-bold">📝 {{'content' | translate}}</label>
       <textarea id="noteContent" [(ngModel)]="selectedNote.content" class="form-control" rows="4"></textarea>
     </div>
   </div>
 
   <div class="modal-footer p-3">
-    <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ Close</button>
-    <button class="btn btn-primary" (click)="updateNote(); modalRef?.hide()">💾 Save</button>
+    <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ {{'close' | translate}}</button>
+    <button class="btn btn-primary" (click)="updateNote(); modalRef?.hide()">💾 {{'save' | translate}}</button>
   </div>
 </ng-template>
 

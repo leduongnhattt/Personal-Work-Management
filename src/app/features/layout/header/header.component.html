@@ -13,12 +13,12 @@
   <!-- Profile Button -->
   <button mat-button routerLink="/profile" routerLinkActive="active" class="profile-button neumorphic-button" (click)="hideSidebar()">
     <mat-icon>account_circle</mat-icon>
-    Profile
+    {{'profile' | translate}}
   </button>
 
   <!-- Sign Out Button -->
   <button mat-button class="sign-out-button neumorphic-button rounded-pill" (click)="signOut()">
     <mat-icon>exit_to_app</mat-icon>
-    <span class="d-none d-sm-inline">Sign Out</span>
+    <span class="d-none d-sm-inline"> {{'signOut' | translate}}</span>
   </button>
 </mat-toolbar>

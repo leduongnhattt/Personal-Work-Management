@@ -1,19 +1,19 @@
 <div class="container-fluid vh-100 d-flex align-items-center justify-content-center" [ngClass]="{'bg-dark text-white': isDarkMode}">
   <div class="card shadow-lg p-4 rounded-lg border-0 w-100 h-100 overflow-hidden" id="settingsCard" [ngClass]="{'bg-dark text-white': isDarkMode}">
-    <h2 class="mb-4 text-center text-primary fw-bold">Settings</h2>
+    <h2 class="mb-4 text-center text-primary fw-bold">{{'setting'| translate }}</h2>
 
     <ul class="nav nav-pills nav-justified mb-3" id="settingsTabs">
       <li class="nav-item">
-        <a class="nav-link active" data-bs-toggle="tab" href="#notifications">🔔 Notifications</a>
+        <a class="nav-link active" data-bs-toggle="tab" href="#notifications">🔔 {{'notification' | translate}}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#security">🔒 Security</a>
+        <a class="nav-link" data-bs-toggle="tab" href="#security">🔒 {{'security' | translate}}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#appearance">🎨 Appearance</a>
+        <a class="nav-link" data-bs-toggle="tab" href="#appearance">🎨 {{'appearance' | translate}}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#language">🌍 Language</a>
+        <a class="nav-link" data-bs-toggle="tab" href="#language">🌍 {{'language' | translate}}</a>
       </li>
     </ul>
 
@@ -49,11 +49,11 @@
       <!-- Language Settings -->
       <div id="language" class="tab-pane fade">
         <h5 class="fw-bold">🌍 Language</h5>
-        <select class="form-select shadow-sm">
-          <option value="en" selected>English</option>
-          <option value="vi">Vietnamese</option>
-          <option value="fr">Français</option>
-          <option value="es">Español</option>
+        <select class="form-select shadow-sm" (change)="ChangeLanguage($event)">
+          <option [selected]="lang==='en'" value="en" selected>English</option>
+          <option [selected]="lang==='vi'" value="vi">Vietnamese</option>
+          <option [selected]="lang==='fr'" value="fr">Français</option>
+          <option [selected]="lang==='es'" value="es">Español</option>
         </select>
       </div>
     </div>

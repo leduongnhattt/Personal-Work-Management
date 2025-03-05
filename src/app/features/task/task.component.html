@@ -1,25 +1,25 @@
 <div class="card shadow-lg p-4 rounded-4" style="max-width: 1400px; margin: auto;">
-  <h4 class="text-center text-gradient mb-3">Add Work Task</h4>
+  <h4 class="text-center text-gradient mb-3">{{'addTask' | translate}}</h4>
   <form (ngSubmit)="addWorkTask()" [formGroup]="taskForm">
     <!-- Task Name -->
     <div class="mb-3">
-      <label for="title" class="form-label fw-bold">Task Name</label>
+      <label for="title" class="form-label fw-bold">{{'taskName' | translate}}</label>
       <input
         type="text"
         id="title"
         class="form-control form-control-lg"
-        placeholder="Enter task name"
+        placeholder="{{'placeholder1' | translate}}"
         formControlName="title"
       />
     </div>
 
     <!-- Description -->
     <div class="mb-3">
-      <label for="description" class="form-label fw-bold">Description</label>
+      <label for="description" class="form-label fw-bold">{{'description' | translate}}</label>
       <textarea
         id="description"
         class="form-control form-control-lg"
-        placeholder="Enter task description"
+        placeholder="{{'placeholder2' | translate}}"
         formControlName="description"
         rows="4"
         style="resize: none;"
@@ -28,7 +28,7 @@
 
     <!-- Start Date -->
     <div class="mb-3">
-      <label for="startDateTask" class="form-label fw-bold">Start Date</label>
+      <label for="startDateTask" class="form-label fw-bold">{{'startDate' | translate}}</label>
       <input
         type="date"
         id="startDateTask"
@@ -40,7 +40,7 @@
 
     <!-- End Date -->
     <div class="mb-3">
-      <label for="endDateTask" class="form-label fw-bold">End Date</label>
+      <label for="endDateTask" class="form-label fw-bold">{{'endDate' | translate}}</label>
       <input
         type="date"
         id="endDateTask"
@@ -57,23 +57,23 @@
 
     <!-- Status -->
     <div class="mb-3">
-      <label for="status" class="form-label fw-bold">Status</label>
+      <label for="status" class="form-label fw-bold">{{'status' | translate}}</label>
       <select
         id="status"
         class="form-select form-select-lg"
         formControlName="status"
       >
-        <option value="" disabled selected>Select status</option>
-        <option value="Pending">Pending</option>
-        <option value="InProgress">In Progress</option>
-        <option value="Completed">Completed</option>
-        <option value="Cancelled">Cancelled</option>
+        <option value="" disabled selected>{{'selectStatus' | translate}}</option>
+        <option value="Pending">{{'pending' | translate}}</option>
+        <option value="InProgress">{{'inprogress' | translate}}</option>
+        <option value="Completed">{{'completed' | translate}}</option>
+        <option value="Cancelled">{{'cancelled' | translate}}</option>
       </select>
     </div>
 
     <!-- Reminder Time -->
     <div class="mb-3">
-      <label for="reminderTime" class="form-label fw-bold">Reminder Time (minutes)</label>
+      <label for="reminderTime" class="form-label fw-bold">{{'reminderTime' | translate}}</label>
       <input
         type="number"
         id="reminderTime"
@@ -90,7 +90,7 @@
         class="btn btn-gradient px-5 py-3 rounded-pill"
         [disabled]="!taskForm.valid || dateError"
       >
-        Add Task
+      {{'addTask' | translate}}
       </button>
     </div>
   </form>

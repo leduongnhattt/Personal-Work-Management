@@ -4,10 +4,11 @@ import { SidebarService } from '../../../core/services/sidebar.service';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-sidenav',
-    imports: [MatIconModule, CommonModule, RouterLink],
+    imports: [MatIconModule, CommonModule, RouterLink, TranslateModule],
     templateUrl: './sidenav.component.html',
     styleUrl: './sidenav.component.css',
     animations: [

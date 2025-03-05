@@ -5,17 +5,19 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { start } from 'repl';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-task-page',
-  imports: [CommonModule, DatePipe, FormsModule],
+  imports: [CommonModule, DatePipe, FormsModule, TranslateModule],
   templateUrl: './task-page.component.html',
   styleUrl: './task-page.component.css'
 })
 export class TaskPageComponent implements OnInit {
   constructor(private taskService: TaskService,
     private modalService: BsModalService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private translate: TranslateService
   ) { }
   selectedTask: any = { workTaskId: '', title: '', description: '', startDateTask: '', endDateTask: '', status: '', reminderTime: '' };
   ngOnInit(): void {
@@ -27,12 +29,14 @@ export class TaskPageComponent implements OnInit {
   @ViewChild('editTaskModal') editTaskModal: any;
   modalRef?: BsModalRef;;
   loadTasks(): void {
-    this.taskService.getAllTasks().subscribe(
-      (data) => {
-        console.log('Dữ liệu từ API:', data);
-        this.tasks = data.data;
-      }
-    );
+    this.taskService.getAllTasks().subscribe({
+      next: (res: any) => {
+        this.tasks = res.data || [];
+      },
+      error: () => {
+        this.tasks = [];
+      },
+    });
   }
   openModal(template: any, task: any): void {
     this.selectedTask = {
@@ -44,21 +48,25 @@ export class TaskPageComponent implements OnInit {
     console.log(this.selectedTask);
   }
   deleteTask(taskId: string): void {
-    if (confirm('Are you sure you want to delete this task?')) {
-      this.taskService.deleteTask(taskId).subscribe(
-        (response) => {
-          this.toastr.success('Task has been deleted!');
-          this.tasks = this.tasks.filter(task => task.workTaskId !== taskId);
-        },
-        (error) => {
-          console.error('Error deleting tasks', error);
-        }
-      );
-    }
+    this.translate.get('TOASTR.CONFIRM_DELETE_TASK').subscribe((confirmText: string) => {
+      if (confirm(confirmText)) {
+        this.taskService.deleteTask(taskId).subscribe(
+          () => {
+            this.translate.get('TOASTR.TASK_DELETED').subscribe((translatedText: string) => {
+              setTimeout(() => this.toastr.success(translatedText), 100);
+            });
+            this.tasks = this.tasks.filter(task => task.workTaskId !== taskId);
+          },
+          (error) => {
+            console.error('Lỗi khi xóa cuộc họp:', error);
+          }
+        );
+      }
+    });
   }
   updateTask(): void {
     if (new Date(this.selectedTask.startDateTask) > new Date(this.selectedTask.endDateTask)) {
-      this.toastr.error('Start date must be before or equal to end date!');
+      this.toastr.error(this.translate.instant('TOASTR.INVALID_DATE'));
       return;
     }
     this.taskService.updateTask(this.selectedTask.workTaskId, {
@@ -71,7 +79,9 @@ export class TaskPageComponent implements OnInit {
     }).subscribe(
       (response) => {
         this.loadTasks();
-        this.toastr.success('Task has been updated!');
+        this.translate.get('TOASTR.TASK_UPDATED').subscribe((translatedText: string) => {
+          setTimeout(() => this.toastr.success(translatedText), 100);
+        });
       },
       (error) => {
         console.error('Error updating tasks:', error);

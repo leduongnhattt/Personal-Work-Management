@@ -5,17 +5,18 @@ import { UserService } from '../../core/services/user.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-schedule',
-    imports: [CommonModule, MatCardModule, MatIconModule],
-    templateUrl: './schedule.component.html',
-    styleUrl: './schedule.component.css'
+  selector: 'app-schedule',
+  imports: [CommonModule, MatCardModule, MatIconModule, TranslateModule],
+  templateUrl: './schedule.component.html',
+  styleUrl: './schedule.component.css'
 })
 export class ScheduleComponent implements OnInit {
-  schedule: any = { tasks: [], apointments: [] }; 
+  schedule: any = { tasks: [], apointments: [] };
 
-  constructor(private authService: AuthService, private userService: UserService) {}
+  constructor(private authService: AuthService, private userService: UserService) { }
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();

@@ -4,17 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { MeetingService } from '../../../core/services/meeting.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-meeting-page',
-  imports: [DatePipe, CommonModule, FormsModule],
+  imports: [DatePipe, CommonModule, FormsModule, TranslateModule],
   templateUrl: './meeting-page.component.html',
   styleUrl: './meeting-page.component.css'
 })
 export class MeetingPageComponent implements OnInit {
   apointments: any[] = [];
   selectedApointment: any = { apointmentId: '', title: '', description: '', startDateApoint: '', endDateApoint: '', location: '', reminderTime: '' };
-  constructor(private meetingService: MeetingService, private modalService: BsModalService, private toastr: ToastrService) { }
+  constructor(private meetingService: MeetingService, private modalService: BsModalService, private toastr: ToastrService, private translate: TranslateService) { }
   @ViewChild('editApointmentModal') editApointmentModal: any;
   modalRef?: BsModalRef;
   ngOnInit(): void {
@@ -41,7 +42,7 @@ export class MeetingPageComponent implements OnInit {
   }
   updateApointment(): void {
     if (new Date(this.selectedApointment.startDateApoint) > new Date(this.selectedApointment.endDateApoint)) {
-      this.toastr.error('Start date must be before end date');
+      this.toastr.error(this.translate.instant('TOASTR.INVALID_DATE'));
       return;
     }
     this.meetingService.updateMeeting(this.selectedApointment.apointmentId, {
@@ -54,7 +55,9 @@ export class MeetingPageComponent implements OnInit {
     }).subscribe(
       () => {
         this.loadApointments();
-        this.toastr.success('Meeting has been updated!');
+        this.translate.get('TOASTR.MEETING_UPDATED').subscribe((translatedText: string) => {
+          setTimeout(() => this.toastr.success(translatedText), 100);
+        });
       },
       (error) => {
         console.error('Error updating meeting', error);
@@ -62,16 +65,20 @@ export class MeetingPageComponent implements OnInit {
     );
   }
   deleteApointment(apointmentId: string): void {
-    if (confirm('Are you sure you want to delete this meeting?')) {
-      this.meetingService.deleteMeeting(apointmentId).subscribe(
-        (response) => {
-          this.toastr.success('Meeting has been deleted!');
-          this.apointments = this.apointments.filter(apointment => apointment.apointmentId !== apointmentId);
-        },
-        (error) => {
-          console.error('Error deleting meeting', error);
-        }
-      );
-    }
+    this.translate.get('TOASTR.CONFIRM_DELETE_MEETING').subscribe((confirmText: string) => {
+      if (confirm(confirmText)) {
+        this.meetingService.deleteMeeting(apointmentId).subscribe(
+          () => {
+            this.translate.get('TOASTR.MEETING_DELETED').subscribe((translatedText: string) => {
+              setTimeout(() => this.toastr.success(translatedText), 100);
+            });
+            this.apointments = this.apointments.filter(apointment => apointment.apointmentId !== apointmentId);
+          },
+          (error) => {
+            console.error('Lỗi khi xóa cuộc họp:', error);
+          }
+        );
+      }
+    });
   }
 }

@@ -1,23 +1,23 @@
 <div class="card shadow-lg p-4 rounded-4" style="max-width: 1400px; margin: auto;">
-  <h4 class="text-center text-gradient mb-3">Add Note</h4>
+  <h4 class="text-center text-gradient mb-3">{{'addNote' | translate}}</h4>
   <form (ngSubmit)="addNote()" [formGroup]="noteForm">
     <!-- Title -->
     <div class="mb-3">
-      <label for="title" class="form-label fw-bold">Note Title</label>
-      <input type="text" id="title" class="form-control form-control-lg" placeholder="Enter note title"
+      <label for="title" class="form-label fw-bold">{{'title' | translate}}</label>
+      <input type="text" id="title" class="form-control form-control-lg" placeholder="{{'placeholderNote2' | translate}}"
         formControlName="title" />
     </div>
 
     <!-- Content -->
     <div class="mb-3">
-      <label for="content" class="form-label fw-bold">Content</label>
-      <textarea id="content" class="form-control form-control-lg" placeholder="Enter note content"
+      <label for="content" class="form-label fw-bold">{{'content' | translate}}</label>
+      <textarea id="content" class="form-control form-control-lg" placeholder="{{'placeholderNote1' | translate}}"
         formControlName="content" rows="4" style="resize: none;"></textarea>
     </div>
     <!-- Submit Button -->
     <div class="text-center mt-4">
       <button type="submit" class="btn btn-gradient px-5 py-3 rounded-pill" [disabled]="!noteForm.valid">
-        Add Form
+        {{'addNote' | translate}}
       </button>
     </div>
   </form>
