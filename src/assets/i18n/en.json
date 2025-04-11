@@ -72,5 +72,6 @@
   "placeholderMeeting2": "Enter the meeting description",
   "placeholderMeeting3": "Enter the meeting location",
   "scheduleMeeting": "Schedule Meeting",
-  "scheduleTask": "Schedule Task"
+  "scheduleTask": "Schedule Task",
+  "meetingTitle": "Meeting Title"
 }

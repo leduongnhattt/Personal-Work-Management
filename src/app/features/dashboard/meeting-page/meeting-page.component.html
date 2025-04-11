@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h2 class="text-center text-primary">📌  {{'listMeeting' | translate}}</h2>
+  <h2 class="text-center text-primary">📌 {{'listMeeting' | translate}}</h2>
 
   <div *ngIf="apointments.length === 0" class="alert alert-warning text-center">
     {{'noMeeting' | translate}}
@@ -14,17 +14,22 @@
 
         <div class="card-body">
           <p class="card-text"><strong>📌 {{'description' | translate}}:</strong> {{ apointment.description }}</p>
-          <p class="card-text"><strong>📅 {{'start' | translate}}:</strong> {{ apointment.startDateApoint | date:'dd/MM/yyyy' }}</p>
-          <p class="card-text"><strong>⏳ {{'end' | translate}}:</strong> {{ apointment.endDateApoint | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>📅 {{'start' | translate}}:</strong> {{
+            formatVietnamTime(apointment.startDateApoint) }}</p>
+          <p class="card-text"><strong>⏳ {{'end' | translate}}:</strong> {{ formatVietnamTime(apointment.endDateApoint)
+            }}</p>
           <p class="card-text"><strong>📍 {{'location' | translate}}:</strong> {{ apointment.location }}</p>
-          <p class="card-text"><strong>⏰ {{'reminder' | translate}}:</strong> {{ apointment.reminderTime }} {{'minutesbefore' | translate}}</p>
+          <p class="card-text"><strong>⏰ {{'reminder' | translate}}:</strong> {{ apointment.reminderTime }}
+            {{'minutesbefore' | translate}}</p>
         </div>
 
         <div class="card-footer d-flex justify-content-end align-items-center">
           <!-- Nút chỉnh sửa và xóa -->
           <div class="d-flex gap-1">
-            <button class="btn btn-warning btn-sm" (click)="openModal(editApointmentModal, apointment)">📝 {{'edit' | translate}}</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteApointment(apointment.apointmentId)">❌ {{'delete' | translate}}</button>
+            <button class="btn btn-warning btn-sm" (click)="openModal(editApointmentModal, apointment)">📝 {{'edit' |
+              translate}}</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteApointment(apointment.apointmentId)">❌ {{'delete' |
+              translate}}</button>
           </div>
         </div>
       </div>
@@ -78,7 +83,7 @@
   </div>
 
   <div class="modal-footer p-3">
-    <button class="btn btn-secondary" (click)="modalRef?.hide()">❌  {{'close' | translate}}</button>
-    <button class="btn btn-primary" (click)="updateApointment(); modalRef?.hide()">💾  {{'save' | translate}}</button>
+    <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ {{'close' | translate}}</button>
+    <button class="btn btn-primary" (click)="updateApointment(); modalRef?.hide()">💾 {{'save' | translate}}</button>
   </div>
 </ng-template>

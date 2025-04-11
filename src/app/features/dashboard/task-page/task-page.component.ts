@@ -14,11 +14,20 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './task-page.component.css'
 })
 export class TaskPageComponent implements OnInit {
-  constructor(private taskService: TaskService,
+  constructor(
+    private taskService: TaskService,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private datePipe: DatePipe
   ) { }
+
+  formatVietnamTime(date: string): string {
+    const vietnamDate = new Date(date);
+    vietnamDate.setHours(vietnamDate.getHours() + 7); // Convert to Vietnam timezone
+    return this.datePipe.transform(vietnamDate, 'dd/MM/yyyy') || '';
+  }
+
   selectedTask: any = { workTaskId: '', title: '', description: '', startDateTask: '', endDateTask: '', status: '', reminderTime: '' };
   ngOnInit(): void {
     setTimeout(() => {

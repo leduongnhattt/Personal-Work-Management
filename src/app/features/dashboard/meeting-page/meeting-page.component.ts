@@ -15,7 +15,21 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class MeetingPageComponent implements OnInit {
   apointments: any[] = [];
   selectedApointment: any = { apointmentId: '', title: '', description: '', startDateApoint: '', endDateApoint: '', location: '', reminderTime: '' };
-  constructor(private meetingService: MeetingService, private modalService: BsModalService, private toastr: ToastrService, private translate: TranslateService) { }
+
+  constructor(
+    private meetingService: MeetingService,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    private translate: TranslateService,
+    private datePipe: DatePipe
+  ) { }
+
+  formatVietnamTime(date: string): string {
+    const vietnamDate = new Date(date);
+    vietnamDate.setHours(vietnamDate.getHours() + 7); // Convert to Vietnam timezone
+    return this.datePipe.transform(vietnamDate, 'dd/MM/yyyy') || '';
+  }
+
   @ViewChild('editApointmentModal') editApointmentModal: any;
   modalRef?: BsModalRef;
   ngOnInit(): void {

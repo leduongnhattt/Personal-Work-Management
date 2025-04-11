@@ -42,7 +42,7 @@ export class TaskComponent {
     const endDate = this.taskForm.get('endDateTask')?.value;
 
     if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-      this.translate.get('DATE_ERROR').subscribe((message) => {
+      this.translate.get('TOASTR_INVALID_DATE').subscribe((message) => {
         this.dateError = message;
       });
       setTimeout(() => {
@@ -62,14 +62,17 @@ export class TaskComponent {
     this.taskService.createTask(this.taskForm.value).subscribe({
       next: (res: any) => {
         if (res.status === "Success") {
-          this.translate.get('ERROR').subscribe((message) => {
+          this.translate.get('TOASTR.TASK_ADDED').subscribe((message) => {
             this.toastr.error(message);
           });
           this.taskForm.reset();
         }
       },
       error: (err) => {
-        this.toastr.error('An error occurred while adding the task.');
+        this.translate.get('TOASTR.ERROR').subscribe((message) => {
+          this.toastr.error(message);
+        });
+        this.taskForm.reset();
       },
     });
   }

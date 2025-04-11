@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { title } from 'process';
 import { NoteService } from '../../core/services/note.service';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -32,14 +31,14 @@ export class NotesComponent implements OnInit {
       this.noteService.createNote(this.noteForm.value).subscribe({
         next: (res: any) => {
           if (res.status === "Success") {
-            this.translate.get('NOTE_ADDED').subscribe((message) => {
+            this.translate.get('TOASTR.NOTE_ADDED').subscribe((message) => {
               this.toastr.success(message);
             });
             this.noteForm.reset();
           }
         },
         error: (error) => {
-          this.translate.get('ERROR').subscribe((message) => {
+          this.translate.get('TOASTR.ERROR').subscribe((message) => {
             this.toastr.error(message);
           });
           this.noteForm.reset();

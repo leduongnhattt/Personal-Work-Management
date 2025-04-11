@@ -8,8 +8,7 @@
   <div class="row">
     <div class="col-md-4" *ngFor="let task of tasks">
       <div class="card shadow-lg border-0 mb-4">
-        <div class="card-header text-white text-uppercase fw-bold text-center"
-             [ngClass]="{'bg-success': task.status === 'Completed',
+        <div class="card-header text-white text-uppercase fw-bold text-center" [ngClass]="{'bg-success': task.status === 'Completed',
                          'bg-warning': task.status === 'InProgress',
                          'bg-danger': task.status === 'Pending',
                          'bg-secondary': task.status === 'Cancelled'}">
@@ -18,16 +17,16 @@
 
         <div class="card-body">
           <p class="card-text"><strong>📌 {{'description' | translate}}:</strong> {{ task.description }}</p>
-          <p class="card-text"><strong>📅 {{'start' | translate}}:</strong> {{ task.startDateTask | date:'dd/MM/yyyy' }}</p>
-          <p class="card-text"><strong>⏳ {{'end' | translate}}:</strong> {{ task.endDateTask | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>📅 {{'start' | translate}}:</strong> {{ formatVietnamTime(task.startDateTask) }}
+          </p>
+          <p class="card-text"><strong>⏳ {{'end' | translate}}:</strong> {{ formatVietnamTime(task.endDateTask) }}</p>
           <p class="card-text"><strong>⏰ {{'reminder' | translate}}:</strong> {{ task.reminderTime }} minutes before</p>
           <p class="card-text">
             <strong>📌 {{'status' | translate}}:</strong>
             <span class="badge mx-2" [ngClass]="{'bg-success': task.status === 'Completed',
                                             'bg-warning': task.status === 'InProgress',
                                             'bg-danger': task.status === 'Pending',
-                                            'bg-secondary': task.status === 'Cancelled'}"
-                                            >
+                                            'bg-secondary': task.status === 'Cancelled'}">
               {{ task.status }}
             </span>
           </p>
@@ -36,8 +35,10 @@
         <div class="card-footer d-flex justify-content-end align-items-center">
           <!-- Nút chỉnh sửa và xóa -->
           <div class="d-flex gap-1">
-            <button class="btn btn-warning btn-sm" (click)="openModal(editTaskModal, task)">📝 {{'edit' | translate}}</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteTask(task.workTaskId)">❌ {{'delete' | translate}}</button>
+            <button class="btn btn-warning btn-sm" (click)="openModal(editTaskModal, task)">📝 {{'edit' |
+              translate}}</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteTask(task.workTaskId)">❌ {{'delete' |
+              translate}}</button>
           </div>
         </div>
       </div>
@@ -100,4 +101,3 @@
     <button class="btn btn-primary" (click)="updateTask(); modalRef?.hide()">💾 {{'save' | translate}}</button>
   </div>
 </ng-template>
-

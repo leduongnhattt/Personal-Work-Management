@@ -15,9 +15,10 @@
           <p class="card-text">{{ note.content }}</p>
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
-          <small class="text-muted">🕒 {{ note.createdAt | date:'HH:mm dd/MM/yyyy' }}</small>
+          <small class="text-muted">🕒 {{ formatVietnamTime(note.createdAt) }}</small>
           <div class="d-flex gap-1">
-            <button class="btn btn-warning btn-sm" (click)="openModal(editNoteModal, note)">📝 {{'edit' | translate}}</button>
+            <button class="btn btn-warning btn-sm" (click)="openModal(editNoteModal, note)">📝 {{'edit' |
+              translate}}</button>
             <button class="btn btn-danger btn-sm" (click)="deleteNote(note.noteId)">❌ {{'delete' | translate}}</button>
           </div>
         </div>
@@ -50,4 +51,3 @@
     <button class="btn btn-primary" (click)="updateNote(); modalRef?.hide()">💾 {{'save' | translate}}</button>
   </div>
 </ng-template>
-

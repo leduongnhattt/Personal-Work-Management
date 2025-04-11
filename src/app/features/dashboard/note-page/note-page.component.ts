@@ -16,11 +16,21 @@ export class NotePageComponent {
   notes: any[] = [];
   selectedNote: any = { noteId: '', title: '', content: '' };
 
-  constructor(private noteService: NoteService, private modalService: BsModalService ,private toastr: ToastrService
-    , private translate: TranslateService
-  ) {}
+  constructor(
+    private noteService: NoteService,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    private translate: TranslateService,
+    private datePipe: DatePipe
+  ) { }
   @ViewChild('editNoteModal') editNoteModal: any;
   modalRef?: BsModalRef;
+
+  formatVietnamTime(date: string): string {
+    const vietnamDate = new Date(date);
+    vietnamDate.setHours(vietnamDate.getHours() + 7); // Convert to Vietnam timezone
+    return this.datePipe.transform(vietnamDate, 'HH:mm dd/MM/yyyy') || '';
+  }
 
   openModal(template: any, note: any): void {
 

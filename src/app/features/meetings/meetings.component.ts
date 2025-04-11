@@ -40,7 +40,7 @@ export class MeetingsComponent implements OnInit {
     this.meetingSerivce.createMeeting(this.meetingForm.value).subscribe({
       next: (res: any) => {
         if (res.status === 'Success') {
-          this.translate.get('MEETING_ADDED').subscribe((message) => {
+          this.translate.get('TOASTR.MEETING_ADDED').subscribe((message) => {
             this.toastr.success(message);
           });
           this.meetingForm.reset();
@@ -48,7 +48,7 @@ export class MeetingsComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.translate.get('ERROR').subscribe((message) => {
+        this.translate.get('TOASTR.ERROR').subscribe((message) => {
           this.toastr.error(message);
         });
         this.meetingForm.reset();

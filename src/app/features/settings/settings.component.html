@@ -1,5 +1,7 @@
-<div class="container-fluid vh-100 d-flex align-items-center justify-content-center" [ngClass]="{'bg-dark text-white': isDarkMode}">
-  <div class="card shadow-lg p-4 rounded-lg border-0 w-100 h-100 overflow-hidden" id="settingsCard" [ngClass]="{'bg-dark text-white': isDarkMode}">
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center"
+  [ngClass]="{'bg-dark text-white': isDarkMode}">
+  <div class="card shadow-lg p-4 rounded-lg border-0 w-100 h-100 overflow-hidden" id="settingsCard"
+    [ngClass]="{'bg-dark text-white': isDarkMode}">
     <h2 class="mb-4 text-center text-primary fw-bold">{{'setting'| translate }}</h2>
 
     <ul class="nav nav-pills nav-justified mb-3" id="settingsTabs">
@@ -26,7 +28,8 @@
           <label class="form-check-label" for="emailNotifications">Enable/Disable Email</label>
         </div>
         <div class="form-check form-switch mt-3">
-          <input class="form-check-input" type="checkbox" id="pushNotifications">
+          <input class="form-check-input" type="checkbox" id="pushNotifications" [checked]="isPushNotificationEnabled"
+            (change)="togglePushNotification($event)">
           <label class="form-check-label" for="pushNotifications">Enable/Disable Push Notifications</label>
         </div>
       </div>
