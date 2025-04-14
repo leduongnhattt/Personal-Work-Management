@@ -1,6 +1,6 @@
 body {
   background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #333;
 }
 
@@ -29,6 +29,7 @@ body {
   border-radius: 10px;
   border: 1px solid #ddd;
   transition: 0.3s ease;
+  padding-right: 2.5rem;
 }
 
 .form-control:focus {
@@ -42,4 +43,14 @@ body {
 
 .text-muted a:hover {
   text-decoration: underline;
+}
+
+.fas.fa-eye,
+.fas.fa-eye-slash {
+  transition: color 0.3s ease;
+}
+
+.fas.fa-eye:hover,
+.fas.fa-eye-slash:hover {
+  color: #113ccb !important;
 }

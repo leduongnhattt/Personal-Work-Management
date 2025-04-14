@@ -41,7 +41,11 @@
     "TASK_ADDED": "The task has been added!",
     "MEETING_ADDED": "The meeting has been added!",
     "NOTE_ADDED": "The note has been added!",
-    "ERROR": "An error occurred!"
+    "ERROR": "An error occurred!",
+    "EXPORT_PDF_SUCCESS": "Successfully exported to PDF",
+    "EXPORT_PDF_ERROR": "Error exporting to PDF",
+    "EXPORT_EXCEL_SUCCESS": "Successfully exported to Excel",
+    "EXPORT_EXCEL_ERROR": "Error exporting to Excel"
   },
   "listMeeting": "Meeting List",
   "description": "Description",
@@ -73,5 +77,9 @@
   "placeholderMeeting3": "Enter the meeting location",
   "scheduleMeeting": "Schedule Meeting",
   "scheduleTask": "Schedule Task",
-  "meetingTitle": "Meeting Title"
+  "meetingTitle": "Meeting Title",
+  "exportPDF": "Export PDF",
+  "exportExcel": "Export Excel",
+  "print": "Print",
+  "chatAssistant": "Chat Assistant"
 }

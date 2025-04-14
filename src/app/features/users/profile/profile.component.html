@@ -39,20 +39,32 @@
           <!-- Username -->
           <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="text" id="username" class="form-control" formControlName="username">
+            <input type="text" id="username" class="form-control"
+              [class.is-invalid]="form.get('username')?.invalid && form.get('username')?.touched"
+              formControlName="username">
+            <div class="invalid-feedback" *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+              Username is required
+            </div>
           </div>
           <!-- Phone Number -->
           <div class="mb-3">
             <label for="phonenumber" class="form-label">Phone Number</label>
-            <input type="text" id="phonenumber" class="form-control" formControlName="phoneNumber">
+            <input type="text" id="phonenumber" class="form-control"
+              [class.is-invalid]="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched"
+              formControlName="phoneNumber">
+            <div class="invalid-feedback" *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
+              <span *ngIf="form.get('phoneNumber')?.errors?.['required']">Phone number is required</span>
+              <span *ngIf="form.get('phoneNumber')?.errors?.['pattern']">Phone number must contain only digits</span>
+            </div>
           </div>
           <!-- Email -->
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" class="form-control" formControlName="email">
-            <div class="alert alert-warning mt-3">
-              Your email is not confirmed. Please check your inbox.
-              <br><a href="#">Resend Confirmation</a>
+            <input type="email" id="email" class="form-control"
+              [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched" formControlName="email">
+            <div class="invalid-feedback" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+              <span *ngIf="form.get('email')?.errors?.['required']">Email is required</span>
+              <span *ngIf="form.get('email')?.errors?.['email']">Please enter a valid email address</span>
             </div>
           </div>
           <div class="text-end mt-3">
@@ -93,23 +105,39 @@
         <div *ngIf="isActiveTab('social-links')">
           <div class="mb-3">
             <label for="twitter" class="form-label">Twitter</label>
-            <input type="url" id="twitter" class="form-control" formControlName="twitter"
-              [value]="user.token?.twitter || ''">
+            <input type="url" id="twitter" class="form-control"
+              [class.is-invalid]="form.get('twitter')?.invalid && form.get('twitter')?.touched"
+              formControlName="twitter">
+            <div class="invalid-feedback" *ngIf="form.get('twitter')?.invalid && form.get('twitter')?.touched">
+              Please enter a valid URL (e.g., https://twitter.com/username)
+            </div>
           </div>
           <div class="mb-3">
             <label for="facebook" class="form-label">Facebook</label>
-            <input type="url" id="facebook" class="form-control" formControlName="facebook"
-              [value]="user.token?.facebook || ''">
+            <input type="url" id="facebook" class="form-control"
+              [class.is-invalid]="form.get('facebook')?.invalid && form.get('facebook')?.touched"
+              formControlName="facebook">
+            <div class="invalid-feedback" *ngIf="form.get('facebook')?.invalid && form.get('facebook')?.touched">
+              Please enter a valid URL (e.g., https://facebook.com/username)
+            </div>
           </div>
           <div class="mb-3">
             <label for="linkedin" class="form-label">LinkedIn</label>
-            <input type="url" id="linkedin" class="form-control" formControlName="linkedin"
-              [value]="user.token?.linkedin || ''">
+            <input type="url" id="linkedin" class="form-control"
+              [class.is-invalid]="form.get('linkedin')?.invalid && form.get('linkedin')?.touched"
+              formControlName="linkedin">
+            <div class="invalid-feedback" *ngIf="form.get('linkedin')?.invalid && form.get('linkedin')?.touched">
+              Please enter a valid URL (e.g., https://linkedin.com/in/username)
+            </div>
           </div>
           <div class="mb-3">
             <label for="instagram" class="form-label">Instagram</label>
-            <input type="url" id="instagram" class="form-control" formControlName="instagram"
-              [value]="user.token?.instagram || ''">
+            <input type="url" id="instagram" class="form-control"
+              [class.is-invalid]="form.get('instagram')?.invalid && form.get('instagram')?.touched"
+              formControlName="instagram">
+            <div class="invalid-feedback" *ngIf="form.get('instagram')?.invalid && form.get('instagram')?.touched">
+              Please enter a valid URL (e.g., https://instagram.com/username)
+            </div>
           </div>
           <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary mx-2" [disabled]="!form.dirty">

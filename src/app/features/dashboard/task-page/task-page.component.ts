@@ -6,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { start } from 'repl';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ExportService } from '../../../core/services/export.service';
 
 @Component({
   selector: 'app-task-page',
-  imports: [CommonModule, DatePipe, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './task-page.component.html',
   styleUrl: './task-page.component.css'
 })
@@ -19,7 +20,8 @@ export class TaskPageComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     private translate: TranslateService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private exportService: ExportService
   ) { }
 
   formatVietnamTime(date: string): string {
@@ -96,5 +98,30 @@ export class TaskPageComponent implements OnInit {
         console.error('Error updating tasks:', error);
       }
     );
+  }
+
+  async exportToPDF(): Promise<void> {
+    try {
+      await this.exportService.exportToPDF('taskList', 'tasks');
+      this.toastr.success(this.translate.instant('TOASTR.EXPORT_PDF_SUCCESS'));
+    } catch (error) {
+      console.error('Error exporting to PDF:', error);
+      this.toastr.error(this.translate.instant('TOASTR.EXPORT_PDF_ERROR'));
+    }
+  }
+
+  exportToExcel(): void {
+    try {
+      const formattedData = this.exportService.formatDataForExport(this.tasks, 'task');
+      this.exportService.exportToExcel(formattedData, 'tasks');
+      this.toastr.success(this.translate.instant('TOASTR.EXPORT_EXCEL_SUCCESS'));
+    } catch (error) {
+      console.error('Error exporting to Excel:', error);
+      this.toastr.error(this.translate.instant('TOASTR.EXPORT_EXCEL_ERROR'));
+    }
+  }
+
+  printTasks(): void {
+    window.print();
   }
 }

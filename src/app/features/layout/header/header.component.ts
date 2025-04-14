@@ -6,14 +6,15 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 @Component({
-    selector: 'app-header',
-    imports: [MatIconModule, MatToolbarModule, CommonModule, RouterLink, TranslateModule],
-    templateUrl: './header.component.html',
-    styleUrl: './header.component.css'
+  selector: 'app-header',
+  imports: [MatIconModule, MatToolbarModule, CommonModule, RouterLink, TranslateModule],
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  constructor(private sidebarService: SidebarService, private router: Router, private authService: AuthService) {}
+  constructor(private sidebarService: SidebarService, private router: Router, private authService: AuthService, private toastr: ToastrService) { }
 
   toggleSidebar() {
     this.sidebarService.toggleSidebar();
@@ -28,6 +29,7 @@ export class HeaderComponent {
     if (confirmSignOut) {
       this.authService.deleteToken();
       this.router.navigateByUrl('/login');
+      this.toastr.success("Signed out successfully");
     }
   }
 }

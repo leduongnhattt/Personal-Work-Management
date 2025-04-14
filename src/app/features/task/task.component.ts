@@ -63,7 +63,7 @@ export class TaskComponent {
       next: (res: any) => {
         if (res.status === "Success") {
           this.translate.get('TOASTR.TASK_ADDED').subscribe((message) => {
-            this.toastr.error(message);
+            this.toastr.success(message);
           });
           this.taskForm.reset();
         }

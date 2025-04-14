@@ -5,10 +5,11 @@ import { MeetingService } from '../../../core/services/meeting.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ExportService } from '../../../core/services/export.service';
 
 @Component({
   selector: 'app-meeting-page',
-  imports: [DatePipe, CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './meeting-page.component.html',
   styleUrl: './meeting-page.component.css'
 })
@@ -21,7 +22,8 @@ export class MeetingPageComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     private translate: TranslateService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private exportService: ExportService
   ) { }
 
   formatVietnamTime(date: string): string {
@@ -94,5 +96,30 @@ export class MeetingPageComponent implements OnInit {
         );
       }
     });
+  }
+
+  async exportToPDF(): Promise<void> {
+    try {
+      await this.exportService.exportToPDF('meetingList', 'meetings', true);
+      this.toastr.success(this.translate.instant('TOASTR.EXPORT_PDF_SUCCESS'));
+    } catch (error) {
+      console.error('Error exporting to PDF:', error);
+      this.toastr.error(this.translate.instant('TOASTR.EXPORT_PDF_ERROR'));
+    }
+  }
+
+  async exportToExcel(): Promise<void> {
+    try {
+      const formattedData = this.exportService.formatDataForExport(this.apointments, 'meeting');
+      await this.exportService.exportToExcel(formattedData, 'meetings', true);
+      this.toastr.success(this.translate.instant('TOASTR.EXPORT_EXCEL_SUCCESS'));
+    } catch (error) {
+      console.error('Error exporting to Excel:', error);
+      this.toastr.error(this.translate.instant('TOASTR.EXPORT_EXCEL_ERROR'));
+    }
+  }
+
+  printMeetings(): void {
+    window.print();
   }
 }

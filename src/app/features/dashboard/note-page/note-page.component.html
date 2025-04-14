@@ -1,25 +1,41 @@
 <div class="container mt-4">
-  <h2 class="text-center text-primary">📌{{'listNote' | translate}}</h2>
-
-  <div *ngIf="notes.length === 0" class="alert alert-warning text-center">
-    {{'noNote' | translate}}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-center text-primary">📌{{'listNote' | translate}}</h2>
+    <div class="btn-group">
+      <button class="btn btn-outline-primary" (click)="exportToPDF()">
+        <i class="fas fa-file-pdf"></i> {{'exportPDF' | translate}}
+      </button>
+      <button class="btn btn-outline-success" (click)="exportToExcel()">
+        <i class="fas fa-file-excel"></i> {{'exportExcel' | translate}}
+      </button>
+      <button class="btn btn-outline-secondary" (click)="printNotes()">
+        <i class="fas fa-print"></i> {{'print' | translate}}
+      </button>
+    </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-4" *ngFor="let note of notes">
-      <div class="card shadow-lg border-0 mb-4">
-        <div class="card-header bg-primary text-white text-uppercase fw-bold text-center">
-          {{ note.title }}
-        </div>
-        <div class="card-body">
-          <p class="card-text">{{ note.content }}</p>
-        </div>
-        <div class="card-footer d-flex justify-content-between align-items-center">
-          <small class="text-muted">🕒 {{ formatVietnamTime(note.createdAt) }}</small>
-          <div class="d-flex gap-1">
-            <button class="btn btn-warning btn-sm" (click)="openModal(editNoteModal, note)">📝 {{'edit' |
-              translate}}</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteNote(note.noteId)">❌ {{'delete' | translate}}</button>
+  <div id="noteList" class="print-section">
+    <div *ngIf="notes.length === 0" class="alert alert-warning text-center">
+      {{'noNote' | translate}}
+    </div>
+
+    <div class="row">
+      <div class="col-md-4" *ngFor="let note of notes">
+        <div class="card shadow-lg border-0 mb-4">
+          <div class="card-header bg-primary text-white text-uppercase fw-bold text-center">
+            {{ note.title }}
+          </div>
+          <div class="card-body">
+            <p class="card-text">{{ note.content }}</p>
+          </div>
+          <div class="card-footer d-flex justify-content-between align-items-center">
+            <small class="text-muted">🕒 {{ formatVietnamTime(note.createdAt) }}</small>
+            <div class="d-flex gap-1">
+              <button class="btn btn-warning btn-sm" (click)="openModal(editNoteModal, note)">📝 {{'edit' |
+                translate}}</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteNote(note.noteId)">❌ {{'delete' |
+                translate}}</button>
+            </div>
           </div>
         </div>
       </div>

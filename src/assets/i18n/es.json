@@ -73,5 +73,6 @@
   "placeholderMeeting2": "Ingrese la descripción de la reunión",
   "placeholderMeeting3": "Ingrese la ubicación de la reunión",
   "scheduleMeeting": "Programar reunión",
-  "scheduleTask": "Programar tarea"
+  "scheduleTask": "Programar tarea",
+  "chatAssistant": "Chatear con el Asistente"
 }

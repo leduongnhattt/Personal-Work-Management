@@ -1,35 +1,51 @@
 <div class="container mt-4">
-  <h2 class="text-center text-primary">📌 {{'listMeeting' | translate}}</h2>
-
-  <div *ngIf="apointments.length === 0" class="alert alert-warning text-center">
-    {{'noMeeting' | translate}}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-center text-primary">📌 {{'listMeeting' | translate}}</h2>
+    <div class="btn-group">
+      <button class="btn btn-outline-primary" (click)="exportToPDF()">
+        <i class="fas fa-file-pdf"></i> {{'exportPDF' | translate}}
+      </button>
+      <button class="btn btn-outline-success" (click)="exportToExcel()">
+        <i class="fas fa-file-excel"></i> {{'exportExcel' | translate}}
+      </button>
+      <button class="btn btn-outline-secondary" (click)="printMeetings()">
+        <i class="fas fa-print"></i> {{'print' | translate}}
+      </button>
+    </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-4" *ngFor="let apointment of apointments">
-      <div class="card shadow-lg border-0 mb-4">
-        <div class="card-header bg-info text-white text-uppercase fw-bold text-center">
-          {{ apointment.title }}
-        </div>
+  <div id="meetingList" class="print-section">
+    <div *ngIf="apointments.length === 0" class="alert alert-warning text-center">
+      {{'noMeeting' | translate}}
+    </div>
 
-        <div class="card-body">
-          <p class="card-text"><strong>📌 {{'description' | translate}}:</strong> {{ apointment.description }}</p>
-          <p class="card-text"><strong>📅 {{'start' | translate}}:</strong> {{
-            formatVietnamTime(apointment.startDateApoint) }}</p>
-          <p class="card-text"><strong>⏳ {{'end' | translate}}:</strong> {{ formatVietnamTime(apointment.endDateApoint)
-            }}</p>
-          <p class="card-text"><strong>📍 {{'location' | translate}}:</strong> {{ apointment.location }}</p>
-          <p class="card-text"><strong>⏰ {{'reminder' | translate}}:</strong> {{ apointment.reminderTime }}
-            {{'minutesbefore' | translate}}</p>
-        </div>
+    <div class="row">
+      <div class="col-md-4" *ngFor="let apointment of apointments">
+        <div class="card shadow-lg border-0 mb-4">
+          <div class="card-header bg-info text-white text-uppercase fw-bold text-center">
+            {{ apointment.title }}
+          </div>
 
-        <div class="card-footer d-flex justify-content-end align-items-center">
-          <!-- Nút chỉnh sửa và xóa -->
-          <div class="d-flex gap-1">
-            <button class="btn btn-warning btn-sm" (click)="openModal(editApointmentModal, apointment)">📝 {{'edit' |
-              translate}}</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteApointment(apointment.apointmentId)">❌ {{'delete' |
-              translate}}</button>
+          <div class="card-body">
+            <p class="card-text"><strong>📌 {{'description' | translate}}:</strong> {{ apointment.description }}</p>
+            <p class="card-text"><strong>📅 {{'start' | translate}}:</strong> {{
+              formatVietnamTime(apointment.startDateApoint) }}</p>
+            <p class="card-text"><strong>⏳ {{'end' | translate}}:</strong> {{
+              formatVietnamTime(apointment.endDateApoint)
+              }}</p>
+            <p class="card-text"><strong>📍 {{'location' | translate}}:</strong> {{ apointment.location }}</p>
+            <p class="card-text"><strong>⏰ {{'reminder' | translate}}:</strong> {{ apointment.reminderTime }}
+              {{'minutesbefore' | translate}}</p>
+          </div>
+
+          <div class="card-footer d-flex justify-content-end align-items-center">
+            <!-- Nút chỉnh sửa và xóa -->
+            <div class="d-flex gap-1">
+              <button class="btn btn-warning btn-sm" (click)="openModal(editApointmentModal, apointment)">📝 {{'edit' |
+                translate}}</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteApointment(apointment.apointmentId)">❌ {{'delete' |
+                translate}}</button>
+            </div>
           </div>
         </div>
       </div>

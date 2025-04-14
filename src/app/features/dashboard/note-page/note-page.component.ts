@@ -5,10 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { ExportService } from '../../../core/services/export.service';
 
 @Component({
   selector: 'app-note-page',
-  imports: [CommonModule, FormsModule, DatePipe, TranslateModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, TranslateModule],
+  providers: [DatePipe],
   templateUrl: './note-page.component.html',
   styleUrl: './note-page.component.css'
 })
@@ -21,7 +24,8 @@ export class NotePageComponent {
     private modalService: BsModalService,
     private toastr: ToastrService,
     private translate: TranslateService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private exportService: ExportService
   ) { }
   @ViewChild('editNoteModal') editNoteModal: any;
   modalRef?: BsModalRef;
@@ -91,5 +95,30 @@ export class NotePageComponent {
         );
       }
     });
+  }
+
+  async exportToPDF(): Promise<void> {
+    try {
+      await this.exportService.exportToPDF('noteList', 'notes', true);
+      this.toastr.success(this.translate.instant('TOASTR.EXPORT_PDF_SUCCESS'));
+    } catch (error) {
+      console.error('Error exporting to PDF:', error);
+      this.toastr.error(this.translate.instant('TOASTR.EXPORT_PDF_ERROR'));
+    }
+  }
+
+  async exportToExcel(): Promise<void> {
+    try {
+      const formattedData = this.exportService.formatDataForExport(this.notes, 'note');
+      await this.exportService.exportToExcel(formattedData, 'notes', true);
+      this.toastr.success(this.translate.instant('TOASTR.EXPORT_EXCEL_SUCCESS'));
+    } catch (error) {
+      console.error('Error exporting to Excel:', error);
+      this.toastr.error(this.translate.instant('TOASTR.EXPORT_EXCEL_ERROR'));
+    }
+  }
+
+  printNotes(): void {
+    window.print();
   }
 }

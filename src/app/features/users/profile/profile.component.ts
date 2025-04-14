@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../core/services/user.service';
+import { SocialLinkService } from '../../../core/services/social-link.service';
+import { SocialLink } from '../../../core/models/social-link.model';
 
 @Component({
   standalone: true,
@@ -21,13 +23,19 @@ export class ProfileComponent implements OnInit {
   selectedFile: File | null = null;
   isImageServer: boolean = false;
   imageUrl: string = '';
-  constructor(private userService: UserService,
+  socialLinks: SocialLink[] = [];
+
+  constructor(
+    private userService: UserService,
+    private socialLinkService: SocialLinkService,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     this.getUserProfile();
     this.initForm();
+    this.getSocialLinks();
   }
 
   // Initialize the form with validators
@@ -36,10 +44,14 @@ export class ProfileComponent implements OnInit {
       username: ['', Validators.required],
       phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      imageUrl: ['', Validators.required],
-      oldPassword: ['', [Validators.required, Validators.minLength(6)]],
-      newPassword: ['', Validators.required, Validators.minLength(6)],
-      repeatPassword: ['', Validators.required, Validators.minLength(6)],
+      imageUrl: [''],
+      oldPassword: [''],
+      newPassword: [''],
+      repeatPassword: [''],
+      twitter: ['', Validators.pattern(/^https?:\/\/.+/)],
+      facebook: ['', Validators.pattern(/^https?:\/\/.+/)],
+      linkedin: ['', Validators.pattern(/^https?:\/\/.+/)],
+      instagram: ['', Validators.pattern(/^https?:\/\/.+/)]
     });
   }
 
@@ -61,6 +73,65 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  getSocialLinks() {
+    this.socialLinkService.getUserSocialLinks().subscribe({
+      next: (response) => {
+        if (response.status === 'Success') {
+          this.socialLinks = response.data;
+          // Update form values with existing social links
+          const twitterLink = this.socialLinks.find(link => link.platform === 'Twitter');
+          const facebookLink = this.socialLinks.find(link => link.platform === 'Facebook');
+          const linkedinLink = this.socialLinks.find(link => link.platform === 'LinkedIn');
+          const instagramLink = this.socialLinks.find(link => link.platform === 'Instagram');
+
+          this.form.patchValue({
+            twitter: twitterLink?.url || '',
+            facebook: facebookLink?.url || '',
+            linkedin: linkedinLink?.url || '',
+            instagram: instagramLink?.url || ''
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Failed to fetch social links:', err);
+        this.toastr.error('Failed to load social links');
+      }
+    });
+  }
+
+  updateSocialLinks() {
+    const socialLinks = [
+      { platform: 'Twitter', url: this.form.value.twitter },
+      { platform: 'Facebook', url: this.form.value.facebook },
+      { platform: 'LinkedIn', url: this.form.value.linkedin },
+      { platform: 'Instagram', url: this.form.value.instagram }
+    ].filter(link => link.url && this.form.get(link.platform.toLowerCase())?.valid);
+
+    if (socialLinks.length > 0) {
+      this.socialLinkService.addMultipleSocialLinks({ socialLinks }).subscribe({
+        next: (response) => {
+          if (response.status === 'Success') {
+            this.toastr.success('Social links updated successfully');
+            this.getSocialLinks();
+          } else {
+            this.toastr.error(response.message || 'Failed to update social links');
+          }
+        },
+        error: (err) => {
+          console.error('Failed to update social links:', err);
+          this.toastr.error('Failed to update social links');
+        }
+      });
+    } else {
+      const hasInvalidLinks = ['twitter', 'facebook', 'linkedin', 'instagram']
+        .some(control => this.form.get(control)?.invalid && this.form.get(control)?.value);
+
+      if (hasInvalidLinks) {
+        this.toastr.error('Please enter valid URLs for social links');
+      }
+    }
+  }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -77,28 +148,35 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(): void {
-    if (this.form.valid) {
-      const formData = new FormData();
-      formData.append('UserName', this.form.value.username);
-      formData.append('SDT', this.form.value.phoneNumber);
-      formData.append('Email', this.form.value.email);
-      if (this.selectedFile) {
-        formData.append('imageFile', this.selectedFile, this.selectedFile.name);
+    if (this.isActiveTab('general')) {
+      const generalControls = ['username', 'phoneNumber', 'email'];
+      if (this.validateFormControls(generalControls)) {
+        const formData = new FormData();
+        formData.append('UserName', this.form.value.username);
+        formData.append('SDT', this.form.value.phoneNumber);
+        formData.append('Email', this.form.value.email);
+        if (this.selectedFile) {
+          formData.append('imageFile', this.selectedFile, this.selectedFile.name);
+        }
+
+        this.userService.updateProfile(formData).subscribe({
+          next: (res: any) => {
+            if (res.status === 'Success') {
+              this.toastr.success('Profile updated successfully!');
+              this.getUserProfile();
+            } else {
+              this.toastr.error(res.message || 'Failed to update profile');
+            }
+          },
+          error: (err) => this.toastr.error('Failed to update profile. Please try again!'),
+        });
       }
-      this.userService.updateProfile(formData).subscribe({
-        next: (res: any) => {
-          console.log(res);
-          this.toastr.success('Profile updated successfully!')
-          this.getUserProfile();
-        },
-        error: (err) => this.toastr.error('Failed to update profile. Please try again!'),
-      });
-    } else {
-      alert('Please fix the form errors before submitting!');
+    } else if (this.isActiveTab('social-links')) {
+      this.updateSocialLinks();
     }
   }
-  updatePassword(): void {
 
+  updatePassword(): void {
     const oldPassword = this.form.get('oldPassword')?.value;
     const newPassword = this.form.get('newPassword')?.value;
     const repeatPassword = this.form.get('repeatPassword')?.value;
@@ -126,13 +204,13 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
+
   // Reset the profile image preview to the original or default image
   resetImage(): void {
     this.selectedFile = null;
     const imageElement = document.querySelector('.rounded-circle') as HTMLImageElement;
     if (imageElement) {
       this.getUserProfile();
-
     }
   }
 
@@ -140,12 +218,30 @@ export class ProfileComponent implements OnInit {
   setTab(tabName: string): void {
     this.currentTab = tabName;
   }
+
   isActiveTab(tabName: string): boolean {
     return this.currentTab === tabName;
   }
+
   resetPassword(): void {
     this.form.get('oldPassword')?.reset();
     this.form.get('newPassword')?.reset();
     this.form.get('repeatPassword')?.reset();
+  }
+
+  validateFormControls(controls: string[]): boolean {
+    let isValid = true;
+    controls.forEach(control => {
+      const formControl = this.form.get(control);
+      if (formControl?.invalid) {
+        formControl.markAsTouched();
+        isValid = false;
+      }
+    });
+
+    if (!isValid) {
+      this.toastr.error('Please fix the form errors before submitting!');
+    }
+    return isValid;
   }
 }

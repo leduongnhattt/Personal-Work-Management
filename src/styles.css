@@ -1,11 +1,46 @@
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden; /* Ẩn scrollbar của body */
 }
 
-.app-root, .app-container {
+.app-root,
+.app-container {
   height: 100vh; /* Chiếm toàn màn hình */
   overflow-y: auto; /* Chỉ hiển thị scrollbar khi cần thiết */
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .print-section,
+  .print-section * {
+    visibility: visible;
+  }
+
+  .print-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
 }

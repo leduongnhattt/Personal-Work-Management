@@ -1,6 +1,6 @@
 body {
   background: linear-gradient(135deg, #ccdf64 0%, #2575fc 100%);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #333;
 }
 
@@ -42,4 +42,20 @@ body {
 
 .text-muted a:hover {
   text-decoration: underline;
+}
+
+.toggle-password {
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.toggle-password:hover {
+  color: #113ccb !important;
+}
+
+.toggle-password i {
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
 }

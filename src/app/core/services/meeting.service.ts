@@ -10,29 +10,29 @@ export class MeetingService {
 
   constructor(private http: HttpClient) { }
 
-  createMeeting(meeting: any): Observable<any>{
+  createMeeting(meeting: any): Observable<any> {
     return this.http.post(environment.apiMeetingUrl + '/addApointment', meeting)
-    .pipe(
-      catchError(error => this.handleError(error))
-    );
+      .pipe(
+        catchError(error => this.handleError(error))
+      );
   }
-  getAllMeetings(): Observable<any>{
+  getAllMeetings(): Observable<any> {
     return this.http.get(environment.apiMeetingUrl + '/allApointment')
-    .pipe(
-      catchError(error => this.handleError(error))
-    );
+      .pipe(
+        catchError(error => this.handleError(error))
+      );
   }
-  updateMeeting(meetingId: string, meeting: any): Observable<any>{
+  updateMeeting(meetingId: string, meeting: any): Observable<any> {
     return this.http.put(environment.apiMeetingUrl + '/updateApointment/' + meetingId, meeting)
-    .pipe(
-      catchError(error => this.handleError(error))
-    );
+      .pipe(
+        catchError(error => this.handleError(error))
+      );
   }
-  deleteMeeting(meetingId: string): Observable<any>{
+  deleteMeeting(meetingId: string): Observable<any> {
     return this.http.delete(environment.apiMeetingUrl + '/deleteApointment/' + meetingId)
-    .pipe(
-      catchError(error => this.handleError(error))
-    );
+      .pipe(
+        catchError(error => this.handleError(error))
+      );
   }
   private handleError(error: any): Observable<never> {
     console.error('API Error:', error);

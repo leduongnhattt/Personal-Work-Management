@@ -7,12 +7,15 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-    selector: 'app-register',
-    imports: [RouterLink, ReactiveFormsModule, CommonModule, FirstKeyPipe],
-    templateUrl: './register.component.html',
-    styleUrl: './register.component.css'
+  selector: 'app-register',
+  imports: [RouterLink, ReactiveFormsModule, CommonModule, FirstKeyPipe],
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit {
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
+
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService) { }
@@ -20,6 +23,14 @@ export class RegisterComponent implements OnInit {
 
   }
   isSubmitted: boolean = false;
+
+  togglePasswordVisibility(field: 'password' | 'confirmPassword') {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+    } else {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
+  }
 
   passwordMatchValidator: ValidatorFn = (control: AbstractControl): null => {
     const password = control.get('password');

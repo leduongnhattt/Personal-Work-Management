@@ -11,28 +11,18 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <!-- Username -->
         <div class="form-floating mb-3">
-          <input
-          formControlName= "username"
-            type="text"
-            id="username"
-            class="form-control"
-            placeholder="Username"
+          <input formControlName="username" type="text" id="username" class="form-control" placeholder="Username"
             required />
           <label for="username"><i class="fas fa-user me-2"></i> Username</label>
-          <div class="text-danger" *ngIf="form.controls.username.hasError('required') && form.controls.username?.touched">
+          <div class="text-danger"
+            *ngIf="form.controls.username.hasError('required') && form.controls.username?.touched">
             Please enter your username
           </div>
         </div>
 
         <!-- Email -->
         <div class="form-floating mb-3">
-          <input
-            formControlName="email"
-            type="email"
-            id="email"
-            class="form-control"
-            placeholder="Email"
-            required />
+          <input formControlName="email" type="email" id="email" class="form-control" placeholder="Email" required />
           <label for="email"><i class="fas fa-envelope me-2"></i> Email</label>
           <div class="text-danger" *ngIf="hasDisplayError('email')">
             <div *ngIf="form.controls.email.hasError('required')">
@@ -45,14 +35,8 @@
         </div>
         <!-- SDT -->
         <div class="form-floating mb-3">
-          <input
-            formControlName="sdt"
-            type="text"
-            id="sdt"
-            class="form-control"
-            placeholder="Phone Number"
-            required />
-          <label for="sdt"><i class="fas fa-envelope me-2"></i> Phone Number</label>
+          <input formControlName="sdt" type="text" id="sdt" class="form-control" placeholder="Phone Number" required />
+          <label for="sdt"><i class="fas fa-phone me-2"></i> Phone Number</label>
           <div class="text-danger" *ngIf="hasDisplayError('sdt')">
             <div *ngIf="form.controls.sdt.hasError('required')">
               Please enter your phone number
@@ -64,17 +48,18 @@
         </div>
 
         <!-- Password -->
-        <div class="form-floating mb-3">
-          <input
-            formControlName= "password"
-            type="password"
-            id="password"
-            class="form-control"
-            placeholder="Password"
-            required />
+        <div class="form-floating mb-3 position-relative">
+          <input formControlName="password" [type]="showPassword ? 'text' : 'password'" id="password"
+            class="form-control" placeholder="Password" required />
           <label for="password"><i class="fas fa-lock me-2"></i> Password</label>
+
+          <!-- Toggle password visibility -->
+          <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+            (click)="togglePasswordVisibility('password')"
+            style="position: absolute; top: 50%; right: 1rem; transform: translateY(-50%); cursor: pointer; color: #6c757d;"></i>
+
           <div class="text-danger" *ngIf="hasDisplayError('password')">
-           <ng-container [ngSwitch]="form.controls.password.errors | firstKey">
+            <ng-container [ngSwitch]="form.controls.password.errors | firstKey">
               <div *ngSwitchCase="'required'">
                 Please enter your password
               </div>
@@ -84,27 +69,30 @@
               <div *ngSwitchCase="'pattern'">
                 One or more special character(s)
               </div>
-           </ng-container>
+            </ng-container>
           </div>
         </div>
 
         <!-- Confirm Password -->
-        <div class="form-floating mb-4">
-          <input
-          formControlName= "confirmPassword"
-            type="password"
-            id="repassword"
-            class="form-control"
-            placeholder="Confirm Password"
-            required />
+        <div class="form-floating mb-4 position-relative">
+          <input formControlName="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" id="repassword"
+            class="form-control" placeholder="Confirm Password" required />
           <label for="repassword"><i class="fas fa-lock me-2"></i> Confirm Password</label>
-          <div class="text-danger" *ngIf="hasDisplayError('confirmPassword') && form.controls.confirmPassword.hasError('passwordMismatch')">
+
+          <!-- Toggle confirm password visibility -->
+          <i class="fas" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"
+            (click)="togglePasswordVisibility('confirmPassword')"
+            style="position: absolute; top: 50%; right: 1rem; transform: translateY(-50%); cursor: pointer; color: #6c757d;"></i>
+
+          <div class="text-danger"
+            *ngIf="hasDisplayError('confirmPassword') && form.controls.confirmPassword.hasError('passwordMismatch')">
             Password doesn't match.
           </div>
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="btn btn-gradient btn-lg w-100 text-light" [disabled]="form.invalid">Sign Up</button>
+        <button type="submit" class="btn btn-gradient btn-lg w-100 text-light" [disabled]="form.invalid">Sign
+          Up</button>
       </form>
 
       <!-- Login Link -->
