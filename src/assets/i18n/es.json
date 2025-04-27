@@ -41,7 +41,20 @@
     "TASK_ADDED": "¡Tarea añadida!",
     "MEETING_ADDED": "¡Reunión añadida!",
     "NOTE_ADDED": "¡Nota añadida!",
-    "ERROR": "¡Se ha producido un error!"
+    "ERROR": "¡Se ha producido un error!",
+    "EXPORT_PDF_SUCCESS": "Exportación de PDF exitosa",
+    "EXPORT_PDF_ERROR": "Error al exportar a PDF",
+    "EXPORT_EXCEL_SUCCESS": "Exportación de Excel exitosa",
+    "EXPORT_EXCEL_ERROR": "Error al exportar a Excel",
+    "CHAT_ERROR": "Se ha producido un error al enviar el mensaje. Por favor, inténtelo de nuevo más tarde.",
+    "CONFIRM_CLEAR_CHAT": "¿Estás seguro de que deseas eliminar todos los mensajes?",
+    "CHAT_CLEARED": "Se han eliminado todos los mensajes correctamente.",
+    "NO_TASKS_TO_EXPORT": "No hay tareas para exportar.",
+    "NO_TASKS_TO_PRINT": "No hay tareas para imprimir.",
+    "NO_MEETINGS_TO_EXPORT": "No hay reuniones para exportar.",
+    "NO_MEETINGS_TO_PRINT": "No hay reuniones para imprimir.",
+    "NO_NOTES_TO_EXPORT": "No hay notas para exportar.",
+    "NO_NOTES_TO_PRINT": "No hay notas para imprimir."
   },
   "listMeeting": "Lista de reuniones",
   "description": "Descripción",
@@ -74,5 +87,9 @@
   "placeholderMeeting3": "Ingrese la ubicación de la reunión",
   "scheduleMeeting": "Programar reunión",
   "scheduleTask": "Programar tarea",
-  "chatAssistant": "Chatear con el Asistente"
+  "chatAssistant": "Chatear con el Asistente",
+  "validation": {
+    "required": "Este campo es requerido.",
+    "maxLength": "Este campo no puede exceder 50 caracteres."
+  }
 }

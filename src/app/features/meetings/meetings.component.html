@@ -6,6 +6,14 @@
       <label for="title" class="form-label fw-bold">{{ 'meetingTitle' | translate }}</label>
       <input type="text" id="title" class="form-control form-control-lg"
         placeholder="{{ 'placeholderMeeting1' | translate }}" formControlName="title" />
+      <div *ngIf="meetingForm.get('title')?.touched && meetingForm.get('title')?.errors" class="text-danger">
+        <div *ngIf="meetingForm.get('title')?.errors?.['required']">
+          Meeting title is required.
+        </div>
+        <div *ngIf="meetingForm.get('title')?.errors?.['maxlength']">
+          Meeting title cannot exceed 50 characters.
+        </div>
+      </div>
     </div>
 
     <!-- Description -->
@@ -47,6 +55,12 @@
       <label for="reminderTime" class="form-label fw-bold">{{ 'reminderTime' | translate }}</label>
       <input type="number" id="reminderTime" class="form-control form-control-lg" placeholder="Enter reminder time"
         formControlName="reminderTime" />
+      <div *ngIf="meetingForm.get('reminderTime')?.touched && meetingForm.get('reminderTime')?.errors"
+        class="text-danger">
+        <div *ngIf="!meetingForm.get('reminderTime')?.errors?.['pattern']">
+          Reminder must be a positive number.
+        </div>
+      </div>
     </div>
 
     <!-- Submit Button -->

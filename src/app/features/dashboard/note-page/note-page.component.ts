@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NoteService } from '../../../core/services/note.service';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { ExportService } from '../../../core/services/export.service';
 @Component({
   selector: 'app-note-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, ReactiveFormsModule],
   providers: [DatePipe],
   templateUrl: './note-page.component.html',
   styleUrl: './note-page.component.css'
@@ -18,6 +18,8 @@ import { ExportService } from '../../../core/services/export.service';
 export class NotePageComponent {
   notes: any[] = [];
   selectedNote: any = { noteId: '', title: '', content: '' };
+  editForm!: FormGroup;
+  maxTitleLength: number = 50;
 
   constructor(
     private noteService: NoteService,
@@ -25,10 +27,28 @@ export class NotePageComponent {
     private toastr: ToastrService,
     private translate: TranslateService,
     private datePipe: DatePipe,
-    private exportService: ExportService
-  ) { }
+    private exportService: ExportService,
+    private fb: FormBuilder
+  ) {
+    this.initializeForm();
+  }
+
   @ViewChild('editNoteModal') editNoteModal: any;
   modalRef?: BsModalRef;
+
+  private initializeForm(): void {
+    this.editForm = this.fb.group({
+      title: ['', [Validators.required, Validators.maxLength(this.maxTitleLength)]],
+      content: ['', [Validators.required]]
+    });
+
+    // Theo dõi thay đổi của title
+    this.editForm.get('title')?.valueChanges.subscribe(value => {
+      if (value && value.length > this.maxTitleLength) {
+        this.toastr.error(this.translate.instant('validation.maxLength'));
+      }
+    });
+  }
 
   formatVietnamTime(date: string): string {
     const vietnamDate = new Date(date);
@@ -37,11 +57,14 @@ export class NotePageComponent {
   }
 
   openModal(template: any, note: any): void {
-
     this.selectedNote = { ...note };
+    this.editForm.patchValue({
+      title: note.title,
+      content: note.content
+    });
     this.modalRef = this.modalService.show(template);
-    console.log(this.selectedNote.noteId);
   }
+
   ngOnInit(): void {
     setTimeout(() => {
       this.loadNotes();
@@ -60,23 +83,39 @@ export class NotePageComponent {
     );
   }
 
-
-
   updateNote(): void {
+    if (this.editForm.invalid) {
+      this.validateAllFormFields(this.editForm);
+      return;
+    }
+
+    const formValue = this.editForm.value;
     this.noteService.updateNote(this.selectedNote.noteId, {
-      title: this.selectedNote.title,
-      content: this.selectedNote.content
+      title: formValue.title,
+      content: formValue.content
     }).subscribe(
       () => {
         this.loadNotes();
         this.translate.get('TOASTR.NOTE_UPDATED').subscribe((translatedText: string) => {
           setTimeout(() => this.toastr.success(translatedText), 100);
         });
+        this.modalRef?.hide();
       },
       (error) => {
         console.error('Lỗi khi cập nhật ghi chú:', error);
       }
     );
+  }
+
+  validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      } else {
+        control?.markAsTouched({ onlySelf: true });
+      }
+    });
   }
 
   deleteNote(noteId: string): void {
@@ -98,6 +137,11 @@ export class NotePageComponent {
   }
 
   async exportToPDF(): Promise<void> {
+    if (this.notes.length === 0) {
+      this.toastr.error(this.translate.instant('TOASTR.NO_NOTES_TO_EXPORT'));
+      return;
+    }
+
     try {
       await this.exportService.exportToPDF('noteList', 'notes', true);
       this.toastr.success(this.translate.instant('TOASTR.EXPORT_PDF_SUCCESS'));
@@ -108,6 +152,11 @@ export class NotePageComponent {
   }
 
   async exportToExcel(): Promise<void> {
+    if (this.notes.length === 0) {
+      this.toastr.error(this.translate.instant('TOASTR.NO_NOTES_TO_EXPORT'));
+      return;
+    }
+
     try {
       const formattedData = this.exportService.formatDataForExport(this.notes, 'note');
       await this.exportService.exportToExcel(formattedData, 'notes', true);
@@ -119,6 +168,10 @@ export class NotePageComponent {
   }
 
   printNotes(): void {
+    if (this.notes.length === 0) {
+      this.toastr.error(this.translate.instant('TOASTR.NO_NOTES_TO_PRINT'));
+      return;
+    }
     window.print();
   }
 }

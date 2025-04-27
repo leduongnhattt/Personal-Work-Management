@@ -31,9 +31,10 @@
             <div>
               <label class="btn btn-outline-primary btn-sm">
                 Upload New Photo
-                <input type="file" class="d-none" (change)="onFileSelected($event)" formControlName="imageUrl">
+                <input type="file" class="d-none" (change)="onFileSelected($event)" formControlName="imageUrl"
+                  accept=".jpg,.jpeg,.png">
               </label>
-              <small class="text-muted d-block mt-2">Allowed JPG, GIF, or PNG. Max size of 800KB</small>
+              <small class="text-muted d-block mt-2">Allowed JPG or PNG. Max size of 2MB</small>
             </div>
           </div>
           <!-- Username -->
@@ -51,20 +52,28 @@
             <label for="phonenumber" class="form-label">Phone Number</label>
             <input type="text" id="phonenumber" class="form-control"
               [class.is-invalid]="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched"
-              formControlName="phoneNumber">
+              formControlName="phoneNumber" placeholder="0xxxxxxxxx">
             <div class="invalid-feedback" *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
               <span *ngIf="form.get('phoneNumber')?.errors?.['required']">Phone number is required</span>
-              <span *ngIf="form.get('phoneNumber')?.errors?.['pattern']">Phone number must contain only digits</span>
+              <span *ngIf="form.get('phoneNumber')?.errors?.['pattern']">Phone number must start with 0 and contain 10
+                digits</span>
+              <span
+                *ngIf="form.get('phoneNumber')?.errors?.['minlength'] || form.get('phoneNumber')?.errors?.['maxlength']">
+                Phone number must be exactly 10 digits
+              </span>
             </div>
           </div>
           <!-- Email -->
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" id="email" class="form-control"
-              [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched" formControlName="email">
+              [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched" formControlName="email"
+              placeholder="example&#64;domain.com">
             <div class="invalid-feedback" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
               <span *ngIf="form.get('email')?.errors?.['required']">Email is required</span>
-              <span *ngIf="form.get('email')?.errors?.['email']">Please enter a valid email address</span>
+              <span *ngIf="form.get('email')?.errors?.['email'] || form.get('email')?.errors?.['pattern']">
+                Please enter a valid email address (e.g., example&#64;domain.com)
+              </span>
             </div>
           </div>
           <div class="text-end mt-3">

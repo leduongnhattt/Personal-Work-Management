@@ -2,13 +2,13 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="text-center text-primary">📌{{'listNote' | translate}}</h2>
     <div class="btn-group">
-      <button class="btn btn-outline-primary" (click)="exportToPDF()">
+      <button class="btn btn-outline-primary" (click)="exportToPDF()" [disabled]="notes.length === 0">
         <i class="fas fa-file-pdf"></i> {{'exportPDF' | translate}}
       </button>
-      <button class="btn btn-outline-success" (click)="exportToExcel()">
+      <button class="btn btn-outline-success" (click)="exportToExcel()" [disabled]="notes.length === 0">
         <i class="fas fa-file-excel"></i> {{'exportExcel' | translate}}
       </button>
-      <button class="btn btn-outline-secondary" (click)="printNotes()">
+      <button class="btn btn-outline-secondary" (click)="printNotes()" [disabled]="notes.length === 0">
         <i class="fas fa-print"></i> {{'print' | translate}}
       </button>
     </div>
@@ -51,19 +51,39 @@
   </div>
 
   <div class="modal-body p-3">
-    <div class="mb-3">
-      <label for="noteTitle" class="form-label fw-bold">📌 {{'title' | translate}}</label>
-      <input id="noteTitle" [(ngModel)]="selectedNote.title" class="form-control">
-    </div>
+    <form [formGroup]="editForm">
+      <div class="mb-3">
+        <label for="noteTitle" class="form-label fw-bold">📌 {{'title' | translate}}</label>
+        <input id="noteTitle" formControlName="title" class="form-control"
+          [class.is-invalid]="editForm.get('title')?.touched && editForm.get('title')?.errors">
+        <small class="text-muted" *ngIf="editForm.get('title')?.value">
+          {{ editForm.get('title')?.value?.length || 0 }}/50
+        </small>
+        <div *ngIf="editForm.get('title')?.touched && editForm.get('title')?.errors" class="invalid-feedback">
+          <div *ngIf="editForm.get('title')?.errors?.['required']">
+            {{'validation.required' | translate}}
+          </div>
+          <div *ngIf="editForm.get('title')?.errors?.['maxlength']">
+            {{'validation.maxLength' | translate}}
+          </div>
+        </div>
+      </div>
 
-    <div class="mb-3">
-      <label for="noteContent" class="form-label fw-bold">📝 {{'content' | translate}}</label>
-      <textarea id="noteContent" [(ngModel)]="selectedNote.content" class="form-control" rows="4"></textarea>
-    </div>
+      <div class="mb-3">
+        <label for="noteContent" class="form-label fw-bold">📝 {{'content' | translate}}</label>
+        <textarea id="noteContent" formControlName="content" class="form-control" rows="4"
+          [class.is-invalid]="editForm.get('content')?.touched && editForm.get('content')?.errors"></textarea>
+        <div *ngIf="editForm.get('content')?.touched && editForm.get('content')?.errors?.['required']"
+          class="invalid-feedback">
+          {{'validation.required' | translate}}
+        </div>
+      </div>
+    </form>
   </div>
 
   <div class="modal-footer p-3">
     <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ {{'close' | translate}}</button>
-    <button class="btn btn-primary" (click)="updateNote(); modalRef?.hide()">💾 {{'save' | translate}}</button>
+    <button class="btn btn-primary" (click)="updateNote()" [disabled]="editForm.invalid">💾 {{'save' |
+      translate}}</button>
   </div>
 </ng-template>

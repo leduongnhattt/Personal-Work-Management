@@ -48,7 +48,13 @@
     "EXPORT_EXCEL_ERROR": "Lỗi khi xuất Excel",
     "CHAT_ERROR": "Có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại sau.",
     "CONFIRM_CLEAR_CHAT": "Bạn có chắc chắn muốn xóa toàn bộ tin nhắn?",
-    "CHAT_CLEARED": "Đã xóa toàn bộ tin nhắn thành công."
+    "CHAT_CLEARED": "Đã xóa toàn bộ tin nhắn thành công.",
+    "NO_TASKS_TO_EXPORT": "Không có công việc nào để xuất.",
+    "NO_TASKS_TO_PRINT": "Không có công việc nào để in.",
+    "NO_MEETINGS_TO_EXPORT": "Không có cuộc họp nào để xuất.",
+    "NO_MEETINGS_TO_PRINT": "Không có cuộc họp nào để in.",
+    "NO_NOTES_TO_EXPORT": "Không có ghi chú nào để xuất.",
+    "NO_NOTES_TO_PRINT": "Không có ghi chú nào để in."
   },
   "listMeeting": "Danh sách cuộc họp",
   "description": "Mô tả",
@@ -84,5 +90,9 @@
   "exportPDF": "Xuất PDF",
   "exportExcel": "Xuất Excel",
   "print": "In",
-  "chatAssistant": "Trò chuyện với Trợ lý"
+  "chatAssistant": "Trò chuyện với Trợ lý",
+  "validation": {
+    "required": "Trường này là bắt buộc.",
+    "maxLength": "Trường này không được vượt quá 50 ký tự."
+  }
 }

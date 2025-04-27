@@ -4,50 +4,37 @@
     <!-- Task Name -->
     <div class="mb-3">
       <label for="title" class="form-label fw-bold">{{'taskName' | translate}}</label>
-      <input
-        type="text"
-        id="title"
-        class="form-control form-control-lg"
-        placeholder="{{'placeholder1' | translate}}"
-        formControlName="title"
-      />
+      <input type="text" id="title" class="form-control form-control-lg" placeholder="{{'placeholder1' | translate}}"
+        formControlName="title" />
+      <div *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.errors" class="text-danger">
+        <div *ngIf="taskForm.get('title')?.errors?.['required']">
+          Task name is required.
+        </div>
+        <div *ngIf="taskForm.get('title')?.errors?.['maxlength']">
+          Task name cannot exceed 50 characters.
+        </div>
+      </div>
     </div>
 
     <!-- Description -->
     <div class="mb-3">
       <label for="description" class="form-label fw-bold">{{'description' | translate}}</label>
-      <textarea
-        id="description"
-        class="form-control form-control-lg"
-        placeholder="{{'placeholder2' | translate}}"
-        formControlName="description"
-        rows="4"
-        style="resize: none;"
-      ></textarea>
+      <textarea id="description" class="form-control form-control-lg" placeholder="{{'placeholder2' | translate}}"
+        formControlName="description" rows="4" style="resize: none;"></textarea>
     </div>
 
     <!-- Start Date -->
     <div class="mb-3">
       <label for="startDateTask" class="form-label fw-bold">{{'startDate' | translate}}</label>
-      <input
-        type="date"
-        id="startDateTask"
-        class="form-control form-control-lg"
-        formControlName="startDateTask"
-        (input)="validateDates()"
-      />
+      <input type="date" id="startDateTask" class="form-control form-control-lg" formControlName="startDateTask"
+        (input)="validateDates()" />
     </div>
 
     <!-- End Date -->
     <div class="mb-3">
       <label for="endDateTask" class="form-label fw-bold">{{'endDate' | translate}}</label>
-      <input
-        type="date"
-        id="endDateTask"
-        class="form-control form-control-lg"
-        formControlName="endDateTask"
-        (input)="validateDates()"
-      />
+      <input type="date" id="endDateTask" class="form-control form-control-lg" formControlName="endDateTask"
+        (input)="validateDates()" />
     </div>
 
     <!-- Error Message -->
@@ -58,11 +45,7 @@
     <!-- Status -->
     <div class="mb-3">
       <label for="status" class="form-label fw-bold">{{'status' | translate}}</label>
-      <select
-        id="status"
-        class="form-select form-select-lg"
-        formControlName="status"
-      >
+      <select id="status" class="form-select form-select-lg" formControlName="status">
         <option value="" disabled selected>{{'selectStatus' | translate}}</option>
         <option value="Pending">{{'pending' | translate}}</option>
         <option value="InProgress">{{'inprogress' | translate}}</option>
@@ -74,23 +57,19 @@
     <!-- Reminder Time -->
     <div class="mb-3">
       <label for="reminderTime" class="form-label fw-bold">{{'reminderTime' | translate}}</label>
-      <input
-        type="number"
-        id="reminderTime"
-        class="form-control form-control-lg"
-        placeholder="Enter reminder time"
-        formControlName="reminderTime"
-      />
+      <input type="number" id="reminderTime" class="form-control form-control-lg" placeholder="Enter reminder time"
+        formControlName="reminderTime" />
+      <div *ngIf="taskForm.get('reminderTime')?.touched && taskForm.get('reminderTime')?.errors" class="text-danger">
+        <div *ngIf="!taskForm.get('reminderTime')?.errors?.['pattern']">
+          Reminder must be a positive number.
+        </div>
+      </div>
     </div>
 
     <!-- Submit Button -->
     <div class="text-center mt-4">
-      <button
-        type="submit"
-        class="btn btn-gradient px-5 py-3 rounded-pill"
-        [disabled]="!taskForm.valid || dateError"
-      >
-      {{'addTask' | translate}}
+      <button type="submit" class="btn btn-gradient px-5 py-3 rounded-pill" [disabled]="!taskForm.valid || dateError">
+        {{'addTask' | translate}}
       </button>
     </div>
   </form>

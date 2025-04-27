@@ -2,13 +2,13 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="text-center text-primary">📌 {{'listMeeting' | translate}}</h2>
     <div class="btn-group">
-      <button class="btn btn-outline-primary" (click)="exportToPDF()">
+      <button class="btn btn-outline-primary" (click)="exportToPDF()" [disabled]="apointments.length === 0">
         <i class="fas fa-file-pdf"></i> {{'exportPDF' | translate}}
       </button>
-      <button class="btn btn-outline-success" (click)="exportToExcel()">
+      <button class="btn btn-outline-success" (click)="exportToExcel()" [disabled]="apointments.length === 0">
         <i class="fas fa-file-excel"></i> {{'exportExcel' | translate}}
       </button>
-      <button class="btn btn-outline-secondary" (click)="printMeetings()">
+      <button class="btn btn-outline-secondary" (click)="printMeetings()" [disabled]="apointments.length === 0">
         <i class="fas fa-print"></i> {{'print' | translate}}
       </button>
     </div>
@@ -61,45 +61,86 @@
   </div>
 
   <div class="modal-body p-3">
-    <!-- Title -->
-    <div class="mb-3">
-      <label for="taskTitle" class="form-label fw-bold">📌 {{'title' | translate}}</label>
-      <input id="taskTitle" [(ngModel)]="selectedApointment.title" class="form-control">
-    </div>
+    <form [formGroup]="editForm">
+      <!-- Title -->
+      <div class="mb-3">
+        <label for="taskTitle" class="form-label fw-bold">📌 {{'title' | translate}}</label>
+        <input id="taskTitle" formControlName="title" class="form-control">
+        <div *ngIf="editForm.get('title')?.touched && editForm.get('title')?.errors" class="text-danger">
+          <div *ngIf="editForm.get('title')?.errors?.['required']">
+            Title is required.
+          </div>
+          <div *ngIf="editForm.get('title')?.errors?.['maxlength']">
+            Title cannot exceed 50 characters.
+          </div>
+        </div>
+      </div>
 
-    <!-- Description -->
-    <div class="mb-3">
-      <label for="taskDescription" class="form-label fw-bold">📝 {{'description' | translate}}</label>
-      <textarea id="taskDescription" [(ngModel)]="selectedApointment.description" class="form-control"
-        rows="3"></textarea>
-    </div>
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="taskDescription" class="form-label fw-bold">📝 {{'description' | translate}}</label>
+        <textarea id="taskDescription" formControlName="description" class="form-control" rows="3"></textarea>
+        <div *ngIf="editForm.get('description')?.touched && editForm.get('description')?.errors" class="text-danger">
+          <div *ngIf="editForm.get('description')?.errors?.['required']">
+            Description is required.
+          </div>
+        </div>
+      </div>
 
-    <!-- Start Date -->
-    <div class="mb-3">
-      <label for="startDateTask" class="form-label fw-bold">📅 {{'start' | translate}}</label>
-      <input id="startDateTask" type="date" [(ngModel)]="selectedApointment.startDateApoint" class="form-control">
-    </div>
+      <!-- Start Date -->
+      <div class="mb-3">
+        <label for="startDateTask" class="form-label fw-bold">📅 {{'start' | translate}}</label>
+        <input id="startDateTask" type="date" formControlName="startDateApoint" class="form-control">
+        <div *ngIf="editForm.get('startDateApoint')?.touched && editForm.get('startDateApoint')?.errors"
+          class="text-danger">
+          <div *ngIf="editForm.get('startDateApoint')?.errors?.['required']">
+            Start date is required.
+          </div>
+        </div>
+      </div>
 
-    <!-- End Date -->
-    <div class="mb-3">
-      <label for="endDateTask" class="form-label fw-bold">⏳ {{'end' | translate}}</label>
-      <input id="endDateTask" type="date" [(ngModel)]="selectedApointment.endDateApoint" class="form-control">
-    </div>
-    <!-- Location -->
-    <div class="mb-3">
-      <label for="taskLocation" class="form-label fw-bold">📍 {{'location' | translate}}</label>
-      <input id="taskLocation" [(ngModel)]="selectedApointment.location" class="form-control">
-    </div>
+      <!-- End Date -->
+      <div class="mb-3">
+        <label for="endDateTask" class="form-label fw-bold">⏳ {{'end' | translate}}</label>
+        <input id="endDateTask" type="date" formControlName="endDateApoint" class="form-control">
+        <div *ngIf="editForm.get('endDateApoint')?.touched && editForm.get('endDateApoint')?.errors"
+          class="text-danger">
+          <div *ngIf="editForm.get('endDateApoint')?.errors?.['required']">
+            End date is required.
+          </div>
+        </div>
+      </div>
 
-    <!-- Reminder Time -->
-    <div class="mb-3">
-      <label for="reminderTime" class="form-label fw-bold">⏰ {{'reminderminutes' | translate}}</label>
-      <input id="reminderTime" type="number" [(ngModel)]="selectedApointment.reminderTime" class="form-control" min="1">
-    </div>
+      <!-- Location -->
+      <div class="mb-3">
+        <label for="taskLocation" class="form-label fw-bold">📍 {{'location' | translate}}</label>
+        <input id="taskLocation" formControlName="location" class="form-control">
+        <div *ngIf="editForm.get('location')?.touched && editForm.get('location')?.errors" class="text-danger">
+          <div *ngIf="editForm.get('location')?.errors?.['required']">
+            Location is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- Reminder Time -->
+      <div class="mb-3">
+        <label for="reminderTime" class="form-label fw-bold">⏰ {{'reminderminutes' | translate}}</label>
+        <input id="reminderTime" type="number" formControlName="reminderTime" class="form-control" min="0">
+        <div *ngIf="editForm.get('reminderTime')?.touched && editForm.get('reminderTime')?.errors" class="text-danger">
+          <div *ngIf="editForm.get('reminderTime')?.errors?.['required']">
+            Reminder time is required.
+          </div>
+          <div *ngIf="editForm.get('reminderTime')?.errors?.['min']">
+            Reminder time must be a positive number.
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 
   <div class="modal-footer p-3">
     <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ {{'close' | translate}}</button>
-    <button class="btn btn-primary" (click)="updateApointment(); modalRef?.hide()">💾 {{'save' | translate}}</button>
+    <button class="btn btn-primary" (click)="updateApointment()" [disabled]="editForm.invalid">💾 {{'save' |
+      translate}}</button>
   </div>
 </ng-template>

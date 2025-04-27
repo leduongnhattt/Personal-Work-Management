@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FirstKeyPipe } from '../../../shared/pipes/first-key.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../core/services/auth.service';
+import { UserService } from '../../../core/services/user.service';
 import { Subscription, timer } from 'rxjs';
 
 @Component({
@@ -25,7 +26,8 @@ export class LoginComponent implements OnDestroy {
   constructor(private formBuilder: FormBuilder,
     private router: Router,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) { }
 
   ngOnDestroy() {
@@ -82,39 +84,92 @@ export class LoginComponent implements OnDestroy {
 
     this.isSubmitted = true;
     if (this.form.valid) {
-      console.log(this.form.value);
-      this.authService.login(this.form.value).subscribe({
-        next: (res: any) => {
-          this.resetLockout(); // Reset on successful login
-          this.authService.saveToken(res.accessToken);
-          this.toastr.success('Login successful', 'Welcome!');
-          this.router.navigateByUrl('/main/home');
-        },
-        error: err => {
-          if (err.status == 400) {
-            this.loginAttempts++;
+      const username = this.form.get('username')?.value;
+      if (username) {
+        this.userService.checkUsernameExists(username).subscribe({
+          next: (res) => {
+            if (res.status === 'Success') {
+              // Username exists, proceed with login
+              this.authService.login(this.form.value).subscribe({
+                next: (res: any) => {
+                  this.resetLockout();
+                  this.authService.saveToken(res.accessToken);
+                  this.toastr.success('Login successful', 'Welcome!');
+                  this.router.navigateByUrl('/main/home');
+                },
+                error: err => {
+                  if (err.status == 400) {
+                    this.loginAttempts++;
 
+                    if (this.loginAttempts >= this.MAX_ATTEMPTS) {
+                      this.startLockoutTimer();
+                      this.toastr.error(`Too many failed attempts. Please try again in ${this.LOCKOUT_TIME / 60} minutes.`, 'Account Locked');
+                    } else {
+                      const remainingAttempts = this.MAX_ATTEMPTS - this.loginAttempts;
+                      this.toastr.error(`Incorrect username or password. ${remainingAttempts} attempts remaining.`, 'Login Failed');
+                    }
+
+                    this.form.reset();
+                    this.isSubmitted = false;
+                  }
+                  else {
+                    console.log('error during login: \n', err)
+                  }
+                }
+              });
+            } else {
+              // Username not found, count as failed attempt
+              this.loginAttempts++;
+              if (this.loginAttempts >= this.MAX_ATTEMPTS) {
+                this.startLockoutTimer();
+                this.toastr.error(`Too many failed attempts. Please try again in ${this.LOCKOUT_TIME / 60} minutes.`, 'Account Locked');
+              } else {
+                const remainingAttempts = this.MAX_ATTEMPTS - this.loginAttempts;
+                this.toastr.error(`Username does not exist. ${remainingAttempts} attempts remaining.`, 'Login Failed');
+              }
+              this.form.reset();
+              this.isSubmitted = false;
+            }
+          },
+          error: (err) => {
+            // Handle API error as a failed attempt
+            this.loginAttempts++;
             if (this.loginAttempts >= this.MAX_ATTEMPTS) {
               this.startLockoutTimer();
               this.toastr.error(`Too many failed attempts. Please try again in ${this.LOCKOUT_TIME / 60} minutes.`, 'Account Locked');
             } else {
               const remainingAttempts = this.MAX_ATTEMPTS - this.loginAttempts;
-              this.toastr.error(`Incorrect username or password. ${remainingAttempts} attempts remaining.`, 'Login Failed');
+              this.toastr.error(`Username does not exist. ${remainingAttempts} attempts remaining.`, 'Login Failed');
             }
-
             this.form.reset();
             this.isSubmitted = false;
           }
-          else {
-            console.log('error during login: \n', err)
-          }
-        }
-      })
+        });
+      }
     }
   }
 
   hasDisplayError(controlName: string): Boolean {
     const control = this.form.get(controlName);
     return Boolean(control?.invalid) && (this.isSubmitted || Boolean(control?.touched) || Boolean(control?.dirty))
+  }
+
+  checkUsername() {
+    const username = this.form.get('username')?.value;
+    if (username) {
+      this.userService.checkUsernameExists(username).subscribe({
+        next: (res) => {
+          if (res.status === 'Success') {
+            this.toastr.success(res.message, 'Success');
+          } else {
+            this.toastr.warning(res.message, 'Warning');
+          }
+        },
+        error: (err) => {
+          console.error('Error checking username:', err);
+          this.toastr.error('Error checking username', 'Error');
+        }
+      });
+    }
   }
 }

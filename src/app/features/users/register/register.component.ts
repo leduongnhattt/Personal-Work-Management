@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FirstKeyPipe } from '../../../shared/pipes/first-key.pipe';
@@ -18,7 +18,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private router: Router) { }
   ngOnInit(): void {
 
   }
@@ -70,6 +71,7 @@ export class RegisterComponent implements OnInit {
             this.form.reset();
             this.isSubmitted = false;
             this.toastr.success('New user created!', 'Registration Successful');
+            this.router.navigate(['/login']);
           }
         },
         error: err => {

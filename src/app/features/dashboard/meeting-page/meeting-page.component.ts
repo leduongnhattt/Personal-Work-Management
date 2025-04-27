@@ -1,6 +1,6 @@
 import { DatePipe, CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MeetingService } from '../../../core/services/meeting.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -9,13 +9,14 @@ import { ExportService } from '../../../core/services/export.service';
 
 @Component({
   selector: 'app-meeting-page',
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, ReactiveFormsModule],
   templateUrl: './meeting-page.component.html',
   styleUrl: './meeting-page.component.css'
 })
 export class MeetingPageComponent implements OnInit {
   apointments: any[] = [];
   selectedApointment: any = { apointmentId: '', title: '', description: '', startDateApoint: '', endDateApoint: '', location: '', reminderTime: '' };
+  editForm!: FormGroup;
 
   constructor(
     private meetingService: MeetingService,
@@ -23,7 +24,8 @@ export class MeetingPageComponent implements OnInit {
     private toastr: ToastrService,
     private translate: TranslateService,
     private datePipe: DatePipe,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private fb: FormBuilder
   ) { }
 
   formatVietnamTime(date: string): string {
@@ -35,6 +37,7 @@ export class MeetingPageComponent implements OnInit {
   @ViewChild('editApointmentModal') editApointmentModal: any;
   modalRef?: BsModalRef;
   ngOnInit(): void {
+    this.initializeForm();
     setTimeout(() => {
       this.loadApointments();
     }, 200);
@@ -53,22 +56,22 @@ export class MeetingPageComponent implements OnInit {
       startDateApoint: apointment.startDateApoint ? apointment.startDateApoint.split('T')[0] : '',
       endDateApoint: apointment.endDateApoint ? apointment.endDateApoint.split('T')[0] : ''
     };
+    this.editForm.patchValue(this.selectedApointment);
     this.modalRef = this.modalService.show(template);
-    console.log(this.selectedApointment);
   }
   updateApointment(): void {
-    if (new Date(this.selectedApointment.startDateApoint) > new Date(this.selectedApointment.endDateApoint)) {
+    if (this.editForm.invalid) {
+      this.validateAllFormFields(this.editForm);
+      return;
+    }
+
+    const formValue = this.editForm.value;
+    if (new Date(formValue.startDateApoint) > new Date(formValue.endDateApoint)) {
       this.toastr.error(this.translate.instant('TOASTR.INVALID_DATE'));
       return;
     }
-    this.meetingService.updateMeeting(this.selectedApointment.apointmentId, {
-      title: this.selectedApointment.title,
-      description: this.selectedApointment.description,
-      startDateApoint: this.selectedApointment.startDateApoint,
-      endDateApoint: this.selectedApointment.endDateApoint,
-      location: this.selectedApointment.location,
-      reminderTime: this.selectedApointment.reminderTime
-    }).subscribe(
+
+    this.meetingService.updateMeeting(this.selectedApointment.apointmentId, formValue).subscribe(
       () => {
         this.loadApointments();
         this.translate.get('TOASTR.MEETING_UPDATED').subscribe((translatedText: string) => {
@@ -79,6 +82,16 @@ export class MeetingPageComponent implements OnInit {
         console.error('Error updating meeting', error);
       }
     );
+  }
+  validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      } else {
+        control?.markAsTouched({ onlySelf: true });
+      }
+    });
   }
   deleteApointment(apointmentId: string): void {
     this.translate.get('TOASTR.CONFIRM_DELETE_MEETING').subscribe((confirmText: string) => {
@@ -99,6 +112,11 @@ export class MeetingPageComponent implements OnInit {
   }
 
   async exportToPDF(): Promise<void> {
+    if (this.apointments.length === 0) {
+      this.toastr.error(this.translate.instant('TOASTR.NO_MEETINGS_TO_EXPORT'));
+      return;
+    }
+
     try {
       await this.exportService.exportToPDF('meetingList', 'meetings', true);
       this.toastr.success(this.translate.instant('TOASTR.EXPORT_PDF_SUCCESS'));
@@ -109,6 +127,11 @@ export class MeetingPageComponent implements OnInit {
   }
 
   async exportToExcel(): Promise<void> {
+    if (this.apointments.length === 0) {
+      this.toastr.error(this.translate.instant('TOASTR.NO_MEETINGS_TO_EXPORT'));
+      return;
+    }
+
     try {
       const formattedData = this.exportService.formatDataForExport(this.apointments, 'meeting');
       await this.exportService.exportToExcel(formattedData, 'meetings', true);
@@ -120,6 +143,21 @@ export class MeetingPageComponent implements OnInit {
   }
 
   printMeetings(): void {
+    if (this.apointments.length === 0) {
+      this.toastr.error(this.translate.instant('TOASTR.NO_MEETINGS_TO_PRINT'));
+      return;
+    }
     window.print();
+  }
+
+  private initializeForm(): void {
+    this.editForm = this.fb.group({
+      title: ['', [Validators.required, Validators.maxLength(50)]],
+      description: ['', Validators.required],
+      startDateApoint: ['', Validators.required],
+      endDateApoint: ['', Validators.required],
+      location: ['', Validators.required],
+      reminderTime: [0, [Validators.required, Validators.min(0)]]
+    });
   }
 }

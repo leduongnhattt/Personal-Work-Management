@@ -12,18 +12,43 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './notes.component.css'
 })
 export class NotesComponent implements OnInit {
+  noteForm!: FormGroup;
+  maxTitleLength: number = 50;
 
-  constructor(private formBuilder: FormBuilder, private noteService: NoteService, private toastr: ToastrService, private translate: TranslateService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private noteService: NoteService,
+    private toastr: ToastrService,
+    private translate: TranslateService
+  ) { }
+
   ngOnInit(): void {
     this.initializeForm();
   }
-  noteForm!: FormGroup;
 
   initializeForm() {
     this.noteForm = this.formBuilder.group({
-      title: ['', Validators.required],
+      title: ['', [
+        Validators.required,
+        Validators.maxLength(this.maxTitleLength)
+      ]],
       content: ['', Validators.required],
     });
+
+    // Theo dõi thay đổi của title
+    this.noteForm.get('title')?.valueChanges.subscribe(value => {
+      if (value && value.length > this.maxTitleLength) {
+        this.toastr.error(this.translate.instant('validation.maxLength'));
+      }
+    });
+  }
+
+  get titleControl() {
+    return this.noteForm.get('title');
+  }
+
+  get contentControl() {
+    return this.noteForm.get('content');
   }
 
   addNote() {
@@ -43,7 +68,14 @@ export class NotesComponent implements OnInit {
           });
           this.noteForm.reset();
         }
-      })
+      });
+    } else {
+      // Mark all fields as touched to show validation messages
+      Object.keys(this.noteForm.controls).forEach(key => {
+        const control = this.noteForm.get(key);
+        control?.markAsTouched();
+      });
     }
   }
 }
+

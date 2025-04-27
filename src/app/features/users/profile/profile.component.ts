@@ -42,16 +42,25 @@ export class ProfileComponent implements OnInit {
   initForm() {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', [
+        Validators.required,
+        Validators.pattern(/^0\d{9}$/),
+        Validators.minLength(10),
+        Validators.maxLength(10)
+      ]],
+      email: ['', [
+        Validators.required,
+        Validators.email,
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+      ]],
       imageUrl: [''],
       oldPassword: [''],
       newPassword: [''],
       repeatPassword: [''],
-      twitter: ['', Validators.pattern(/^https?:\/\/.+/)],
-      facebook: ['', Validators.pattern(/^https?:\/\/.+/)],
-      linkedin: ['', Validators.pattern(/^https?:\/\/.+/)],
-      instagram: ['', Validators.pattern(/^https?:\/\/.+/)]
+      twitter: ['', Validators.pattern(/^https?:\/\/(?:www\.)?twitter\.com\/[A-Za-z0-9_]{1,15}$/)],
+      facebook: ['', Validators.pattern(/^https?:\/\/(?:www\.)?facebook\.com\/[A-Za-z0-9.]+$/)],
+      linkedin: ['', Validators.pattern(/^https?:\/\/(?:www\.)?linkedin\.com\/(?:in|company)\/[A-Za-z0-9-]+$/)],
+      instagram: ['', Validators.pattern(/^https?:\/\/(?:www\.)?instagram\.com\/[A-Za-z0-9._]+$/)],
     });
   }
 
@@ -135,12 +144,30 @@ export class ProfileComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
+      const file = input.files[0];
+
+      // Check file format
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      if (!allowedTypes.includes(file.type)) {
+        this.toastr.error('Only JPG and PNG files are allowed');
+        input.value = ''; // Clear the input
+        return;
+      }
+
+      // Check file size (2MB = 2 * 1024 * 1024 bytes)
+      const maxSize = 2 * 1024 * 1024;
+      if (file.size > maxSize) {
+        this.toastr.error('File size must be less than 2MB');
+        input.value = ''; // Clear the input
+        return;
+      }
+
+      this.selectedFile = file;
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         const imageElement = document.querySelector('.rounded-circle') as HTMLImageElement;
-        if (imageElement) {
-          imageElement.src = e.target?.result as string;
+        if (imageElement && e.target?.result) {
+          imageElement.src = e.target.result as string;
         }
       };
       reader.readAsDataURL(this.selectedFile);

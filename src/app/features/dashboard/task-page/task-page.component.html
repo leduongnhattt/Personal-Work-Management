@@ -2,13 +2,13 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="text-center text-primary">📌 {{'listTask' | translate}}</h2>
     <div class="btn-group">
-      <button class="btn btn-outline-primary" (click)="exportToPDF()">
+      <button class="btn btn-outline-primary" (click)="exportToPDF()" [disabled]="tasks.length === 0">
         <i class="fas fa-file-pdf"></i> {{'exportPDF' | translate}}
       </button>
-      <button class="btn btn-outline-success" (click)="exportToExcel()">
+      <button class="btn btn-outline-success" (click)="exportToExcel()" [disabled]="tasks.length === 0">
         <i class="fas fa-file-excel"></i> {{'exportExcel' | translate}}
       </button>
-      <button class="btn btn-outline-secondary" (click)="printTasks()">
+      <button class="btn btn-outline-secondary" (click)="printTasks()" [disabled]="tasks.length === 0">
         <i class="fas fa-print"></i> {{'print' | translate}}
       </button>
     </div>
@@ -71,50 +71,91 @@
   </div>
 
   <div class="modal-body p-3">
-    <!-- Title -->
-    <div class="mb-3">
-      <label for="taskTitle" class="form-label fw-bold">📌 {{'title' | translate}}</label>
-      <input id="taskTitle" [(ngModel)]="selectedTask.title" class="form-control">
-    </div>
+    <form [formGroup]="editForm">
+      <!-- Title -->
+      <div class="mb-3">
+        <label for="taskTitle" class="form-label fw-bold">📌 {{'title' | translate}}</label>
+        <input id="taskTitle" formControlName="title" class="form-control">
+        <div *ngIf="editForm.get('title')?.touched && editForm.get('title')?.errors" class="text-danger">
+          <div *ngIf="editForm.get('title')?.errors?.['required']">
+            Title is required.
+          </div>
+          <div *ngIf="editForm.get('title')?.errors?.['maxlength']">
+            Title cannot exceed 50 characters.
+          </div>
+        </div>
+      </div>
 
-    <!-- Description -->
-    <div class="mb-3">
-      <label for="taskDescription" class="form-label fw-bold">📝 {{'description' | translate}}</label>
-      <textarea id="taskDescription" [(ngModel)]="selectedTask.description" class="form-control" rows="3"></textarea>
-    </div>
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="taskDescription" class="form-label fw-bold">📝 {{'description' | translate}}</label>
+        <textarea id="taskDescription" formControlName="description" class="form-control" rows="3"></textarea>
+        <div *ngIf="editForm.get('description')?.touched && editForm.get('description')?.errors" class="text-danger">
+          <div *ngIf="editForm.get('description')?.errors?.['required']">
+            Description is required.
+          </div>
+        </div>
+      </div>
 
-    <!-- Start Date -->
-    <div class="mb-3">
-      <label for="startDateTask" class="form-label fw-bold">📅 {{'start' | translate}}</label>
-      <input id="startDateTask" type="date" [(ngModel)]="selectedTask.startDateTask" class="form-control">
-    </div>
+      <!-- Start Date -->
+      <div class="mb-3">
+        <label for="startDateTask" class="form-label fw-bold">📅 {{'start' | translate}}</label>
+        <input id="startDateTask" type="date" formControlName="startDateTask" class="form-control">
+        <div *ngIf="editForm.get('startDateTask')?.touched && editForm.get('startDateTask')?.errors"
+          class="text-danger">
+          <div *ngIf="editForm.get('startDateTask')?.errors?.['required']">
+            Start date is required.
+          </div>
+        </div>
+      </div>
 
-    <!-- End Date -->
-    <div class="mb-3">
-      <label for="endDateTask" class="form-label fw-bold">⏳ {{'end' | translate}}</label>
-      <input id="endDateTask" type="date" [(ngModel)]="selectedTask.endDateTask" class="form-control">
-    </div>
+      <!-- End Date -->
+      <div class="mb-3">
+        <label for="endDateTask" class="form-label fw-bold">⏳ {{'end' | translate}}</label>
+        <input id="endDateTask" type="date" formControlName="endDateTask" class="form-control">
+        <div *ngIf="editForm.get('endDateTask')?.touched && editForm.get('endDateTask')?.errors" class="text-danger">
+          <div *ngIf="editForm.get('endDateTask')?.errors?.['required']">
+            End date is required.
+          </div>
+        </div>
+      </div>
 
-    <!-- Status -->
-    <div class="mb-3">
-      <label for="taskStatus" class="form-label fw-bold">📌 {{'status' | translate}}</label>
-      <select id="taskStatus" [(ngModel)]="selectedTask.status" class="form-select">
-        <option value="Pending">🔴 {{'pending' | translate}}</option>
-        <option value="InProgress">🟡 {{'inprogress' | translate}}</option>
-        <option value="Completed">🟢 {{'completed' | translate}}</option>
-        <option value="Cancelled">⚫ {{'cancelled' | translate}}</option>
-      </select>
-    </div>
+      <!-- Status -->
+      <div class="mb-3">
+        <label for="taskStatus" class="form-label fw-bold">📌 {{'status' | translate}}</label>
+        <select id="taskStatus" formControlName="status" class="form-select">
+          <option value="" disabled selected>{{'selectStatus' | translate}}</option>
+          <option value="Pending">🔴 {{'pending' | translate}}</option>
+          <option value="InProgress">🟡 {{'inprogress' | translate}}</option>
+          <option value="Completed">🟢 {{'completed' | translate}}</option>
+          <option value="Cancelled">⚫ {{'cancelled' | translate}}</option>
+        </select>
+        <div *ngIf="editForm.get('status')?.touched && editForm.get('status')?.errors" class="text-danger">
+          <div *ngIf="editForm.get('status')?.errors?.['required']">
+            Status is required.
+          </div>
+        </div>
+      </div>
 
-    <!-- Reminder Time -->
-    <div class="mb-3">
-      <label for="reminderTime" class="form-label fw-bold">⏰ {{'reminder' | translate}}</label>
-      <input id="reminderTime" type="number" [(ngModel)]="selectedTask.reminderTime" class="form-control" min="1">
-    </div>
+      <!-- Reminder Time -->
+      <div class="mb-3">
+        <label for="reminderTime" class="form-label fw-bold">⏰ {{'reminder' | translate}}</label>
+        <input id="reminderTime" type="number" formControlName="reminderTime" class="form-control" min="0">
+        <div *ngIf="editForm.get('reminderTime')?.touched && editForm.get('reminderTime')?.errors" class="text-danger">
+          <div *ngIf="editForm.get('reminderTime')?.errors?.['required']">
+            Reminder time is required.
+          </div>
+          <div *ngIf="editForm.get('reminderTime')?.errors?.['min']">
+            Reminder time must be a positive number.
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 
   <div class="modal-footer p-3">
     <button class="btn btn-secondary" (click)="modalRef?.hide()">❌ {{'close' | translate}}</button>
-    <button class="btn btn-primary" (click)="updateTask(); modalRef?.hide()">💾 {{'save' | translate}}</button>
+    <button class="btn btn-primary" (click)="updateTask()" [disabled]="editForm.invalid">💾 {{'save' |
+      translate}}</button>
   </div>
 </ng-template>

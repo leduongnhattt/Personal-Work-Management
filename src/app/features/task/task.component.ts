@@ -28,12 +28,19 @@ export class TaskComponent {
 
   private initializeForm(): void {
     this.taskForm = this.fb.group({
-      title: ['', Validators.required],
+      title: ['', [
+        Validators.required,
+        Validators.maxLength(50)
+      ]],
       description: ['', Validators.required],
       startDateTask: ['', Validators.required],
       endDateTask: ['', Validators.required],
       status: ['', Validators.required],
-      reminderTime: [0, [Validators.required, Validators.min(0)]],
+      reminderTime: [0, [
+        Validators.required,
+        Validators.min(0),
+        Validators.pattern('^-?\\d*$')
+      ]],
     });
   }
 

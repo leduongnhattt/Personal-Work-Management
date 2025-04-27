@@ -29,7 +29,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     // Subscribe to messages from the chat service
     this.chatService.messages$.subscribe(messages => {
       this.messages = messages;
-      this.scrollToBottom();
+      // Use setTimeout to ensure the view is updated
+      setTimeout(() => this.scrollToBottom(), 0);
     });
   }
 
@@ -44,6 +45,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.isLoading = true;
       await this.chatService.sendMessage(this.newMessage);
       this.newMessage = '';
+      // Use setTimeout to ensure the view is updated
+      setTimeout(() => this.scrollToBottom(), 0);
     } catch (error) {
       console.error('Error sending message:', error);
     } finally {
@@ -54,11 +57,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   clearChat(): void {
     if (confirm('Are you sure you want to clear the chat history?')) {
       this.chatService.clearChat();
+      // Use setTimeout to ensure the view is updated
+      setTimeout(() => this.scrollToBottom(), 0);
     }
   }
 
   private scrollToBottom(): void {
     try {
+      if (!this.chatContainer?.nativeElement) {
+        return;
+      }
       const element = this.chatContainer.nativeElement;
       element.scrollTop = element.scrollHeight;
     } catch (err) {

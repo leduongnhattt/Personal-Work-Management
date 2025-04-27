@@ -1,42 +1,152 @@
 <div class="schedule-container">
-  <!-- Phần Meetings -->
-  <div class="meeting-section">
-    <h2 class="section-title meeting-title">
-      <mat-icon>event</mat-icon>
-      <span>{{ 'scheduleMeeting' | translate }}</span>
-    </h2>
-    <div class="meeting-list">
-      <mat-card *ngFor="let apointment of schedule?.apointments" class="apointment-card">
-        <mat-card-header class="apointment-header">
-          <mat-card-title>{{ apointment?.title }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p><strong>{{ 'description' | translate }}:</strong> {{ apointment?.description }}</p>
-          <p><strong>{{ 'location' | translate }}:</strong> {{ apointment?.location }}</p>
-          <p><strong>{{ 'start' | translate }}:</strong> {{ apointment?.startDateApoint | date:'dd/MM/yyyy' }}</p>
-          <p><strong>{{ 'end' | translate }}:</strong> {{ apointment?.endDateApoint | date:'dd/MM/yyyy' }}</p>
-        </mat-card-content>
-      </mat-card>
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="input-group">
+      <input type="search" [(ngModel)]="searchTerm" (ngModelChange)="onSearch()" class="form-control search-input"
+        placeholder="Search for appointments or tasks..." id="searchInput">
+      <button type="button" class="btn btn-primary" data-mdb-ripple-init (click)="performSearch()">
+        <i class="fas fa-search"></i>
+      </button>
+
+    </div>
+    <div class="search-info" *ngIf="isSearching && searchTerm">
+      {{ filteredTasks.length + filteredAppointments.length }} results found
     </div>
   </div>
 
-  <!-- Phần Tasks -->
-  <div class="task-section">
-    <h2 class="section-title task-title">
-      <mat-icon>task_alt</mat-icon>
-      <span>{{ 'scheduleTask' | translate }}</span>
-    </h2>
-    <div class="task-list">
-      <mat-card *ngFor="let task of schedule?.tasks" class="task-card">
-        <mat-card-header class="task-header">
-          <mat-card-title>{{ task?.title }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p><strong>{{ 'description' | translate }}:</strong> {{ task?.description }}</p>
-          <p><strong>{{ 'start' | translate }}:</strong> {{ task?.startDateTask | date:'dd/MM/yyyy' }}</p>
-          <p><strong>{{ 'end' | translate }}:</strong> {{ task?.endDateTask | date:'dd/MM/yyyy' }}</p>
-        </mat-card-content>
-      </mat-card>
-    </div>
+  <div class="content-container mt-3">
+    <!-- Default View -->
+    <ng-container *ngIf="!isSearching">
+      <!-- Meetings Section -->
+      <div class="meeting-section">
+        <div class="section-header">
+          <h2 class="section-title meeting-title">
+            <mat-icon>event</mat-icon>
+            <span>Appointments</span>
+            <span class="count-badge" *ngIf="schedule.apointments.length > 0">
+              {{ schedule.apointments.length }}
+            </span>
+          </h2>
+          <button mat-icon-button (click)="toggleAppointments()"
+            [matTooltip]="showAppointments ? 'Hide Appointments' : 'Show Appointments'" type="button">
+            <mat-icon>{{ showAppointments ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+        </div>
+
+        <div class="meeting-list" *ngIf="showAppointments">
+          <mat-card *ngFor="let apointment of schedule.apointments" class="apointment-card">
+            <mat-card-header>
+              <mat-card-title>{{ getTitle(apointment?.title) }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p><strong>Description:</strong> {{ getDescription(apointment?.description) }}</p>
+              <p><strong>Location:</strong> {{ getLocation(apointment?.location) }}</p>
+              <p><strong>Start:</strong> {{ formatDate(apointment?.startDateApoint) }}</p>
+              <p><strong>End:</strong> {{ formatDate(apointment?.endDateApoint) }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <!-- Tasks Section -->
+      <div class="task-section">
+        <div class="section-header">
+          <h2 class="section-title task-title">
+            <mat-icon>task_alt</mat-icon>
+            <span>Tasks</span>
+            <span class="count-badge" *ngIf="schedule.tasks.length > 0">
+              {{ schedule.tasks.length }}
+            </span>
+          </h2>
+          <button mat-icon-button (click)="toggleTasks()" [matTooltip]="showTasks ? 'Hide Tasks' : 'Show Tasks'"
+            type="button">
+            <mat-icon>{{ showTasks ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+        </div>
+
+        <div class="task-list" *ngIf="showTasks">
+          <mat-card *ngFor="let task of schedule.tasks" class="task-card">
+            <mat-card-header>
+              <mat-card-title>{{ getTitle(task?.title) }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p><strong>Description:</strong> {{ getDescription(task?.description) }}</p>
+              <p><strong>Start:</strong> {{ formatDate(task?.startDateTask) }}</p>
+              <p><strong>End:</strong> {{ formatDate(task?.endDateTask) }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Search Results View -->
+    <ng-container *ngIf="isSearching">
+      <!-- Meetings Section -->
+      <div class="meeting-section">
+        <div class="section-header">
+          <h2 class="section-title meeting-title">
+            <mat-icon>event</mat-icon>
+            <span>Appointments</span>
+            <span class="count-badge" *ngIf="filteredAppointments.length > 0">
+              {{ filteredAppointments.length }}
+            </span>
+          </h2>
+          <button mat-icon-button (click)="toggleAppointments()"
+            [matTooltip]="showAppointments ? 'Hide Appointments' : 'Show Appointments'" type="button">
+            <mat-icon>{{ showAppointments ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+        </div>
+
+        <div class="meeting-list" *ngIf="showAppointments">
+          <mat-card *ngFor="let apointment of filteredAppointments" class="apointment-card">
+            <mat-card-header>
+              <mat-card-title>{{ getTitle(apointment?.title) }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p><strong>Description:</strong> {{ getDescription(apointment?.description) }}</p>
+              <p><strong>Location:</strong> {{ getLocation(apointment?.location) }}</p>
+              <p><strong>Start:</strong> {{ formatDate(apointment?.startDateApoint) }}</p>
+              <p><strong>End:</strong> {{ formatDate(apointment?.endDateApoint) }}</p>
+            </mat-card-content>
+          </mat-card>
+          <div class="no-results" *ngIf="filteredAppointments.length === 0">
+            No appointments found
+          </div>
+        </div>
+      </div>
+
+      <!-- Tasks Section -->
+      <div class="task-section">
+        <div class="section-header">
+          <h2 class="section-title task-title">
+            <mat-icon>task_alt</mat-icon>
+            <span>Tasks</span>
+            <span class="count-badge" *ngIf="filteredTasks.length > 0">
+              {{ filteredTasks.length }}
+            </span>
+          </h2>
+          <button mat-icon-button (click)="toggleTasks()" [matTooltip]="showTasks ? 'Hide Tasks' : 'Show Tasks'"
+            type="button">
+            <mat-icon>{{ showTasks ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+        </div>
+
+        <div class="task-list" *ngIf="showTasks">
+          <mat-card *ngFor="let task of filteredTasks" class="task-card">
+            <mat-card-header>
+              <mat-card-title>{{ getTitle(task?.title) }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p><strong>Description:</strong> {{ getDescription(task?.description) }}</p>
+              <p><strong>Start:</strong> {{ formatDate(task?.startDateTask) }}</p>
+              <p><strong>End:</strong> {{ formatDate(task?.endDateTask) }}</p>
+            </mat-card-content>
+          </mat-card>
+          <div class="no-results" *ngIf="filteredTasks.length === 0">
+            No tasks found
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>

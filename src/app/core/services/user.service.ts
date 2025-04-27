@@ -24,4 +24,10 @@ export class UserService {
   updateProfile(data: any): Observable<any> {
     return this.http.put(`${environment.apiAuthUrl}/profile`, data);
   }
+  exisitingUser(email: string): Observable<any> {
+    return this.http.get(`${environment.apiAuthUrl}/existing-user/${email}`);
+  }
+  checkUsernameExists(username: string): Observable<{ message: string, status: string, userName?: string }> {
+    return this.http.get<{ message: string, status: string, userName?: string }>(`${environment.apiAuthUrl}/existing-user?username=${username}`);
+  }
 }

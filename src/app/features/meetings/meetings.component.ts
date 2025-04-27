@@ -8,31 +8,47 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-meetings',
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+  ],
   templateUrl: './meetings.component.html',
   styleUrl: './meetings.component.css'
 })
 export class MeetingsComponent implements OnInit {
   meetingForm!: FormGroup;
   dateError: string | null = null;
+  showOnlineMeeting = false;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private meetingSerivce: MeetingService,
     private toastr: ToastrService,
-    private translate: TranslateService) { }
+    private translate: TranslateService
+  ) { }
+
   ngOnInit(): void {
     this.initializeForm();
   }
 
   private initializeForm(): void {
     this.meetingForm = this.formBuilder.group({
-      title: ['', Validators.required],
+      title: ['', [
+        Validators.required,
+        Validators.maxLength(50)
+      ]],
       description: ['', Validators.required],
       location: ['', Validators.required],
       startDateApoint: ['', Validators.required],
       endDateApoint: ['', Validators.required],
-      reminderTime: [0, [Validators.required, Validators.min(0)]],
-    })
+      reminderTime: [0, [
+        Validators.required,
+        Validators.min(0),
+        Validators.pattern('^-?\\d*$')
+      ]],
+    });
   }
 
   addMeeting() {
@@ -54,8 +70,8 @@ export class MeetingsComponent implements OnInit {
         this.meetingForm.reset();
       }
     });
-
   }
+
   public validateDates(): boolean {
     const startDate = this.meetingForm.get('startDateApoint')?.value;
     const endDate = this.meetingForm.get('endDateApoint')?.value;
@@ -65,7 +81,7 @@ export class MeetingsComponent implements OnInit {
       setTimeout(() => {
         this.meetingForm.get('startDateApoint')?.reset();
         this.meetingForm.get('endDateApoint')?.reset();
-      }, 3000)
+      }, 3000);
       return false;
     }
 

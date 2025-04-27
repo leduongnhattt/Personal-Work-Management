@@ -4,8 +4,22 @@
     <!-- Title -->
     <div class="mb-3">
       <label for="title" class="form-label fw-bold">{{'title' | translate}}</label>
-      <input type="text" id="title" class="form-control form-control-lg" placeholder="{{'placeholderNote2' | translate}}"
-        formControlName="title" />
+      <input type="text" id="title" class="form-control form-control-lg"
+        placeholder="{{'placeholderNote2' | translate}}" formControlName="title" />
+      <!-- Hiển thị số ký tự -->
+      <small class="text-muted" *ngIf="noteForm.get('title')?.value">
+        {{ noteForm.get('title')?.value?.length || 0 }}/50
+      </small>
+      <!-- Validation message for title -->
+      <div *ngIf="noteForm.get('title')?.invalid && (noteForm.get('title')?.dirty || noteForm.get('title')?.touched)"
+        class="text-danger">
+        <small *ngIf="noteForm.get('title')?.errors?.['required']">
+          {{'validation.required' | translate}}
+        </small>
+        <small *ngIf="noteForm.get('title')?.errors?.['maxlength']">
+          {{'validation.maxLength' | translate}}
+        </small>
+      </div>
     </div>
 
     <!-- Content -->
@@ -13,7 +27,16 @@
       <label for="content" class="form-label fw-bold">{{'content' | translate}}</label>
       <textarea id="content" class="form-control form-control-lg" placeholder="{{'placeholderNote1' | translate}}"
         formControlName="content" rows="4" style="resize: none;"></textarea>
+      <!-- Validation message for content -->
+      <div
+        *ngIf="noteForm.get('content')?.invalid && (noteForm.get('content')?.dirty || noteForm.get('content')?.touched)"
+        class="text-danger">
+        <small *ngIf="noteForm.get('content')?.errors?.['required']">
+          {{'validation.required' | translate}}
+        </small>
+      </div>
     </div>
+
     <!-- Submit Button -->
     <div class="text-center mt-4">
       <button type="submit" class="btn btn-gradient px-5 py-3 rounded-pill" [disabled]="!noteForm.valid">

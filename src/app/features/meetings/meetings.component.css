@@ -26,7 +26,8 @@ textarea::placeholder {
   font-size: 0.85rem;
   color: #b0b0b0;
 }
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -36,4 +37,30 @@ body, html {
 .app-container {
   height: 100vh; /* Chiếm toàn màn hình */
   overflow: auto; /* Chỉ hiển thị scrollbar nếu nội dung quá dài */
+}
+
+.meetings-container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.create-meeting-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.create-meeting-btn:hover {
+  background-color: #0056b3;
 }

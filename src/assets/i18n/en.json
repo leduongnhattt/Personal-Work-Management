@@ -45,7 +45,13 @@
     "EXPORT_PDF_SUCCESS": "Successfully exported to PDF",
     "EXPORT_PDF_ERROR": "Error exporting to PDF",
     "EXPORT_EXCEL_SUCCESS": "Successfully exported to Excel",
-    "EXPORT_EXCEL_ERROR": "Error exporting to Excel"
+    "EXPORT_EXCEL_ERROR": "Error exporting to Excel",
+    "NO_MEETINGS_TO_EXPORT": "No meetings to export.",
+    "NO_MEETINGS_TO_PRINT": "No meetings to print.",
+    "NO_NOTES_TO_EXPORT": "No notes to export.",
+    "NO_NOTES_TO_PRINT": "No notes to print.",
+    "NO_TASKS_TO_EXPORT": "No tasks to export.",
+    "NO_TASKS_TO_PRINT": "No tasks to print."
   },
   "listMeeting": "Meeting List",
   "description": "Description",
@@ -81,5 +87,9 @@
   "exportPDF": "Export PDF",
   "exportExcel": "Export Excel",
   "print": "Print",
-  "chatAssistant": "Chat Assistant"
+  "chatAssistant": "Chat Assistant",
+  "validation": {
+    "required": "This field is required.",
+    "maxLength": "This field cannot exceed 50 characters."
+  }
 }

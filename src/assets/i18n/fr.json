@@ -74,5 +74,9 @@
   "placeholderMeeting3": "Entrez le lieu de la réunion",
   "scheduleMeeting": "Planifier une réunion",
   "scheduleTask": "Planifier une tâche",
-  "chatAssistant": "Discuter avec l'Assistant"
+  "chatAssistant": "Discuter avec l'Assistant",
+  "validation": {
+    "required": "Ce champ est requis.",
+    "maxLength": "Ce champ ne peut pas excéder 50 caractères."
+  }
 }
